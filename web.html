@@ -12,9 +12,8 @@
         }
 
         body{
-            background-color:rgb(252, 245, 245);
+            background-color:rgb(36, 33, 33);
             font-family:'Roboto', sans-serif;
-            background-color: rgb(36, 33, 33);
         }
 
         .container{
@@ -240,6 +239,7 @@
 
         .detail{
             color:white;
+            max-width: 500px;
         }
 
         .club-title{
@@ -318,8 +318,6 @@
         }
 
         .box{
-            display:flex;
-            flex-wrap:wrap;
             width:298px;
             height:258px;
             background-color:rgb(10, 10, 30);
@@ -394,29 +392,189 @@
             color:rgb(0, 174, 255);
         }
 
-        /* FOOTER STYLES */
-        .foot{
-            width:100%;
-            padding: 25px 0;
-            background-color:black;
+        .Title{
+            margin-bottom:0;
+            font-size:30px;
+            font-family:arial;
+            font-weight:bold;
+            text-align:center;
+            color:white;
         }
 
-        .last{
+        .news{
+            margin-top:35px;
+            display:flex;
+            flex-wrap: wrap;
+            justify-content:center;
+            gap: 25px;
+            padding: 0 15px;
+        }
+        
+        .news-card {
+            width:300px;
+            height:425px;
+            border-radius:25px;
+            position: relative;
+            padding: 2px;
+            --deg: 0deg;
+        }
+
+        .news-card::before,
+        .news-card::after{
+            content:''; 
+            position:absolute;
+            left:-2px;
+            top:-2px;
+            background: conic-gradient(from var(--deg) at 50% 50%,#00c3ff,#4d0199,#a34df9,#00c3ff);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            border-radius: inherit;
+            animation: autoRotate 4s linear infinite;
+            z-index: -2; 
+        }
+
+        .news-card::after{
+            filter:blur(2px);
+            z-index: -3;
+        }
+
+        .news-card-content {
+            background-color:rgb(10, 10, 30);
+            color: white;
+            height: 100%;
+            width: 100%;
+            border-radius: inherit;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .news-header{
+            padding: 20px;
+            height:40%;
+            font-size:28px;
+            font-family:arial;
+            font-weight:bold;
+            text-align: center;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            color:white;
+            background-color: black;
+        }
+
+        .news-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-headline{
+            font-size:24px;
+            font-family:arial;
+            font-weight:bold;
+            color:rgb(0, 174, 255);
+        }
+
+        .news-summary{
+            padding-top:15px;
+            font-size:18px;
+            font-family:arial;
+            color:white;
+            flex-grow: 1;
+        }
+
+        .news-link{
+            padding: 0 20px 10px;
+            font-size:15px;
+            font-family:arial;
+            color:blueviolet;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .news-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* --- GALLERY STYLES --- */
+        .gallery-title{
+            padding-top:75px;
+            padding-bottom:25px;
+            font-size:30px;
+            font-family:arial;
+            font-weight:bold;
             color:white;
             text-align:center;
         }
 
-        .news{
-            display:flex;
-            flex-wrap: wrap; /* Allows items to wrap on smaller screens */
-            justify-content:center;
-            gap: 20px;
+        .slider{
+            height:250px;
+            margin: auto;
+            position:relative;
+            width:90%;
+            display:grid;
+            place-items:center;
+            overflow: hidden;
         }
-        .news1,.news2,.news3{
-            width:298px;
-            height:400px;
-            background-color: rgb(10,10,30);
-            border-radius:25px;
+
+        .slide-track{
+            display:flex;
+            width:calc(250px * 20);
+            animation:scroll 40s linear infinite;
+        }
+        
+        .slide-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll{
+            0%{
+                transform:translateX(0);
+            }
+            100%{
+                transform:translateX(calc(-250px * 10));
+            }
+        }
+
+        .slide{
+            height:200px;
+            width:250px;
+            display:flex;
+            align-items:center;
+            padding:15px;
+            perspective:100px;
+        }
+
+        .slide img{
+            width:100%;
+            transition:transform 0.5s;
+        }
+
+        .slide img:hover{
+            transform:translateZ(20px);
+        }
+
+        .slider::before,
+        .slider::after{
+            background:linear-gradient(to right, rgb(36, 33, 33) 0%, rgba(36, 33, 33, 0) 100%);
+            content:'';
+            height:100%;
+            position:absolute;
+            width:15%;
+            z-index:2;
+        }
+
+        .slider::before{
+            left:0;
+            top:0;
+        }
+
+        .slider::after{
+            right:0;
+            top:0;
+            transform:rotateZ(180deg);
         }
 
         /* --- RESPONSIVE STYLES --- */
@@ -431,6 +589,9 @@
         }
 
         @media (max-width: 768px) {
+            .container {
+                justify-content: center;
+            }
             .content {
                 font-size: 50px;
             }
@@ -447,61 +608,18 @@
                 justify-content: center;
             }
         }
-
-        .news-title1{
+        
+        /* FOOTER STYLES */
+        .foot{
             width:100%;
-            height:40%;
-            font-size:30px;
-            text-align: center;
-            color:white;
-            background-color: black;
-        }
-
-        .news-info1{
-            width:100%;
-            height:60%;
-            font-size:30px;
-            text-align: center;
-            color:black;
-            background-color:rgb(10,10,30);
-        }
-
-        .news-title2{
-            width:100%;
-            height:40%;
-            font-size:30px;
-            text-align: center;
-            color:white;
-            background-color: black;
-                }
-
-        .news-info2{
-            width:100%;
-            height:60%;
-            font-size:30px;
-            text-align: center;
-            color:black;
-            background-color:rgb(10,10,30);
-        }
-
-        .news-title3{
-            width:100%;
-            height:40%;
-            font-size:30px;
-            text-align: center;
-            color:white;
+            padding: 25px 0;
             background-color:black;
         }
 
-        .news-info3{
-            width:100%;
-            height:60%;
-            font-size:30px;
-            text-align: center;
-            color:black;
-            background-color:rgb(10,10,30);
+        .last{
+            color:white;
+            text-align:center;
         }
-
 
     </style>
 </head>
@@ -517,6 +635,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#clubs">Clubs</a></li>
                     <li><a href="#events">Events</a></li>
+                    <li><a href="#news">News</a></li>
                     <li><a href="#gallery">Gallery</a></li>
                     <li><a href="#feedback">Feedback</a></li>
                 </ul>
@@ -542,8 +661,8 @@
                 <div class="detail">
                     <div class="club-title">Tech Titans Club</div>
                     <div class="club-moto">Pioneering Tomorrow's Technology</div>
-                    <div class="club-info">The Tech Titans Club is a community of innovators, coders, and tech enthusiasts<br>
-                        dedicated to exploring the frontiers of technology. We host workshops, hackathons,<br>
+                    <div class="club-info">The Tech Titans Club is a community of innovators, coders, and tech enthusiasts
+                        dedicated to exploring the frontiers of technology. We host workshops, hackathons,
                         and seminars to foster learning and collaboration.
                     </div>
                     <button class="view-event">View Events</button>
@@ -593,27 +712,79 @@
             </div>
         </div>
 
+        <p class="Title">Latest News</p>
         <div class="news">
-            <div class="news1">
-            <div class="news-title1">1</div>
-            <div class="news-info1">1</div>
+            <!-- News Card 1 -->
+            <div class="news-card">
+                <div class="news-card-content">
+                    <div class="news-header">Winner's Announcement</div>
+                    <div class="news-body">
+                        <p class="news-headline">Team Innovate Wins CodeFest 2025!</p>
+                        <p class="news-summary">Big congrats to 'Team Innovate', our CodeFest 2025 champions! Their resource-sharing app wowed the judges, earning them the top prize & a sponsored internship. Awesome work!</p>
+                        <a href="#" class="news-link">Read more &#8594;</a>
+                    </div>
+                </div>
             </div>
-            <div class="news2">
-            <div class="news-title2"></div>
-            <div class="news-info2"></div>
+            <!-- News Card 2 -->
+            <div class="news-card">
+                <div class="news-card-content">
+                    <div class="news-header">New Initiative</div>
+                    <div class="news-body">
+                        <p class="news-headline">ClubHub Launches New Mentorship Program</p>
+                        <p class="news-summary">Announcing the new ClubHub Mentorship Program! Connect with experienced members to guide your tech journey. Applications for mentors and mentees are now open. Sign up today!</p>
+                         <a href="#" class="news-link">Read more &#8594;</a>
+                    </div>
+                </div>
             </div>
-            <div class="news3">
-            <div class="news-title3"></div>
-            <div class="news-info3"></div>
+            <!-- News Card 3 -->
+            <div class="news-card">
+                <div class="news-card-content">
+                    <div class="news-header">Member Achievement Story</div>
+                    <div class="news-body">
+                        <p class="news-headline">Member Spotlight: Priya Sharma</p>
+                        <p class="news-summary">A shout-out to Priya Sharma! Her AI project for predicting air quality just won recognition at the National Science Fair. We are incredibly proud of her achievements!</p>
+                        <a href="#" class="news-link">Read more &#8594;</a>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="gallery">
+             <p class="gallery-title">Media Gallery</p>
+        </div>
+        
+        <div class="slider">
+            <div class="slide-track">
+                <div class="slide"><img src="photo1.jpg" alt="Event 1"></div>
+                <div class="slide"><img src="photo2.jpg" alt="Hackathon"></div>
+                <div class="slide"><img src="photo3.jpg" alt="Workshop"></div>
+                <div class="slide"><img src="photo4.jpg" alt="Winners"></div>
+                <div class="slide"><img src="photo5.jpg" alt="Projects"></div>
+                <div class="slide"><img src="photo6.jpg" alt="Teamwork"></div>
+                <div class="slide"><img src="photo7.jpg" alt="Coding"></div>
+                <div class="slide"><img src="photo8.jpg" alt="Innovate"></div>
+                <div class="slide"><img src="photo9.jpg" alt="Community"></div>
+                <div class="slide"><img src="photo10.jpg" alt="Fun"></div>
+                <!-- Doubled for infinite effect -->
+                <div class="slide"><img src="photo1.jpg" alt="Event 1"></div>
+                <div class="slide"><img src="photo2.jpg" alt="Hackathon"></div>
+                <div class="slide"><img src="photo3.jpg" alt="Workshop"></div>
+                <div class="slide"><img src="photo4.jpg" alt="Winners"></div>
+                <div class="slide"><img src="photo5.jpg" alt="Projects"></div>
+                <div class="slide"><img src="photo6.jpg" alt="Teamwork"></div>
+                <div class="slide"><img src="photo7.jpg" alt="Coding"></div>
+                <div class="slide"><img src="photo8.jpg" alt="Innovate"></div>
+                <div class="slide"><img src="photo9.jpg" alt="Community"></div>
+                <div class="slide"><img src="photo10.jpg" alt="Fun"></div>
+            </div>
+        </div>
+
     </main>
 
-    <footer>
-        <div class="foot">
-            <p class="last">&copy; 2025 ClubHub. All rights reserved.</p>
-        </div>
+    <footer class="foot" style="margin-top: 100px;">
+        <p class="last">&copy; 2025 ClubHub. All rights reserved.</p>
     </footer>
 </body>
 </html>
+
 
