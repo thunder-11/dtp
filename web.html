@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DT project</title>
     <style>
+
         *{
             margin:0;
             padding:0;
@@ -12,8 +13,8 @@
         }
 
         body{
-            background-color:rgb(36, 33, 33);
-            font-family:'Roboto', sans-serif;
+            background-color:#1a1a1a;
+            font-family:arial;
         }
 
         .container{
@@ -26,7 +27,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background-color: rgb(36, 33, 33);
+            background-color: #1a1a1a;
             flex-wrap: wrap;
         }
 
@@ -35,7 +36,7 @@
             background-clip: text;
             -webkit-background-clip: text;
             color:transparent;
-            background-image: linear-gradient(to right, #fc72ff,#8f68ff,#487bff,#8f68ff,#fc72ff);
+            background-image: linear-gradient(to right, #3b82f6, #8b5cf6, #06b6d4, #8b5cf6, #3b82f6);
             background-size:400% 400%;
             animation: animate 15s ease infinite;
         }
@@ -66,7 +67,7 @@
         .navbar a {
             position: relative;
             text-decoration: none; 
-            color: white; 
+            color: #f8fafc; 
             font-size: 16px;
             padding: 5px 0; 
         }
@@ -78,8 +79,8 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background-color: #00aaff;
-            box-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff;
+            background-color: #3b82f6;
+            box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
             transform: scaleX(0); 
             transform-origin: center;
             transition: transform 0.4s ease-out; 
@@ -96,27 +97,27 @@
 
         .btn {
             text-decoration: none;
-            color: white;
+            color: #f8fafc;
             padding: 8px 16px;
-            border: 1px solid white;
+            border: 1px solid #3b82f6;
             border-radius: 5px;
             margin-left: 10px;
             transition: all 0.3s ease;
         }
 
         .btn:hover {
-            background-color: white;
-            color: black;
+            background-color: #3b82f6;
+            color: #f8fafc;
         }
 
         .btn.btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #3b82f6;
+            border-color: #3b82f6;
         }
 
         .btn.btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+            background-color: #2563eb;
+            border-color: #2563eb;
         }
 
         .content{
@@ -127,7 +128,7 @@
             background-clip: text;
             -webkit-background-clip: text;
             color:transparent;
-            background-image: linear-gradient(to right, #fc72ff,#8f68ff,#487bff,#8f68ff,#fc72ff);
+            background-image: linear-gradient(to right, #3b82f6, #8b5cf6, #06b6d4, #8b5cf6, #3b82f6);
             background-size:400% 400%;
             animation: animate 15s ease infinite;
             text-align:center;
@@ -141,7 +142,7 @@
             margin-top:15px;
             font-size:20px;
             font-family:arial;
-            color:white;
+            color:#e2e8f0;
             text-align:center;
         }
 
@@ -153,11 +154,11 @@
             padding-bottom:15px;
             padding-left:25px;
             padding-right:25px;
-            background-color:#161a20;
-            border-color:white;
+            background-color:#2a2a3a;
+            border-color:#3b82f6;
             border-width:1.5px;
             border-style:solid;
-            color:#f0f0f0;
+            color:#f8fafc;
             border-radius:1000px;
             font-family:Arial, Helvetica, sans-serif;
             font-weight:bold;
@@ -174,13 +175,13 @@
             height:108%;
             width:104%;
             border-radius:1000px;
-            background-image:linear-gradient(to bottom right,blue,purple);
+            background-image:linear-gradient(to bottom right, #3b82f6, #8b5cf6);
             z-index:-1;
         }
 
         .explore:hover{
             z-index:0;
-            box-shadow: 40px 0 100px rgba(0, 0, 255, 0.733), -40px 0 100px rgba(128, 0, 128, 0.766);
+            box-shadow: 20px 0 60px rgba(59, 130, 246, 0.4), -20px 0 60px rgba(139, 92, 246, 0.4);
         }
 
         .featured-club{
@@ -189,7 +190,7 @@
             font-size:30px;
             font-weight:bold;
             font-family:arial;
-            color:white;
+            color:#f8fafc;
             text-align:center;
         }
 
@@ -201,7 +202,7 @@
             margin-bottom:100px;
             display:flex;
             flex-wrap:wrap;
-            background-color: rgb(10, 10, 30);
+            background-color: #2a2a3a;
             border-radius:20px;
             position:relative;
             justify-content:center;
@@ -215,7 +216,7 @@
             position:absolute;
             left:-2px;
             top:-2px;
-            background: conic-gradient(from var(--deg) at 50% 50%,#00c3ff,#4d0199,#a34df9,#00c3ff);
+            background: conic-gradient(from var(--deg) at 50% 50%, #3b82f6, #8b5cf6, #06b6d4, #3b82f6);
             width: calc(100% + 4px);
             height: calc(100% + 4px);
             border-radius: inherit;
@@ -238,7 +239,7 @@
         }
 
         .detail{
-            color:white;
+            color:#f8fafc;
             max-width: 500px;
         }
 
@@ -266,11 +267,11 @@
             padding-bottom:10px;
             padding-left:18px;
             padding-right:18px;
-            background-color:#161a20;
+            background-color:#2a2a3a;
             border-width:1px;
-            border-color:white;
+            border-color:#3b82f6;
             border-style:solid;
-            color:#f0f0f0;
+            color:#f8fafc;
             border-radius:1000px;
             font-family:Arial;
             position:relative;
@@ -286,13 +287,13 @@
             height:105%;
             width:103%;
             border-radius:1000px;
-            background-image:linear-gradient(to bottom right,blue,purple);
+            background-image:linear-gradient(to bottom right, #3b82f6, #8b5cf6);
             z-index:-1;
         }
 
         .view-event:hover{
             z-index:0;
-            box-shadow: 40px 0 100px rgb(0, 0, 255), -40px 0 100px rgb(128, 0, 128);
+            box-shadow: 20px 0 60px rgba(59, 130, 246, 0.4), -20px 0 60px rgba(139, 92, 246, 0.4);
         }
         
         .future{
@@ -304,13 +305,13 @@
             font-size:30px;
             font-family:arial;
             font-weight:bold;
-            color:white;
+            color:#f8fafc;
             text-align:center;
         }
         
         .events-container{
             display:flex;
-            flex-wrap: wrap; /* Allows items to wrap to the next line on smaller screens */
+            flex-wrap: wrap; 
             justify-content: center;
             gap: 20px;
             padding: 0 30px;
@@ -320,7 +321,7 @@
         .box{
             width:298px;
             height:258px;
-            background-color:rgb(10, 10, 30);
+            background-color:#2a2a3a;
             border-radius:20px;
             position:relative;
             padding: 2px; 
@@ -333,7 +334,7 @@
             position:absolute;
             left:-2px;
             top:-2px;
-            background: conic-gradient(from var(--deg) at 50% 50%,#00c3ff,#4d0199,#a34df9,#00c3ff);
+            background: conic-gradient(from var(--deg) at 50% 50%, #3b82f6, #8b5cf6, #06b6d4, #3b82f6);
             width: calc(100% + 4px);
             height: calc(100% + 4px);
             border-radius: inherit;
@@ -347,8 +348,8 @@
         }
 
         .box-content {
-            background-color:rgb(10, 10, 30);
-            color: white;
+            background-color:#2a2a3a;
+            color: #f8fafc;
             padding: 20px;
             height: 100%;
             width: 100%;
@@ -363,7 +364,7 @@
         
         b{
             font-size:18px;
-            color:purple;
+            color:#8b5cf6;
         }
 
         .event-title {
@@ -372,7 +373,7 @@
             font-size:20px;
             font-family:arial;
             font-weight:bold;
-            color:skyblue;
+            color:#3b82f6;
         }
         .event-type, .event-date {
             margin-top:12px;
@@ -389,7 +390,7 @@
             font-size:18px;
             font-family:arial;
             font-weight:bold;
-            color:rgb(0, 174, 255);
+            color:#10b981;
         }
 
         .Title{
@@ -398,7 +399,7 @@
             font-family:arial;
             font-weight:bold;
             text-align:center;
-            color:white;
+            color:#f8fafc;
         }
 
         .news{
@@ -425,7 +426,7 @@
             position:absolute;
             left:-2px;
             top:-2px;
-            background: conic-gradient(from var(--deg) at 50% 50%,#00c3ff,#4d0199,#a34df9,#00c3ff);
+            background: conic-gradient(from var(--deg) at 50% 50%, #3b82f6, #8b5cf6, #06b6d4, #3b82f6);
             width: calc(100% + 4px);
             height: calc(100% + 4px);
             border-radius: inherit;
@@ -439,8 +440,8 @@
         }
 
         .news-card-content {
-            background-color:rgb(10, 10, 30);
-            color: white;
+            background-color:#2a2a3a;
+            color: #f8fafc;
             height: 100%;
             width: 100%;
             border-radius: inherit;
@@ -460,8 +461,8 @@
             display:flex;
             justify-content: center;
             align-items: center;
-            color:white;
-            background-color: black;
+            color:#f8fafc;
+            background-color: #1a1a1a;
         }
 
         .news-body {
@@ -475,14 +476,14 @@
             font-size:24px;
             font-family:arial;
             font-weight:bold;
-            color:rgb(0, 174, 255);
+            color:#3b82f6;
         }
 
         .news-summary{
             padding-top:15px;
             font-size:18px;
             font-family:arial;
-            color:white;
+            color:#f8fafc;
             flex-grow: 1;
         }
 
@@ -490,7 +491,7 @@
             padding: 0 20px 10px;
             font-size:15px;
             font-family:arial;
-            color:blueviolet;
+            color:#8b5cf6;
             text-decoration: none;
             font-weight: bold;
         }
@@ -505,7 +506,7 @@
             font-size:30px;
             font-family:arial;
             font-weight:bold;
-            color:white;
+            color:#f8fafc;
             text-align:center;
         }
 
@@ -558,7 +559,7 @@
 
         .slider::before,
         .slider::after{
-            background:linear-gradient(to right, rgb(36, 33, 33) 0%, rgba(36, 33, 33, 0) 100%);
+            background:linear-gradient(to right, #1a1a1a 0%, rgba(26, 26, 26, 0) 100%);
             content:'';
             height:100%;
             position:absolute;
@@ -577,22 +578,75 @@
             transform:rotateZ(180deg);
         }
 
-        /* --- RESPONSIVE STYLES --- */
-        
-        
-        /* FOOTER STYLES */
+        .feedback-title{
+            margin-top:75px;
+            color:#f8fafc;
+            font-size:30px;
+            font-family:arial;
+            font-weight:bold;
+            text-align:center;
+
+        }
+
+        .message{
+            margin-top:10px;
+            color:#e2e8f0;
+            font-size:15px;
+            font-family:arial;
+            text-align:center;
+        }
+
+        .submit{
+            margin-top:30px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top:15px;
+            padding-bottom:15px;
+            padding-left:25px;
+            padding-right:25px;
+            background-color:#2a2a3a;
+            border-color:#3b82f6;
+            border-width:1.5px;
+            border-style:solid;
+            color:#f8fafc;
+            border-radius:1000px;
+            font-family:Arial, Helvetica, sans-serif;
+            font-weight:bold;
+            position:relative;
+            display:flex;
+            justify-content:center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .submit::after{
+            content:'';
+            position:absolute;
+            height:108%;
+            width:104%;
+            border-radius:1000px;
+            background-image:linear-gradient(to bottom right, #3b82f6, #8b5cf6);
+            z-index:-1;
+        }
+
+        .submit:hover{
+            z-index:0;
+            box-shadow: 20px 0 60px rgba(59, 130, 246, 0.4), -20px 0 60px rgba(139, 92, 246, 0.4);
+        }
+
         .foot{
             width:100%;
             padding: 25px 0;
-            background-color:black;
+            background-color:#0f0f0f;
         }
 
         .last{
-            color:white;
+            color:#f8fafc;
             text-align:center;
         }
 
     </style>
+    
 </head>
 <body>
     <header>
@@ -620,10 +674,14 @@
     </header>
 
     <main>
+        <section id="Home">
         <p class="content">Welcome! to the Club<span>Hub</span></p>
         <p class="description">This is your launchpad for the next thing. Explore upcoming events, celebrating our winners,<br>
             and see what's new in our community.</p>
         <button class="explore">Explore Clubs</button>
+        </section>
+
+        <section id="Clubs">
             <div class="featured-club"><p>Our Featured Club</p></div>
             <div class="club-card">
                 <div class="image">
@@ -639,7 +697,9 @@
                     <button class="view-event">View Events</button>
                 </div>
             </div>
+            </section>
 
+        <section id="Events">
         <div class="future"><p class="update">Upcoming Events & Workshops</p></div>
 
         <div class="events-container">
@@ -682,10 +742,12 @@
                 </div>
             </div>
         </div>
+        </section>
 
+        <section id="News">
         <p class="Title">Latest News</p>
         <div class="news">
-            <!-- News Card 1 -->
+
             <div class="news-card">
                 <div class="news-card-content">
                     <div class="news-header">Winner's Announcement</div>
@@ -696,7 +758,7 @@
                     </div>
                 </div>
             </div>
-            <!-- News Card 2 -->
+
             <div class="news-card">
                 <div class="news-card-content">
                     <div class="news-header">New Initiative</div>
@@ -707,7 +769,7 @@
                     </div>
                 </div>
             </div>
-            <!-- News Card 3 -->
+
             <div class="news-card">
                 <div class="news-card-content">
                     <div class="news-header">Member Achievement Story</div>
@@ -719,36 +781,55 @@
                 </div>
             </div>
         </div>
+        </section>
 
+        <section id="Gallery">
         <div class="gallery">
              <p class="gallery-title">Media Gallery</p>
         </div>
         
         <div class="slider">
             <div class="slide-track">
-                <div class="slide"><img src="photo1.jpg" alt="Event 1"></div>
-                <div class="slide"><img src="photo2.jpg" alt="Hackathon"></div>
-                <div class="slide"><img src="photo3.jpg" alt="Workshop"></div>
-                <div class="slide"><img src="photo4.jpg" alt="Winners"></div>
-                <div class="slide"><img src="photo5.jpg" alt="Projects"></div>
-                <div class="slide"><img src="photo6.jpg" alt="Teamwork"></div>
-                <div class="slide"><img src="photo7.jpg" alt="Coding"></div>
-                <div class="slide"><img src="photo8.jpg" alt="Innovate"></div>
-                <div class="slide"><img src="photo9.jpg" alt="Community"></div>
-                <div class="slide"><img src="photo10.jpg" alt="Fun"></div>
+                <div class="slide"><img src="photo1.jpg"></div>
+                <div class="slide"><img src="photo2.jpg"></div>
+                <div class="slide"><img src="photo3.jpg"></div>
+                <div class="slide"><img src="photo4.jpg"></div>
+                <div class="slide"><img src="photo5.jpg"></div>
+                <div class="slide"><img src="photo6.jpg"></div>
+                <div class="slide"><img src="photo7.jpg"></div>
+                <div class="slide"><img src="photo8.jpg"></div>
+                <div class="slide"><img src="photo9.jpg"></div>
+                <div class="slide"><img src="photo10.jpg"></div>
+
                 <!-- Doubled for infinite effect -->
-                <div class="slide"><img src="photo1.jpg" alt="Event 1"></div>
-                <div class="slide"><img src="photo2.jpg" alt="Hackathon"></div>
-                <div class="slide"><img src="photo3.jpg" alt="Workshop"></div>
-                <div class="slide"><img src="photo4.jpg" alt="Winners"></div>
-                <div class="slide"><img src="photo5.jpg" alt="Projects"></div>
-                <div class="slide"><img src="photo6.jpg" alt="Teamwork"></div>
-                <div class="slide"><img src="photo7.jpg" alt="Coding"></div>
-                <div class="slide"><img src="photo8.jpg" alt="Innovate"></div>
-                <div class="slide"><img src="photo9.jpg" alt="Community"></div>
-                <div class="slide"><img src="photo10.jpg" alt="Fun"></div>
+
+                <div class="slide"><img src="photo1.jpg"></div>
+                <div class="slide"><img src="photo2.jpg"></div>
+                <div class="slide"><img src="photo3.jpg"></div>
+                <div class="slide"><img src="photo4.jpg"></div>
+                <div class="slide"><img src="photo5.jpg"></div>
+                <div class="slide"><img src="photo6.jpg"></div>
+                <div class="slide"><img src="photo7.jpg"></div>
+                <div class="slide"><img src="photo8.jpg"></div>
+                <div class="slide"><img src="photo9.jpg"></div>
+                <div class="slide"><img src="photo10.jpg"></div>
             </div>
         </div>
+        </section>
+
+        <section id="Feedback">
+        <div class="feedback">
+            <p class="feedback-title">
+                Have Feedback or Any Idea ?
+            </p>
+            <p class="message">
+                Your input is invaluable in shaping our community events. 
+            </p>
+            <button class="submit">
+                Give Feedback 
+            </button>
+        </div>
+        </section>
     </main>
 
     <footer class="foot" style="margin-top: 100px;">
@@ -756,4 +837,3 @@
     </footer>
 </body>
 </html>
-
