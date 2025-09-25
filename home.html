@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>DT project</title>
+
 </head>
 <body>
     <header>
@@ -18,6 +19,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#clubs">Clubs</a></li>
                     <li><a href="#events">Events</a></li>
+                    <li><a href="#news">News</a></li>
                     <li><a href="#gallery">Gallery</a></li>
                     <li><a href="#feedback">Feedback</a></li>
                 </ul>
@@ -31,10 +33,14 @@
     </header>
 
     <main>
+        <section id="Home">
         <p class="content">Welcome! to the Club<span>Hub</span></p>
         <p class="description">This is your launchpad for the next thing. Explore upcoming events, celebrating our winners,<br>
             and see what's new in our community.</p>
         <button class="explore">Explore Clubs</button>
+        </section>
+
+        <section id="Clubs">
             <div class="featured-club"><p>Our Featured Club</p></div>
             <div class="club-card">
                 <div class="image">
@@ -43,16 +49,18 @@
                 <div class="detail">
                     <div class="club-title">Tech Titans Club</div>
                     <div class="club-moto">Pioneering Tomorrow's Technology</div>
-                    <div class="club-info">The Tech Titans Club is a community of innovators, coders, and tech enthusiasts<br>
-                        dedicated to exploring the frontiers of technology. We host workshops, hackathons,<br>
+                    <div class="club-info">The Tech Titans Club is a community of innovators, coders, and tech enthusiasts
+                        dedicated to exploring the frontiers of technology. We host workshops, hackathons,
                         and seminars to foster learning and collaboration.
                     </div>
                     <button class="view-event">View Events</button>
                 </div>
             </div>
+            </section>
 
+        <section id="Events">
         <div class="future"><p class="update">Upcoming Events & Workshops</p></div>
-<section id="events">
+
         <div class="events-container">
             <div class="box" id="box1">
                 <div class="box-content">
@@ -93,29 +101,98 @@
                 </div>
             </div>
         </div>
-</section>
-        <section id="news">
+        </section>
+
+        <section id="News">
+        <p class="Title">Latest News</p>
         <div class="news">
-            <div class="news1">
-            <div class="news-title1">1</div>
-            <div class="news-info1">1</div>
+
+            <div class="news-card">
+                <div class="news-card-content">
+                    <div class="news-header">Winner's Announcement</div>
+                    <div class="news-body">
+                        <p class="news-headline">Team Innovate Wins CodeFest 2025!</p>
+                        <p class="news-summary">Big congrats to 'Team Innovate', our CodeFest 2025 champions! Their resource-sharing app wowed the judges, earning them the top prize & a sponsored internship. Awesome work!</p>
+                        <a href="#" class="news-link">Read more &#8594;</a>
+                    </div>
+                </div>
             </div>
-            <div class="news2">
-            <div class="news-title2"></div>
-            <div class="news-info2"></div>
+
+            <div class="news-card">
+                <div class="news-card-content">
+                    <div class="news-header">New Initiative</div>
+                    <div class="news-body">
+                        <p class="news-headline">ClubHub Launches New Mentorship Program</p>
+                        <p class="news-summary">Announcing the new ClubHub Mentorship Program! Connect with experienced members to guide your tech journey. Applications for mentors and mentees are now open. Sign up today!</p>
+                         <a href="#" class="news-link">Read more &#8594;</a>
+                    </div>
+                </div>
             </div>
-            <div class="news3">
-            <div class="news-title3"></div>
-            <div class="news-info3"></div>
+
+            <div class="news-card">
+                <div class="news-card-content">
+                    <div class="news-header">Member Achievement Story</div>
+                    <div class="news-body">
+                        <p class="news-headline">Member Spotlight: Priya Sharma</p>
+                        <p class="news-summary">A shout-out to Priya Sharma! Her AI project for predicting air quality just won recognition at the National Science Fair. We are incredibly proud of her achievements!</p>
+                        <a href="#" class="news-link">Read more &#8594;</a>
+                    </div>
+                </div>
             </div>
+        </div>
+        </section>
+
+        <section id="Gallery">
+        <div class="gallery">
+             <p class="gallery-title">Media Gallery</p>
+        </div>
+        
+        <div class="slider">
+            <div class="slide-track">
+                <div class="slide"><img src="photo1.jpg"></div>
+                <div class="slide"><img src="photo2.jpg"></div>
+                <div class="slide"><img src="photo3.jpg"></div>
+                <div class="slide"><img src="photo4.jpg"></div>
+                <div class="slide"><img src="photo5.jpg"></div>
+                <div class="slide"><img src="photo6.jpg"></div>
+                <div class="slide"><img src="photo7.jpg"></div>
+                <div class="slide"><img src="photo8.jpg"></div>
+                <div class="slide"><img src="photo9.jpg"></div>
+                <div class="slide"><img src="photo10.jpg"></div>
+
+                <!-- Doubled for infinite effect -->
+
+                <div class="slide"><img src="photo1.jpg"></div>
+                <div class="slide"><img src="photo2.jpg"></div>
+                <div class="slide"><img src="photo3.jpg"></div>
+                <div class="slide"><img src="photo4.jpg"></div>
+                <div class="slide"><img src="photo5.jpg"></div>
+                <div class="slide"><img src="photo6.jpg"></div>
+                <div class="slide"><img src="photo7.jpg"></div>
+                <div class="slide"><img src="photo8.jpg"></div>
+                <div class="slide"><img src="photo9.jpg"></div>
+                <div class="slide"><img src="photo10.jpg"></div>
+            </div>
+        </div>
+        </section>
+
+        <section id="Feedback">
+        <div class="feedback">
+            <p class="feedback-title">
+                Have Feedback or Any Idea ?
+            </p>
+            <p class="message">
+                Your input is invaluable in shaping our community events. 
+            </p>
+            <button class="submit">
+                Give Feedback 
+            </button>
         </div>
         </section>
     </main>
 
-    <footer>
-        <div class="foot">
-            <p class="last">&copy; 2025 ClubHub. All rights reserved.</p>
-        </div>
+    <footer class="foot" style="margin-top: 100px;">
+        <p class="last">&copy; 2025 ClubHub. All rights reserved.</p>
     </footer>
 </body>
 </html>
