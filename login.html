@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <title>Sign In</title>
 </head>
 <body>
+    <section>
+      <span class="overlay" onclick="window.location.assign('home.html')"></span>
+
+      <div class="modal-box">
+        <i class="fa-regular fa-circle-check"></i>
+        <h2 id="message"></h2>
+
+        <div class="buttons">
+          <button class="close-btn" onclick="window.location.assign('home.html')">Ok</button>
+        </div>
+      </div>
+    </section>
     <div class="signin-container">
         <div class="header">
             <h1>Sign In</h1>
@@ -44,7 +57,7 @@
                 <a href="#forgot" class="forgot-password">Forgot password?</a>
             </div>
             
-            <button type="submit" id="submit" class="signin-btn">
+            <button type="submit" id="submit" class="signin-btn" class="show-modal">
             Sign In
             </button>
         </form>

@@ -14,6 +14,10 @@ firebase.analytics();
 const db = firebase.database();
 
 document.addEventListener("DOMContentLoaded", () => {
+  const section = document.querySelector("section");
+  const checkIcon = document.querySelector(".fa-circle-check");
+  const img = document.getElementById("img");
+  const message = document.getElementById("message");
   const username = document.getElementById("username")
   const email = document.getElementById("email");
   const password = document.getElementById("password");
@@ -21,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function addData(event) {
     event.preventDefault();
-    const emailv = email.value.replace(/\./g, "_"); 
+    const emailv = email.value.replace(/\./g, "_");
     db.ref("users/" + emailv).set({
       username: username.value,
       email: email.value,
@@ -42,8 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (snapshot.exists()) {
         const userData = snapshot.val();
         if (userData.password === password.value) {
-          alert("Login successful!");
-          window.location.href = "home.html"; 
+          message.innerHTML = 'Logged in successfully';
+          section.classList.add("active");
         } else {
           alert("Invalid credentials.");
         }
@@ -54,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Login error:", error);
     });
   }
-
+  
   const form = document.querySelector("form");
   form.addEventListener("submit", getData);
 });
