@@ -28,7 +28,7 @@
             padding: 40px;
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); 
         }
 
         .header {
@@ -149,20 +149,9 @@
             color: #666;
             font-size: 14px;
         }
-
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: #444;
-        }
-
         .divider span {
-            background: #2a2a2a;
-            padding: 0 15px;
+            background-color: #2a2a2a;
+            padding: 5px;
         }
 
         .signup-link {
@@ -285,7 +274,7 @@
         </div>
         
         <div class="signup-link">
-            <a href="http://127.0.0.1:5500/register.html">Create new account</a>
+            <a onclick="window.location.assign('register.html')">Create new account</a>
         </div>
     </div>
 </body>

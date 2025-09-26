@@ -140,16 +140,6 @@
             font-size: 14px;
         }
 
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: #444;
-        }
-
         .divider span {
             background: #2a2a2a;
             padding: 0 15px;
@@ -255,7 +245,7 @@
         
         <div class="divider"><span>Already have an account?</span></div>
         <div class="login-link">
-            <a href="http://127.0.0.1:5500/web.html">Sign in</a>
+            <a onclick="window.location.assign('login.html')">Sign in</a>
         </div>
     </div>
 </body>
