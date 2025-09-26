@@ -235,12 +235,12 @@
         
         <form>
             <div class="form-group">
-                <label for="login">Email or Username</label>
+                <label for="email">Email</label>
                 <input 
                     type="text" 
-                    id="login" 
-                    name="login"
-                    placeholder="Enter email or username"
+                    id="email" 
+                    name="email"
+                    placeholder="Enter email"
                     required
                 >
             </div>
@@ -264,7 +264,7 @@
                 <a href="#forgot" class="forgot-password">Forgot password?</a>
             </div>
             
-            <button type="submit" class="signin-btn">
+            <button type="submit" id="submit" class="signin-btn">
             Sign In
             </button>
         </form>
@@ -278,4 +278,8 @@
         </div>
     </div>
 </body>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="main.js"></script>
 </html>
