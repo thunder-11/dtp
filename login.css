@@ -133,7 +133,7 @@ button:active {
     transform: translateY(0);
 }
 
-.button:focus {
+button:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
 }

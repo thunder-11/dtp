@@ -7,7 +7,7 @@
     font-family: "Poppins", sans-serif;
 }
 
-        body {
+body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: #1a1a1a;
     color: #ffffff;
@@ -17,169 +17,171 @@
     justify-content: center;
     padding: 20px;
 }
-        .register{
-            background: #2a2a2a;
-            border-radius: 12px;
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+.register {
+    background: #2a2a2a;
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
 
-        .header h1 {
-            font-size: 28px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 8px;
-        }
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
 
-        .header p {
-            color: #888;
-            font-size: 14px;
-        }
+.header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+.header p {
+    color: #888;
+    font-size: 14px;
+}
 
-        .form-group label {
-            display: block;
-            color: #ccc;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
+.form-group {
+    margin-bottom: 20px;
+}
 
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            background: #333;
-            border: 1px solid #444;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
+.form-group label {
+    display: block;
+    color: #ccc;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #6366f1;
-            background: #383838;
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-        }
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
 
-        .form-group input::placeholder {
-            color: #666;
-        }
+.form-group input:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: #383838;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
 
-        button {
-            width: 100%;
-            padding: 14px;
-            background: #6366f1;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
+.form-group input::placeholder {
+    color: #666;
+}
 
-        button:hover {
-            background: #5856eb;
-            transform: translateY(-1px);
-        }
+.register-btn {
+    width: 100%;
+    padding: 14px;
+    background: #6366f1;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
 
-        button:active {
-            background: #4f46e5;
-            transform: translateY(0);
-        }
+button:hover {
+    background: #5856eb;
+    transform: translateY(-1px);
+}
 
-        .form-group {
-            position: relative;
-        }
+button:active {
+    background: #4f46e5;
+    transform: translateY(0);
+}
 
-        .form-group::after {
-            content: '';
-            position: absolute;
-            right: 12px;
-            top: 38px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+.form-group {
+    position: relative;
+}
 
-        .form-group input:valid + ::after,
-        .form-group input:valid::after {
-            content: '✓';
-            color: #10b981;
-            font-size: 14px;
-            font-weight: bold;
-            opacity: 1;
-        }
+.form-group::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 38px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
-        .divider {
-            text-align: center;
-            margin: 25px 0;
-            position: relative;
-            color: #666;
-            font-size: 14px;
-        }
+.form-group input:valid+ ::after,
+.form-group input:valid::after {
+    content: '✓';
+    color: #10b981;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 1;
+}
 
-        .divider span {
-            background: #2a2a2a;
-            padding: 0 15px;
-        }
+.divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+    color: #666;
+    font-size: 14px;
+}
 
-        .login-link {
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-        }
+.divider span {
+    background: #2a2a2a;
+    padding: 0 15px;
+}
 
-        .login-link a {
-            color: #6366f1;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+.login-link {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+}
 
-        .login-link a:hover {
-            color: #5856eb;
-            text-decoration: underline;
-        }
+.login-link a {
+    color: #6366f1;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
 
-        @media (max-width: 480px) {
-            .register-container {
-                padding: 30px 25px;
-            }
-            
-            .header h1 {
-                font-size: 24px;
-            }
-        }
+.login-link a:hover {
+    color: #5856eb;
+    text-decoration: underline;
+}
 
-        .form-group input:focus::placeholder {
-            color: #888;
-        }
+@media (max-width: 480px) {
+    .register-container {
+        padding: 30px 25px;
+    }
 
-        button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
-        }
+    .header h1 {
+        font-size: 24px;
+    }
+}
 
-        .login-link a:focus {
-            outline: 2px solid #6366f1;
-            outline-offset: 2px;
-            border-radius: 4px;
-  }    
+.form-group input:focus::placeholder {
+    color: #888;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+.login-link a:focus {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
 .modal-box {
     position: fixed;
     left: 50%;
@@ -212,16 +214,18 @@ section.active .overlay {
 }
 
 .modal-box {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(1.2);
-    background: #fff;
-    border-radius: 24px;
-    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 380px;
     width: 100%;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px;
+    border-radius: 24px;
+    background-color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%) scale(1.2);
 
     opacity: 0;
     pointer-events: none;
@@ -239,6 +243,7 @@ section.active .modal-box {
 
 .modal-box i {
     display: flex;
+    justify-content: center;
     font-size: 70px;
     color: #6366f1;
 }
@@ -248,6 +253,7 @@ section.active .modal-box {
     font-size: 25px;
     font-weight: 500;
     color: #333;
+    text-align: center;
 }
 
 .modal-box h3 {
@@ -265,4 +271,12 @@ section.active .modal-box {
     font-size: 14px;
     padding: 6px 22px;
     margin: 0 0;
+    background: #6366f1;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
