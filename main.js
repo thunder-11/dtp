@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const password = document.getElementById("password");
 
 
-  function addData(event) {
+  window.addData = function (event) {
     event.preventDefault();
     const emailv = email.value.replace(/\./g, "_");
     db.ref("users/" + emailv).set({
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function getData(event) {
+  window.getData = function(event) {
     event.preventDefault();
 
     const emailv = email.value.replace(/\./g, "_");
@@ -58,7 +58,67 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Login error:", error);
     });
   }
+
+  const eventContainer = document.getElementById("events-container");
+  function safe(s = "") {
+    return String(s)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+
+function loading(){
+  eventContainer.innerHTML = "";
   
-  const form = document.querySelector("form");
-  form.addEventListener("submit", getData);
+  db.ref("events/").get().then((snapshot) => {
+        if (!snapshot.exists()) {
+          eventContainer.innerHTML = "<p>No events available.</p>";
+          return;
+        }
+
+    snapshot.forEach(childSnap => {
+      const ev = childSnap.val();
+      const card = document.createElement("div");
+      card.className = "box";
+
+      const title = safe(ev.title);
+      const desc = safe(ev.description || "");
+      const date = safe(ev.date || "");
+
+      card.innerHTML = `
+        <div class="box-content">
+          <p class="event-title">${title}</p>
+          <p class="event-description">${desc}</p>
+          <p class="event-date"><b>Date:</b> ${date}</p>
+        </div>
+      `;
+
+      eventContainer.appendChild(card);
+    })
+  })
+ }
+
+  window.fun = function(e) {
+    if (e && typeof e.preventDefault === "function") e.preventDefault();
+  
+    db.ref("events").push({
+      title: "Sample Workshop",
+      description: "Hands-on web dev workshop",
+      date: "2025-10-20"
+    })
+    .then(() => {
+      alert("Event added");
+      loading();
+    })
+    .catch((error) => {
+      console.error("Error adding event:", error);
+      alert("Error adding event: " + error.message);
+    });
+}
+  if (eventContainer) {
+    loading();
+  }
 });

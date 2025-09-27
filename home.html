@@ -37,7 +37,7 @@
         <p class="content">Welcome! to the Club<span>Hub</span></p>
         <p class="description">This is your launchpad for the next thing. Explore upcoming events, celebrating our winners,<br>
             and see what's new in our community.</p>
-        <button class="explore">Explore Clubs</button>
+        <button class="explore" id="try" onclick="fun()">Explore Clubs</button>
         </section>
 
         <section id="clubs">
@@ -61,8 +61,8 @@
         <section id="events">
         <div class="future"><p class="update">Upcoming Events & Workshops</p></div>
 
-        <div class="events-container">
-            <div class="box" id="box1">
+        <div id="events-container" class="events-container">
+            <!-- <div class="box" id="box1">
                 <div class="box-content">
                     <p class="event-title">AI & Machine Learning</p>
                     <p class="event-type"><b>Type:</b> Workshop</p>
@@ -90,16 +90,15 @@
 
             <div class="box" id="box3">
                 <div class="box-content">
-                    <p class="event-title">CodeFest Hackathon</p>
-                    <p class="event-type"><b>Type:</b> Competition</p>
-                    <p class="event-description">Join our 24-hour hackathon.
+                    <p class="event-title" id="title">CodeFest Hackathon</p>
+                    <p class="event-description" id="desc">Join our 24-hour hackathon.
                         <br>Compete, innovate, and win<br>
                         exciting prizes!
                     </p>
-                    <p class="event-date"><b>Date:</b> October 12, 2025</p>
-                    <p class="event-countdown">20 days left</p>
+                    <p class="event-date" id="date"><b>Date:</b> October 12, 2025</p>
+                    <p class="event-countdown" id="countdown">20 days left</p>
                 </div>
-            </div>
+            </div> -->
         </div>
         </section>
 
@@ -194,6 +193,10 @@
     <footer class="foot" style="margin-top: 100px;">
         <p class="last">&copy; 2025 ClubHub. All rights reserved.</p>
     </footer>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
 

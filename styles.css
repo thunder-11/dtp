@@ -10,6 +10,14 @@
             font-family:arial;
         }
 
+        p {
+            margin-top:15px;
+            font-family:arial;
+            color:white;
+            text-align:center;
+            font-size:15px;
+        }
+
         .container{
             display:flex;
             justify-content: space-between;
