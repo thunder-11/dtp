@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <title>Sign Up</title>
 </head>
 <body>
+    <section>
+      <span class="overlay" onclick="window.location.assign('login.html')"></span>
+
+      <div class="modal-box">
+        <i class="fa-regular fa-circle-check"></i>
+        <h2 id="message"></h2>
+
+        <div class="buttons">
+          <button class="close-btn" onclick="window.location.assign('login.html')">Ok</button>
+        </div>
+      </div>
+    </section>
     <div class="register">
         <div class="header"><h1>Sign Up</h1>
             <p>Create your account</p>
@@ -58,7 +71,7 @@
                     required
                 >
             </div>
-            <button type="submit" id="submit" class="register-btn">Create Account</button>
+            <button type="submit" id="submit" class="register-btn" class="show-modal">Create Account</button>
         </form>
         
         <div class="divider"><span>Already have an account?</span></div>
@@ -88,6 +101,8 @@ firebase.analytics();
 const db = firebase.database();
 
 document.addEventListener("DOMContentLoaded", () => {
+  const section = document.querySelector("section");
+  const message = document.getElementById("message");
   const username = document.getElementById("username")
   const email = document.getElementById("email");
   const password = document.getElementById("password");
@@ -103,7 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
       email: email.value,
       password: password.value
     }).then(() => {
-      alert("User registered successfully!");
+    message.innerHTML = 'Registered successfully';
+    section.classList.add("active");
     }).catch((error) => {
       console.error("Error adding user:", error);
     });
