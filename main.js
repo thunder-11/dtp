@@ -11,6 +11,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
+const auth = firebase.auth()
 const db = firebase.database();
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.getData = function(event) {
+  /* window.getData = function(event) {
     event.preventDefault();
 
     const emailv = email.value.replace(/\./g, "_");
@@ -57,6 +58,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }).catch((error) => {
       console.error("Login error:", error);
     });
+  } */
+
+  window.login = function(event){
+    if (event && typeof event.preventDefault === "function") {event.preventDefault();}
+    auth.signInWithEmailAndPassword(email.value, password.value)
+  .then((userCredential) => {
+    const user = userCredential.user;
+    console.log("User signed in:", user.email);
+    message.innerHTML = 'Logged in successfully';
+    section.classList.add("active");
+  })
+  .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+
+            console.error("Sign-in error:", errorCode, errorMessage);
+
+            switch (errorCode) {
+        case 'auth/invalid-login-credentials':
+            alert("Error: Invalid email or password. Please check your credentials and try again.");
+            break;
+        case 'auth/too-many-requests':
+            alert("Access to this account has been temporarily disabled due to too many failed login attempts. Please try again later.");
+            break;
+        case 'auth/invalid-email':
+             alert("Error: The email address is not valid. Please check the format.");
+             break;
+        default:
+            alert(`An unexpected error occurred: ${error.message}`);
+            break;
+    }
+          });
   }
 
   const eventContainer = document.getElementById("events-container");
@@ -100,6 +133,17 @@ function loading(){
     })
   })
  }
+
+const togglePasswordIcon = document.getElementById("togglePassword");
+
+window.togglePass = function () {
+    const type = password.getAttribute("type") === "password" ? "text" : "password";
+    password.setAttribute("type", type);
+    
+    togglePasswordIcon.classList.toggle("fa-eye");
+    togglePasswordIcon.classList.toggle("fa-eye-slash");
+
+};
 
   window.fun = function(e) {
     if (e && typeof e.preventDefault === "function") e.preventDefault();

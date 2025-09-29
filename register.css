@@ -234,6 +234,25 @@ section.active .overlay {
     z-index: 1000;
 }
 
+.pass {
+  position: relative;
+  width: 100%;
+}
+
+.pass input {
+  width: 100%;
+  padding-right: 40px;
+  box-sizing: border-box;
+}
+
+.pass .icon {
+  position: absolute;
+  top: 50%; 
+  right: 12px;
+  transform: translateY(-50%); 
+  cursor: pointer;
+  color: #555;
+}
 
 section.active .modal-box {
     opacity: 1;
