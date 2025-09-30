@@ -116,18 +116,37 @@ function loading(){
       const ev = childSnap.val();
       const card = document.createElement("div");
       card.className = "box";
+    let notification='';
+
 
       const title = safe(ev.title);
       const desc = safe(ev.description || "");
       const date = safe(ev.date || "");
 
+      const typeColors = {
+                    'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+                    'Workshop': 'background-color: #fefce8; color: #b45309;',
+                    'Event': 'background-color: #eef2ff; color: #4338ca;'
+                };
+                
+
       card.innerHTML = `
-        <div class="box-content">
-          <p class="event-title">${title}</p>
-          <p class="event-description">${desc}</p>
-          <p class="event-date"><b>Date:</b> ${date}</p>
-        </div>
-      `;
+                    <div class="event-card card-hover-effect">
+                        <div class="event-card-content">
+                            <div class="event-card-header">
+                              <span class="event-type-badge" style="${typeColors[ev.type]}">${ev.type}</span>
+                                <span class="event-date">${ev.date}</span>
+                            </div>
+                            <h3 class="event-title">${ev.title}</h3>
+                            <p class="event-description">${ev.description}</p>
+                            <div class="event-organizer">
+                                <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                                <span>Organized by <strong>${ev.club}</strong></span>
+                            </div>
+                        </div>
+                        ${notification}
+                    </div>`;
+        
 
       eventContainer.appendChild(card);
     })
@@ -151,7 +170,9 @@ window.togglePass = function () {
     db.ref("events").push({
       title: "Sample Workshop",
       description: "Hands-on web dev workshop",
-      date: "2025-10-20"
+      date: "2025-10-20",
+      club: "CSI",
+      type: "Seminar"
     })
     .then(() => {
       alert("Event added");
