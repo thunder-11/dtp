@@ -1,199 +1,764 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>DT project</title>
+    <title>ClubHub - Your Campus Event Central</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Global & Font Styles */
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b; /* slate-800 */
+        }
+        .font-comic {
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .container {
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1024px;
+            }
+        }
+
+        /* Header & Navigation */
+        .header {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        .nav-links {
+            display: none;
+        }
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+            }
+        }
+        .nav-link {
+            color: #475569;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #4f46e5;
+        }
+        .profile-section {
+            display: none;
+        }
+         @media (min-width: 768px) {
+            .profile-section {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+        }
+        .profile-name {
+            font-weight: 600;
+            color: #334155;
+        }
+        .profile-icon-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background-color: #f1f5f9;
+            border-radius: 9999px;
+            transition: background-color 0.3s;
+        }
+        .profile-icon-link:hover {
+            background-color: #e2e8f0;
+        }
+        .mobile-menu-button {
+            display: block;
+        }
+        @media (min-width: 768px) {
+            .mobile-menu-button {
+                display: none;
+            }
+        }
+        .mobile-menu {
+            display: none;
+            padding: 0 1.5rem 1rem;
+        }
+        .mobile-menu.open {
+            display: block;
+        }
+
+        /* Main Sections */
+        .section {
+            padding: 4rem 0;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .section-subtitle {
+            color: #64748b;
+        }
+
+        /* Hero Section */
+        #home {
+            text-align: center;
+            padding: 5rem 0;
+        }
+        #home h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        @media (min-width: 768px) {
+           #home h1 {
+                font-size: 4.5rem;
+           }
+        }
+        #home p {
+            font-size: 1.125rem;
+            color: #475569;
+            max-width: 56rem;
+            margin: 0 auto 2rem;
+        }
+        @media (min-width: 768px) {
+           #home p {
+                font-size: 1.25rem;
+           }
+        }
+        .hero-button {
+            display: inline-block;
+            background-color: #4f46e5;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4), 0 4px 6px -2px rgba(79, 70, 229, 0.2);
+        }
+        .hero-button:hover {
+            background-color: #4338ca;
+            transform: scale(1.05);
+        }
+
+        /* Grid Layouts */
+        .grid-container {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(1, 1fr);
+        }
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .grid-container-3-col {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .grid-container-5-col {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        #clubs {
+            background-color: #f1f5f9;
+            border-radius: 1.5rem;
+        }
+        
+        /* Two Column Layout (News/Leaderboard) */
+        .two-col-layout {
+            display: grid;
+            gap: 4rem;
+            padding: 4rem 0;
+        }
+        @media (min-width: 1024px) {
+            .two-col-layout {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+        .leaderboard-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            height: 350px;
+            overflow-y: auto;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (min-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .gallery-grid .grid {
+            display: grid;
+            gap: 1rem;
+        }
+        .gallery-grid img {
+            height: auto;
+            max-width: 100%;
+            border-radius: 0.5rem;
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: #0f172a;
+            color: white;
+        }
+        .footer-grid {
+            display: grid;
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* General Card Styles */
+        .card-hover-effect {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        /* Event Card Specific Styles */
+        .event-card {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            overflow: hidden;
+            position: relative;
+        }
+        .event-card-content {
+            padding: 1.5rem;
+        }
+        .event-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        .event-type-badge {
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+        }
+        .event-date {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        .event-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .event-description {
+            color: #475569;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+        .event-organizer {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        .notification-badge {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Club Item Specific Styles */
+        .club-item {
+            text-align: center;
+        }
+        .club-logo-container {
+            background-color: white;
+            width: 8rem;
+            height: 8rem;
+            margin: 0 auto;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .club-item:hover .club-logo-container {
+            background-color: #4f46e5;
+            transform: scale(1.1);
+        }
+        .club-logo {
+            width: 4rem;
+            height: 4rem;
+            color: #4f46e5;
+            transition: color 0.3s;
+        }
+        .club-item:hover .club-logo {
+            color: white;
+        }
+        .club-name {
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        /* News Item Styles */
+        .news-item {
+            background-color: white;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            transition: box-shadow 0.3s;
+        }
+        .news-item:hover {
+             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .news-meta {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Leaderboard Item Styles */
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+        .leaderboard-rank {
+            font-weight: 700;
+            color: #334155;
+            width: 1.5rem;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+        .leaderboard-name {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .leaderboard-event {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 1rem;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 48rem; /* max-w-3xl */
+            position: relative;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-body {
+            overflow-y: auto;
+            padding-right: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #94a3b8; /* slate-400 */
+        }
+        .modal-close-btn:hover {
+            color: #1e293b; /* slate-800 */
+        }
+        .hidden {
+            display: none;
+        }
+
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">
-                <h1 class="logo-text">Club<span>Hub</span></h1>
-            </div>
 
-            <nav class="navbar">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#clubs">Clubs</a></li>
-                    <li><a href="#events">Events</a></li>
-                    <li><a href="#news">News</a></li>
-                    <li><a href="#gallery">Gallery</a></li>
-                    <li><a href="#feedback">Feedback</a></li>
-                </ul>
-            </nav>
-
-            <div class="auth-buttons">
-                <a onclick="window.location.assign('login.html')"class="btn">Sign In</a>
-                <a onclick="window.location.assign('register.html')" class="btn btn-primary">Sign Up</a>
+    <header class="header">
+        <nav class="container nav-container">
+            <a href="#" class="gradient-text" style="font-size: 1.875rem; font-weight: 700;">ClubHub</a>
+            <div class="nav-links">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#events" class="nav-link">Events</a>
+                <a href="#clubs" class="nav-link">Clubs</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
+                <a href="#leaderboard" class="nav-link">Winners</a>
             </div>
+            <div class="profile-section">
+                <span class="profile-name font-comic">abc</span>
+                <a href="profile.html" class="profile-icon-link">
+                    <i data-lucide="user" style="width: 1.5rem; height: 1.5rem; color: #475569;"></i>
+                </a>
+            </div>
+            <button id="mobile-menu-button" class="mobile-menu-button">
+                <i data-lucide="menu"></i>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="mobile-menu">
+             <!-- Mobile links are populated by JS -->
         </div>
     </header>
 
-    <main>
+    <main class="container">
         <section id="home">
-        <p class="content">Welcome! to the Club<span>Hub</span></p>
-        <p class="description">This is your launchpad for the next thing. Explore upcoming events, celebrating our winners,<br>
-            and see what's new in our community.</p>
-        <button class="explore">Explore Clubs</button>
+            <h1>Discover, Engage, <span class="gradient-text">Excel.</span></h1>
+            <p>Your central hub for all club activities, workshops, and events. Dive into a vibrant campus community and never miss an opportunity.</p>
+            <a href="#events" class="hero-button">Explore Upcoming Events</a>
         </section>
 
-        <section id="clubs">
-            <div class="featured-club"><p>Our Featured Club</p></div>
-            <div class="club-card">
-                <div class="image">
-                    <img class="clubs" src="https://placehold.co/250x180/1e1b4b/ffffff?text=Tech+Titans+Logo" alt="Tech Titans Club Logo">
-                </div>
-                <div class="detail">
-                    <div class="club-title">Tech Titans Club</div>
-                    <div class="club-moto">Pioneering Tomorrow's Technology</div>
-                    <div class="club-info">The Tech Titans Club is a community of innovators, coders, and tech enthusiasts
-                        dedicated to exploring the frontiers of technology. We host workshops, hackathons,
-                        and seminars to foster learning and collaboration.
-                    </div>
-                    <button class="view-event">View Events</button>
-                </div>
+        <section id="events" class="section">
+            <div class="section-header">
+                <h2 class="section-title">Upcoming Events & Workshops</h2>
+                <p class="section-subtitle">Stay ahead of the curve. Here's what's happening on campus soon.</p>
             </div>
-            </section>
-
-        <section id="events">
-        <div class="future"><p class="update">Upcoming Events & Workshops</p></div>
-
-        <div class="events-container">
-            <div class="box" id="box1">
-                <div class="box-content">
-                    <p class="event-title">AI & Machine Learning</p>
-                    <p class="event-type"><b>Type:</b> Workshop</p>
-                    <p class="event-description">Dive into the world of Artificial
-                        <br>Intelligence. A hands-on workshop <br>
-                        for beginners.
-                    </p>
-                    <p class="event-date"><b>Date:</b> September 28, 2025</p>
-                    <p class="event-countdown">6 days left</p>
-                </div>
-            </div>
-
-            <div class="box" id="box2">
-                <div class="box-content">
-                    <p class="event-title">The future of web 3.0</p>
-                    <p class="event-type"><b>Type:</b> Bootcamp</p>
-                    <p class="event-description">Learn to build modern websites
-                        <br>from scratch with HTML, CSS, &<br>
-                        JavaScript.
-                    </p>
-                    <p class="event-date"><b>Date:</b> October 5, 2025</p>
-                    <p class="event-countdown">13 days left</p>
-                </div>
-            </div>
-
-            <div class="box" id="box3">
-                <div class="box-content">
-                    <p class="event-title">CodeFest Hackathon</p>
-                    <p class="event-type"><b>Type:</b> Competition</p>
-                    <p class="event-description">Join our 24-hour hackathon.
-                        <br>Compete, innovate, and win<br>
-                        exciting prizes!
-                    </p>
-                    <p class="event-date"><b>Date:</b> October 12, 2025</p>
-                    <p class="event-countdown">20 days left</p>
-                </div>
-            </div>
-        </div>
+            <div id="event-list" class="grid-container grid-container-3-col"></div>
         </section>
-
-        <section id="news">
-        <p class="Title">Latest News</p>
-        <div class="news">
-            <!-- News Card 1 -->
-            <div class="news-card">
-                <div class="news-card-content">
-                    <div class="news-header">Winner's Announcement</div>
-                    <div class="news-body">
-                        <p class="news-headline">Team Innovate Wins CodeFest 2025!</p>
-                        <p class="news-summary">Big congrats to 'Team Innovate', our CodeFest 2025 champions! Their resource-sharing app wowed the judges, earning them the top prize & a sponsored internship. Awesome work!</p>
-                        <a href="#" class="news-link">Read more &#8594;</a>
-                    </div>
-                </div>
-            </div>
-            <!-- News Card 2 -->
-            <div class="news-card">
-                <div class="news-card-content">
-                    <div class="news-header">New Initiative</div>
-                    <div class="news-body">
-                        <p class="news-headline">ClubHub Launches New Mentorship Program</p>
-                        <p class="news-summary">Announcing the new ClubHub Mentorship Program! Connect with experienced members to guide your tech journey. Applications for mentors and mentees are now open. Sign up today!</p>
-                         <a href="#" class="news-link">Read more &#8594;</a>
-                    </div>
-                </div>
-            </div>
-            <!-- News Card 3 -->
-            <div class="news-card">
-                <div class="news-card-content">
-                    <div class="news-header">Member Achievement Story</div>
-                    <div class="news-body">
-                        <p class="news-headline">Member Spotlight: Priya Sharma</p>
-                        <p class="news-summary">A shout-out to Priya Sharma! Her AI project for predicting air quality just won recognition at the National Science Fair. We are incredibly proud of her achievements!</p>
-                        <a href="#" class="news-link">Read more &#8594;</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </section>
-
-        <section id="gallery">
-        <div class="gallery">
-             <p class="gallery-title">Media Gallery</p>
-        </div>
         
-        <div class="slider">
-            <div class="slide-track">
-                <div class="slide"><img src="photo1.jpg" alt="Event 1"></div>
-                <div class="slide"><img src="photo2.jpg" alt="Hackathon"></div>
-                <div class="slide"><img src="photo3.jpg" alt="Workshop"></div>
-                <div class="slide"><img src="photo4.jpg" alt="Winners"></div>
-                <div class="slide"><img src="photo5.jpg" alt="Projects"></div>
-                <div class="slide"><img src="photo6.jpg" alt="Teamwork"></div>
-                <div class="slide"><img src="photo7.jpg" alt="Coding"></div>
-                <div class="slide"><img src="photo8.jpg" alt="Innovate"></div>
-                <div class="slide"><img src="photo9.jpg" alt="Community"></div>
-                <div class="slide"><img src="photo10.jpg" alt="Fun"></div>
-
-                <!-- Doubled for infinite effect -->
-
-                <div class="slide"><img src="photo1.jpg" alt="Event 1"></div>
-                <div class="slide"><img src="photo2.jpg" alt="Hackathon"></div>
-                <div class="slide"><img src="photo3.jpg" alt="Workshop"></div>
-                <div class="slide"><img src="photo4.jpg" alt="Winners"></div>
-                <div class="slide"><img src="photo5.jpg" alt="Projects"></div>
-                <div class="slide"><img src="photo6.jpg" alt="Teamwork"></div>
-                <div class="slide"><img src="photo7.jpg" alt="Coding"></div>
-                <div class="slide"><img src="photo8.jpg" alt="Innovate"></div>
-                <div class="slide"><img src="photo9.jpg" alt="Community"></div>
-                <div class="slide"><img src="photo10.jpg" alt="Fun"></div>
+        <section id="clubs" class="section">
+            <div class="section-header">
+                <h2 class="section-title">Featured Clubs</h2>
+                <p class="section-subtitle">Explore the diverse clubs driving our campus culture.</p>
             </div>
-        </div>
+            <div id="club-list" class="grid-container grid-container-5-col" style="padding: 0 1rem;"></div>
         </section>
 
-        <section id="feedback">
-        <div class="feedback">
-            <p class="feedback-title">
-                Have Feedback or Any Idea ?
-            </p>
-            <p class="message">
-                Your input is invaluable in shaping our community events. 
-            </p>
-            <button class="submit">
-                Give Feedback 
-            </button>
+        <div class="two-col-layout">
+            <section id="news">
+                <div class="section-header" style="text-align: left; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2 class="section-title" style="margin-bottom: 0;">Latest News</h2>
+                        <p class="section-subtitle">The freshest updates from across the clubs.</p>
+                    </div>
+                    <a href="#" id="view-all-news-btn" class="nav-link" style="font-weight: 600; display:flex; align-items:center; gap: 0.25rem;">
+                        <span>View All News</span>
+                        <i data-lucide="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
+                    </a>
+                </div>
+                <div id="news-feed" style="display: flex; flex-direction: column; gap: 1.5rem;"></div>
+            </section>
+            <section id="leaderboard">
+                 <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+                    <h2 class="section-title">Hall of Fame</h2>
+                    <p class="section-subtitle">Celebrating our recent winners.</p>
+                </div>
+                <div class="leaderboard-container">
+                    <ul id="leaderboard-list" style="display: flex; flex-direction: column; gap: 1rem;"></ul>
+                </div>
+            </section>
         </div>
+        <section id="gallery" class="section">
+            <div class="section-header">
+                <h2 class="section-title">Event Snapshots</h2>
+                <p class="section-subtitle">A glimpse into the vibrant moments from our past events.</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="grid">
+                    <div><img class="card-hover-effect" src="https://placehold.co/500x800/a78bfa/ffffff?text=Hackathon" alt=""></div>
+                    <div><img class="card-hover-effect" src="https://placehold.co/500x500/f472b6/ffffff?text=Art+Expo" alt=""></div>
+                </div>
+                <div class="grid">
+                    <div><img class="card-hover-effect" src="https://placehold.co/500x500/60a5fa/ffffff?text=Music+Night" alt=""></div>
+                    <div><img class="card-hover-effect" src="https://placehold.co/500x800/34d399/ffffff?text=Code+Jam" alt=""></div>
+                </div>
+                <div class="grid">
+                    <div><img class="card-hover-effect" src="https://placehold.co/500x800/fbbf24/ffffff?text=Debate+Finals" alt=""></div>
+                    <div><img class="card-hover-effect" src="https://placehold.co/500x500/f87171/ffffff?text=Cultural+Fest" alt=""></div>
+                </div>
+                <div class="grid">
+                    <div><img class="card-hover-effect" src="https://placehold.co/500x500/818cf8/ffffff?text=Seminar" alt=""></div>
+                    <div><img class="card-hover-effect" src="https://placehold.co/500x800/a3e635/ffffff?text=Sports+Day" alt=""></div>
+                </div>
+            </div>
         </section>
     </main>
 
-    <footer class="foot" style="margin-top: 100px;">
-        <p class="last">&copy; 2025 ClubHub. All rights reserved.</p>
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <h3 class="gradient-text" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">ClubHub</h3>
+                <p style="color: #94a3b8;">Connecting students, fostering talent, and creating memories.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Quick Links</h4>
+                <ul style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <li><a href="#events" class="nav-link" style="color: #94a3b8;">Upcoming Events</a></li>
+                    <li><a href="#clubs" class="nav-link" style="color: #94a3b8;">Find a Club</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Follow Us</h4>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="#" class="nav-link" style="color: #94a3b8;"><i data-lucide="twitter"></i></a>
+                    <a href="#" class="nav-link" style="color: #94a3b8;"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="nav-link" style="color: #94a3b8;"><i data-lucide="linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div style="border-top: 1px solid #1e293b; text-align: center; padding: 1.5rem 0;">
+            <p style="color: #64748b;">&copy; 2025 ClubHub. All Rights Reserved.</p>
+        </div>
     </footer>
+
+    <div id="all-news-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="section-header" style="margin-bottom: 1.5rem;">
+                <h2 class="section-title">All News Updates</h2>
+                <p class="section-subtitle">The complete feed of updates from all our clubs.</p>
+            </div>
+            <div id="all-news-feed" class="modal-body"></div>
+            <button id="close-news-modal" class="modal-close-btn">
+                <i data-lucide="x" style="width: 2rem; height: 2rem;"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const today = new Date();
+        const events = [
+            { club: 'Tech Titans', name: 'AI & Machine Learning Seminar', date: new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000), type: 'Seminar', description: 'Explore the future of AI with industry experts.' },
+            { club: 'Creative Coders', name: 'Annual Hackathon "CodeWave"', date: new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000), type: 'Event', description: '24 hours of intense coding, innovation, and fun. Prizes worth thousands!' },
+            { club: 'Art & Design Circle', name: 'Digital Illustration Workshop', date: new Date(today.getTime() + 12 * 24 * 60 * 60 * 1000), type: 'Workshop', description: 'Learn the basics of digital art from professional artists.' },
+            { club: 'E-Cell', name: 'Startup Pitch Competition', date: new Date(today.getTime() + 20 * 24 * 60 * 60 * 1000), type: 'Event', description: 'Pitch your business idea to a panel of venture capitalists.' },
+            { club: 'Music Mavericks', name: 'Campus Unplugged Night', date: new Date(today.getTime() + 15 * 24 * 60 * 60 * 1000), type: 'Event', description: 'An evening of soulful acoustic performances by students.' },
+            { club: 'Literary Society', name: 'Poetry Slam Workshop', date: new Date(today.getTime() + 2.5 * 24 * 60 * 60 * 1000), type: 'Workshop', description: 'Find your voice and master the art of spoken word poetry.' }
+        ];
+        const clubs = [
+            { name: 'Tech Titans', logo: 'cpu', page: 'tech-titans.html' },
+            { name: 'Creative Coders', logo: 'code-2', page: 'creative-coders.html' },
+            { name: 'Art & Design', logo: 'palette', page: 'art-design.html' },
+            { name: 'E-Cell', logo: 'lightbulb', page: 'e-cell.html' },
+            { name: 'Music Mavericks', logo: 'music', page: 'music-mavericks.html' },
+            { name: 'Literary Society', logo: 'book-open', page: 'literary-society.html' },
+            { name: 'Eco Warriors', logo: 'leaf', page: 'eco-warriors.html' },
+            { name: 'Film Club', logo: 'film', page: 'film-club.html' },
+            { name: 'Debate Union', logo: 'messages-square', page: 'debate-union.html' },
+            { name: 'Sports Club', logo: 'swords', page: 'sports-club.html' }
+        ];
+        const news = [
+            { title: 'CodeWave Hackathon Registrations Now Open!', club: 'Creative Coders', date: new Date(2025, 8, 27) },
+            { title: 'Highlights from the Annual Tech Summit', club: 'Tech Titans', date: new Date(2025, 8, 24) },
+            { title: 'Art Expo Winners Announced', club: 'Art & Design', date: new Date(2025, 8, 20) },
+            { title: 'E-Cell Secures Funding for Startup Incubator', club: 'E-Cell', date: new Date(2025, 8, 18) },
+            { title: 'Music Mavericks Announce Battle of the Bands', club: 'Music Mavericks', date: new Date(2025, 8, 15) },
+            { title: 'Poetry Slam Night Was a Resounding Success', club: 'Literary Society', date: new Date(2025, 8, 12) },
+            { title: 'Eco Warriors Lead Campus Green Drive', club: 'Eco Warriors', date: new Date(2025, 8, 9) },
+            { title: 'Film Club Announces 48-Hour Film Challenge', club: 'Film Club', date: new Date(2025, 8, 5) },
+            { title: 'Debate Union Qualifies for National Championship', club: 'Debate Union', date: new Date(2025, 8, 2) },
+            { title: 'Inter-Departmental Sports Tournament Dates Released', club: 'Sports Club', date: new Date(2025, 7, 30) },
+            { title: 'New Photography Workshop by Art & Design Club', club: 'Art & Design', date: new Date(2025, 7, 28) },
+            { title: 'Tech Titans Launch Mentorship Program', club: 'Tech Titans', date: new Date(2025, 7, 25) }
+        ];
+        const leaderboard = [
+            { rank: 1, name: 'Team Alpha', event: 'CodeWave 2024' },
+            { rank: 2, name: 'Priya Sharma', event: 'Debate Finals' },
+            { rank: 3, name: 'Rohan & Co.', event: 'Startup Pitch' },
+            { rank: 4, name: 'The Canvas Crew', event: 'Art Expo' },
+            { rank: 5, name: 'Byte Brigade', event: 'Code Jam' },
+            { rank: 6, name: 'Acoustic Souls', event: 'Music Fest' },
+            { rank: 7, 'name': 'Eco Innovators', event: 'Green Challenge' },
+            { rank: 8, name: 'The Orators', event: 'MUN' },
+            { rank: 9, name: 'Pixel Perfect', event: 'Designathon' },
+            { rank: 10, name: 'Poetic Justice', event: 'Poetry Slam' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+            
+            const eventList = document.getElementById('event-list');
+            const clubListContainer = document.getElementById('club-list');
+            const newsFeed = document.getElementById('news-feed');
+            const leaderboardList = document.getElementById('leaderboard-list');
+            const allNewsFeed = document.getElementById('all-news-feed');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // Populate Mobile Menu
+            const navLinks = document.querySelector('.nav-links');
+            mobileMenu.innerHTML = navLinks.innerHTML; // copy desktop links
+            const profileSection = document.querySelector('.profile-section');
+            mobileMenu.innerHTML += `<div style="border-top: 1px solid #e2e8f0; margin-top: 1rem; padding-top: 1rem;">${profileSection.innerHTML}</div>`;
+
+
+            // Populate Events
+            events.sort((a, b) => a.date - b.date).forEach(event => {
+                const timeDiff = event.date.getTime() - new Date().getTime();
+                const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                let notification = '';
+                if (daysRemaining > 0 && daysRemaining <= 3) {
+                     notification = `<div class="notification-badge">${daysRemaining} Day${daysRemaining > 1 ? 's' : ''} Left!</div>`;
+                }
+
+                const typeColors = {
+                    'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+                    'Workshop': 'background-color: #fefce8; color: #b45309;',
+                    'Event': 'background-color: #eef2ff; color: #4338ca;'
+                };
+
+                const eventCardHTML = `
+                    <div class="event-card card-hover-effect">
+                        <div class="event-card-content">
+                            <div class="event-card-header">
+                                <span class="event-type-badge" style="${typeColors[event.type]}">${event.type}</span>
+                                <span class="event-date">${event.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                            </div>
+                            <h3 class="event-title">${event.name}</h3>
+                            <p class="event-description">${event.description}</p>
+                            <div class="event-organizer">
+                                <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                                <span>Organized by <strong>${event.club}</strong></span>
+                            </div>
+                        </div>
+                        ${notification}
+                    </div>`;
+                eventList.innerHTML += eventCardHTML;
+            });
+            
+            // Populate Clubs
+            clubs.forEach(club => {
+                const clubItemHTML = `
+                    <a href="${club.page}" class="club-item">
+                        <div class="club-logo-container">
+                            <i data-lucide="${club.logo}" class="club-logo"></i>
+                        </div>
+                        <p class="club-name">${club.name}</p>
+                    </a>`;
+                clubListContainer.innerHTML += clubItemHTML;
+            });
+            
+            // Populate News (Homepage)
+            news.slice(0, 3).forEach(item => {
+                const timeAgo = Math.round((new Date() - item.date) / (1000 * 60 * 60 * 24));
+                const newsItemHTML = `
+                    <div class="news-item">
+                        <p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p>
+                        <div class="news-meta">
+                            <span>By ${item.club}</span>
+                            <span>${timeAgo} day${timeAgo != 1 ? 's' : ''} ago</span>
+                        </div>
+                    </div>`;
+                newsFeed.innerHTML += newsItemHTML;
+            });
+
+            // Populate Leaderboard
+            const medalColors = { 1: '#facc15', 2: '#94a3b8', 3: '#f97316', 4: '#38bdf8', 5: '#84cc16', 6: '#22d3ee', 7: '#10b981', 8: '#f43f5e', 9: '#8b5cf6', 10: '#14b8a6' };
+            leaderboard.forEach(entry => {
+                const leaderItemHTML = `
+                    <li class="leaderboard-item">
+                        <i data-lucide="medal" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: ${medalColors[entry.rank]};"></i>
+                        <span class="leaderboard-rank">${entry.rank}.</span>
+                        <div>
+                            <p class="leaderboard-name">${entry.name}</p>
+                            <p class="leaderboard-event">${entry.event}</p>
+                        </div>
+                    </li>`;
+                leaderboardList.innerHTML += leaderItemHTML;
+            });
+
+            // Populate All News Modal
+            news.forEach(item => {
+                const timeAgo = Math.round((new Date() - item.date) / (1000*60*60*24));
+                const newsItemHTML = `
+                    <div class="news-item" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                        <p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p>
+                        <div class="news-meta">
+                            <span>By <strong>${item.club}</strong></span>
+                            <span>${timeAgo} day${timeAgo != 1 ? 's' : ''} ago</span>
+                        </div>
+                    </div>`;
+                allNewsFeed.innerHTML += newsItemHTML;
+            });
+
+            lucide.createIcons();
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+            });
+
+            // News Modal Logic
+            const viewAllNewsBtn = document.getElementById('view-all-news-btn');
+            const allNewsModal = document.getElementById('all-news-modal');
+            const closeNewsModalBtn = document.getElementById('close-news-modal');
+            
+            if(viewAllNewsBtn) {
+                viewAllNewsBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    allNewsModal.classList.remove('hidden');
+                });
+            }
+
+            if(closeNewsModalBtn) {
+                closeNewsModalBtn.addEventListener('click', () => {
+                    allNewsModal.classList.add('hidden');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
+
 
