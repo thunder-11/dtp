@@ -14,6 +14,8 @@ firebase.analytics();
 const auth = firebase.auth()
 const db = firebase.database();
 
+const userData = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   const section = document.querySelector("section");
   const checkIcon = document.querySelector(".fa-circle-check");
@@ -64,6 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event && typeof event.preventDefault === "function") {event.preventDefault();}
     auth.signInWithEmailAndPassword(email.value, password.value)
   .then((userCredential) => {
+    const emailv = email.value.replace(/\./g, "_");
+    db.ref("users/" + emailv).get().then((snap) => {
+      const userData = snap.val();
+    })
     const user = userCredential.user;
     console.log("User signed in:", user.email);
     message.innerHTML = 'Logged in successfully';
@@ -186,4 +192,42 @@ window.togglePass = function () {
   if (eventContainer) {
     loading();
   }
+
+  const profileSection = document.querySelector("profile-section")
+  const profilename = document.getElementById("profilename");
+  const logoutBtn = document.getElementById("logout-btn");
+  const signbutton = document.querySelector("sign")
+  
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      const emailv = user.email.replace(/\./g, "_");
+       db.ref("users/" + emailv).get().then((snap) => {
+        if (snap.exists()) {
+          const userData = snap.val();
+          if (userData.username) {
+            profilename.innerHTML = userData.username;
+            profilename.style.display = "inline";
+          }
+        }
+      });
+      profileSection.style.display = "none";
+      logoutBtn.style.display = "inline";
+
+    } else {
+      profileSection.style.display = "none";
+      logoutBtn.style.display = "none";
+      sign.style.display = "inline";
+    }
+  });
+
+  window.logOut = function (){
+    auth.signOut().then(() => {
+      profileSection.style.display = "none";
+      logoutBtn.style.display = "none";
+      window.location.href = "index.html";
+    }).catch((error) => {
+      console.error("❌ Logout error:", error);
+    });
+}
+
 });
