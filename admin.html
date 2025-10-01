@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Event Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; 
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .tab-button.active {
+            border-color: #4f46e5;
+            color: #4f46e5;
+            background-color: #eef2ff;
+        }
+        .admin-control-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .admin-control-card.active {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 2px #4f46e5;
+            transform: scale(1.02);
+        }
+        .gradient-button {
+            background-image: linear-gradient(to right, #4f46e5, #a21caf);
+            transition: all 0.3s ease-in-out;
+            background-size: 200% auto;
+        }
+        .gradient-button:hover {
+            background-position: right center;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-bold gradient-text">ClubHub - Admin</a>
+            <div class="hidden md:flex items-center space-x-3">
+                <span class="font-semibold text-slate-700">Admin User</span>
+                <a href="profile.html" class="flex items-center justify-center w-12 h-12 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors duration-300">
+                    <i data-lucide="user-cog" class="w-6 h-6 text-slate-600"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        
+        <!-- Events Section with Tabs -->
+        <section id="events" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-2">Manage Events</h2>
+                <p class="text-slate-500">View, add, modify, or delete events for the Tech Titans club.</p>
+            </div>
+            <div class="flex justify-center mb-8 border-b">
+                <button class="tab-button active py-4 px-6 text-lg font-semibold border-b-2 border-transparent transition" data-tab="upcoming">Upcoming</button>
+                <button class="tab-button py-4 px-6 text-lg font-semibold border-b-2 border-transparent text-slate-500 transition" data-tab="ongoing">Ongoing</button>
+                <button class="tab-button py-4 px-6 text-lg font-semibold border-b-2 border-transparent text-slate-500 transition" data-tab="past">Past</button>
+            </div>
+            <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Event cards will be inserted here -->
+            </div>
+        </section>
+
+        <!-- Admin Controls Section -->
+        <section id="admin-controls" class="py-16 bg-slate-100 rounded-3xl">
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900">Admin Controls</h2>
+                    <p class="text-slate-500 mt-2">Select an action to perform.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <!-- Add Card -->
+                    <div id="add-control" data-target="add-event-form" class="admin-control-card active bg-white p-6 rounded-xl shadow-md text-center cursor-pointer border-2 border-transparent">
+                        <i data-lucide="plus-circle" class="w-10 h-10 mx-auto mb-4 text-indigo-500"></i>
+                        <h3 class="font-bold text-lg text-slate-800">Add Event</h3>
+                        <p class="text-sm text-slate-500 mt-1">Create a new event from scratch.</p>
+                    </div>
+                    <!-- Modify Card -->
+                    <div id="modify-control" data-target="modify-event-form" class="admin-control-card bg-white p-6 rounded-xl shadow-md text-center cursor-pointer border-2 border-transparent">
+                        <i data-lucide="edit" class="w-10 h-10 mx-auto mb-4 text-slate-500"></i>
+                        <h3 class="font-bold text-lg text-slate-800">Modify Event</h3>
+                        <p class="text-sm text-slate-500 mt-1">Edit details of an existing event.</p>
+                    </div>
+                    <!-- Delete Card -->
+                    <div id="delete-control" data-target="delete-event-form" class="admin-control-card bg-white p-6 rounded-xl shadow-md text-center cursor-pointer border-2 border-transparent">
+                        <i data-lucide="trash-2" class="w-10 h-10 mx-auto mb-4 text-slate-500"></i>
+                        <h3 class="font-bold text-lg text-slate-800">Delete Event</h3>
+                        <p class="text-sm text-slate-500 mt-1">Permanently remove an event.</p>
+                    </div>
+                </div>
+
+                <!-- Add Event Form -->
+                <div id="add-event-form" class="admin-form bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-3xl font-bold mb-6 gradient-text">Add a New Event</h3>
+                    <form id="event-form" class="space-y-6">
+                        <div>
+                            <label for="event-name" class="block text-sm font-medium text-slate-700 mb-1">Event Name</label>
+                            <div class="relative"><div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"><i data-lucide="clipboard-list" class="h-5 w-5 text-slate-400"></i></div><input type="text" id="event-name" name="event-name" required class="block w-full rounded-md border-slate-400 py-3 pl-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" placeholder="e.g., Python Workshop"></div>
+                        </div>
+                        <div>
+                            <label for="event-description" class="block text-sm font-medium text-slate-700 mb-1">Event Description</label>
+                            <textarea id="event-description" name="event-description" rows="3" required class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" placeholder="A short summary of the event..."></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="event-date" class="block text-sm font-medium text-slate-700 mb-1">Event Date</label>
+                                 <div class="relative"><div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"><i data-lucide="calendar" class="h-5 w-5 text-slate-400"></i></div><input type="date" id="event-date" name="event-date" required class="block w-full rounded-md border-slate-400 py-3 pl-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"></div>
+                            </div>
+                            <div>
+                                <label for="event-type" class="block text-sm font-medium text-slate-700 mb-1">Event Type</label>
+                                <select id="event-type" name="event-type" class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"><option>Workshop</option><option>Seminar</option><option>Event</option></select>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full justify-center py-3 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white gradient-button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Add Event</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Modify Event Form -->
+                <div id="modify-event-form" class="admin-form hidden bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-3xl font-bold mb-6 gradient-text">Modify an Existing Event</h3>
+                    <div class="space-y-6">
+                        <div>
+                             <label for="modify-event-select" class="block text-sm font-medium text-slate-700 mb-1">Select Event to Modify</label>
+                             <select id="modify-event-select" name="modify-event-select" class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"><option value="">-- Select an event --</option></select>
+                        </div>
+                        <form id="modify-form-details" class="space-y-6 hidden">
+                            <input type="hidden" id="original-event-name">
+                             <div>
+                                <label for="modify-event-name" class="block text-sm font-medium text-slate-700 mb-1">Event Name</label>
+                                <div class="relative"><div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"><i data-lucide="clipboard-list" class="h-5 w-5 text-slate-400"></i></div><input type="text" id="modify-event-name" name="modify-event-name" required class="block w-full rounded-md border-slate-400 py-3 pl-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"></div>
+                            </div>
+                            <div>
+                                <label for="modify-event-description" class="block text-sm font-medium text-slate-700 mb-1">Event Description</label>
+                                <textarea id="modify-event-description" name="modify-event-description" rows="3" required class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"></textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="modify-event-date" class="block text-sm font-medium text-slate-700 mb-1">Event Date</label>
+                                     <div class="relative"><div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"><i data-lucide="calendar" class="h-5 w-5 text-slate-400"></i></div><input type="date" id="modify-event-date" name="modify-event-date" required class="block w-full rounded-md border-slate-400 py-3 pl-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"></div>
+                                </div>
+                                <div>
+                                    <label for="modify-event-type" class="block text-sm font-medium text-slate-700 mb-1">Event Type</label>
+                                    <select id="modify-event-type" name="modify-event-type" class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"><option>Workshop</option><option>Seminar</option><option>Event</option></select>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full justify-center py-3 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white gradient-button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Delete Event Form -->
+                <div id="delete-event-form" class="admin-form hidden bg-white p-8 rounded-2xl shadow-lg">
+                     <h3 class="text-3xl font-bold mb-6 gradient-text">Delete an Event</h3>
+                     <form id="delete-form" class="space-y-6">
+                        <div>
+                             <label for="delete-event-select" class="block text-sm font-medium text-slate-700 mb-1">Select Event to Delete</label>
+                             <select id="delete-event-select" name="delete-event-select" class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"><option value="">-- Select an event --</option></select>
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full justify-center py-3 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete Event</button>
+                        </div>
+                     </form>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            const today = new Date();
+            let clubEvents = {
+                upcoming: [ { name: 'Advanced Python Workshop', date: new Date(today.getTime() + 10 * 24 * 60 * 60 * 1000), description: 'Master advanced Python concepts...', type: 'Workshop' }, { name: 'Guest Lecture on Quantum Computing', date: new Date(today.getTime() + 25 * 24 * 60 * 60 * 1000), description: 'A deep dive into the next generation...', type: 'Seminar' }, { name: 'Web Dev Crash Course', date: new Date(today.getTime() + 50 * 24 * 60 * 60 * 1000), description: 'A weekend bootcamp on HTML, CSS, and JavaScript.', type: 'Workshop' } ],
+                ongoing: [ { name: '30-Day Coding Challenge', date: new Date(), description: 'Sharpen your problem-solving skills...', type: 'Event' } ],
+                past: [ { name: 'AI & Machine Learning Seminar', date: new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000), description: 'Explored the future of AI with industry experts...', type: 'Seminar' }, { name: 'Cybersecurity Workshop', date: new Date(today.getTime() - 45 * 24 * 60 * 60 * 1000), description: 'A hands-on workshop on ethical hacking principles.', type: 'Workshop'}, { name: 'Web Dev Challenge: Build a Portfolio', date: new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000), description: 'A 24-hour challenge where participants built and deployed their personal portfolio websites.', type: 'Event'}, { name: 'Annual Tech Summit 2024', date: new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000), description: 'Our flagship event featuring talks, workshops, and networking sessions.', type: 'Event' }, { name: 'Introduction to Git & GitHub', date: new Date(today.getTime() - 120 * 24 * 60 * 60 * 1000), description: 'A beginner-friendly session covering version control basics for collaborative projects.', type: 'Workshop'} ]
+            };
+
+            const eventsContainer = document.getElementById('events-container');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const eventForm = document.getElementById('event-form');
+            const controlCards = document.querySelectorAll('.admin-control-card');
+            const adminForms = document.querySelectorAll('.admin-form');
+            const modifyEventSelect = document.getElementById('modify-event-select');
+            const modifyFormDetails = document.getElementById('modify-form-details');
+            const deleteEventSelect = document.getElementById('delete-event-select');
+            const deleteForm = document.getElementById('delete-form');
+
+            const createEventCard = (event, status) => {
+                let dateInfo;
+                if (status === 'upcoming') dateInfo = `<span class="text-sm font-medium bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">Upcoming</span>`;
+                else if (status === 'ongoing') dateInfo = `<span class="text-sm font-medium bg-orange-100 text-orange-800 px-3 py-1 rounded-full animate-pulse">Live Now</span>`;
+                else dateInfo = `<span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Completed</span>`;
+                return `<div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover-effect flex flex-col"><div class="p-6 flex-grow"><div class="flex items-center justify-between mb-3"><h3 class="text-xl font-bold">${event.name}</h3>${dateInfo}</div><p class="text-slate-600 text-sm">${event.description}</p><p class="text-xs text-slate-400 mt-4">${event.date.toDateString()}</p></div></div>`;
+            };
+
+            const populateDropdowns = () => {
+                const allEvents = [...clubEvents.upcoming, ...clubEvents.ongoing, ...clubEvents.past];
+                if (modifyEventSelect) modifyEventSelect.innerHTML = '<option value="">-- Select an event --</option>';
+                if (deleteEventSelect) deleteEventSelect.innerHTML = '<option value="">-- Select an event --</option>';
+                allEvents.forEach(event => {
+                    const option = document.createElement('option');
+                    option.value = event.name;
+                    option.textContent = event.name;
+                    if (modifyEventSelect) modifyEventSelect.appendChild(option.cloneNode(true));
+                    if (deleteEventSelect) deleteEventSelect.appendChild(option);
+                });
+            };
+
+            const renderEvents = (activeTab) => {
+                eventsContainer.innerHTML = '';
+                const eventsToRender = clubEvents[activeTab] || [];
+                if (eventsToRender.length > 0) {
+                    eventsToRender.sort((a,b) => a.date - b.date).forEach(event => {
+                        eventsContainer.innerHTML += createEventCard(event, activeTab);
+                    });
+                } else {
+                    eventsContainer.innerHTML = `<p class="text-center text-slate-500 col-span-3">No ${activeTab} events found.</p>`;
+                }
+                populateDropdowns();
+                lucide.createIcons();
+            };
+            
+            let activeTab = 'upcoming';
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    activeTab = button.dataset.tab;
+                    renderEvents(activeTab);
+                });
+            });
+
+            controlCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    controlCards.forEach(c => {
+                        c.classList.remove('active');
+                        const icon = c.querySelector('i');
+                        if (icon) icon.classList.replace('text-indigo-500', 'text-slate-500');
+                    });
+                    card.classList.add('active');
+                    const icon = card.querySelector('i');
+                    if (icon) icon.classList.replace('text-slate-500', 'text-indigo-500');
+                    const targetFormId = card.dataset.target;
+                    adminForms.forEach(form => {
+                        if (form.id === targetFormId) {
+                            form.classList.remove('hidden');
+                        } else {
+                            form.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            if(eventForm) eventForm.addEventListener('submit', (e) => { 
+                e.preventDefault();
+                const newEvent = { name: document.getElementById('event-name').value, description: document.getElementById('event-description').value, date: new Date(document.getElementById('event-date').value + 'T00:00:00'), type: document.getElementById('event-type').value };
+                const now = new Date(); now.setHours(0,0,0,0);
+                if (newEvent.date < now) clubEvents.past.push(newEvent); else clubEvents.upcoming.push(newEvent);
+                renderEvents(activeTab);
+                eventForm.reset();
+                const submitButton = eventForm.querySelector('button[type="submit"]');
+                submitButton.textContent = 'Event Added!';
+                setTimeout(() => { submitButton.textContent = 'Add Event'; }, 2000);
+            });
+
+            if(modifyEventSelect) modifyEventSelect.addEventListener('change', (e) => {
+                const eventName = e.target.value;
+                if (!eventName) {
+                    modifyFormDetails.classList.add('hidden');
+                    return;
+                }
+                const allEvents = [...clubEvents.upcoming, ...clubEvents.ongoing, ...clubEvents.past];
+                const eventToModify = allEvents.find(event => event.name === eventName);
+                if (eventToModify) {
+                    document.getElementById('original-event-name').value = eventToModify.name;
+                    document.getElementById('modify-event-name').value = eventToModify.name;
+                    document.getElementById('modify-event-description').value = eventToModify.description;
+                    document.getElementById('modify-event-date').value = eventToModify.date.toISOString().split('T')[0];
+                    document.getElementById('modify-event-type').value = eventToModify.type;
+                    modifyFormDetails.classList.remove('hidden');
+                }
+            });
+
+            if(modifyFormDetails) modifyFormDetails.addEventListener('submit', (e) => { 
+                e.preventDefault();
+                const originalName = document.getElementById('original-event-name').value;
+                const newName = document.getElementById('modify-event-name').value;
+                const newDescription = document.getElementById('modify-event-description').value;
+                const newDate = new Date(document.getElementById('modify-event-date').value + 'T00:00:00');
+                const newType = document.getElementById('modify-event-type').value;
+
+                for (const status in clubEvents) {
+                    const eventIndex = clubEvents[status].findIndex(event => event.name === originalName);
+                    if (eventIndex !== -1) {
+                        const [eventToMove] = clubEvents[status].splice(eventIndex, 1);
+                        eventToMove.name = newName;
+                        eventToMove.description = newDescription;
+                        eventToMove.date = newDate;
+                        eventToMove.type = newType;
+                        const now = new Date(); now.setHours(0,0,0,0);
+                        let newStatus = 'ongoing';
+                        if (newDate < now) newStatus = 'past';
+                        else if (newDate > now) newStatus = 'upcoming';
+                        clubEvents[newStatus].push(eventToMove);
+                        break;
+                    }
+                }
+                renderEvents(activeTab);
+                modifyFormDetails.classList.add('hidden');
+                modifyEventSelect.value = '';
+                const submitButton = modifyFormDetails.querySelector('button[type="submit"]');
+                submitButton.textContent = 'Changes Saved!';
+                setTimeout(() => { submitButton.textContent = 'Save Changes'; }, 2000);
+            });
+
+            if(deleteForm) deleteForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const eventNameToDelete = deleteEventSelect.value;
+                if (!eventNameToDelete) return;
+
+                for (const status in clubEvents) {
+                    const eventIndex = clubEvents[status].findIndex(event => event.name === eventNameToDelete);
+                    if (eventIndex !== -1) {
+                        clubEvents[status].splice(eventIndex, 1);
+                        break;
+                    }
+                }
+                renderEvents(activeTab);
+                deleteEventSelect.value = '';
+                const submitButton = deleteForm.querySelector('button[type="submit"]');
+                submitButton.textContent = 'Event Deleted!';
+                submitButton.classList.replace('bg-red-600', 'bg-green-600');
+                submitButton.classList.replace('hover:bg-red-700', 'hover:bg-green-700');
+                setTimeout(() => {
+                    submitButton.textContent = 'Delete Event';
+                    submitButton.classList.replace('bg-green-600', 'bg-red-600');
+                    submitButton.classList.replace('hover:bg-green-700', 'hover:bg-red-700');
+                }, 2000);
+            });
+
+            renderEvents(activeTab);
+        });
+    </script>
+</body>
+</html>
+

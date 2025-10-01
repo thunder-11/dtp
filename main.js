@@ -62,40 +62,40 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   } */
 
-  window.login = function(event){
-    if (event && typeof event.preventDefault === "function") {event.preventDefault();}
+  window.login = function (event) {
+    if (event && typeof event.preventDefault === "function") { event.preventDefault(); }
     auth.signInWithEmailAndPassword(email.value, password.value)
-  .then((userCredential) => {
-    const emailv = email.value.replace(/\./g, "_");
-    db.ref("users/" + emailv).get().then((snap) => {
-      const userData = snap.val();
-    })
-    const user = userCredential.user;
-    console.log("User signed in:", user.email);
-    message.innerHTML = 'Logged in successfully';
-    section.classList.add("active");
-  })
-  .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
+      .then((userCredential) => {
+        const emailv = email.value.replace(/\./g, "_");
+        db.ref("users/" + emailv).get().then((snap) => {
+          const userData = snap.val();
+        })
+        const user = userCredential.user;
+        console.log("User signed in:", user.email);
+        message.innerHTML = 'Logged in successfully';
+        section.classList.add("active");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
 
-            console.error("Sign-in error:", errorCode, errorMessage);
+        console.error("Sign-in error:", errorCode, errorMessage);
 
-            switch (errorCode) {
-        case 'auth/invalid-login-credentials':
+        switch (errorCode) {
+          case 'auth/invalid-login-credentials':
             alert("Error: Invalid email or password. Please check your credentials and try again.");
             break;
-        case 'auth/too-many-requests':
+          case 'auth/too-many-requests':
             alert("Access to this account has been temporarily disabled due to too many failed login attempts. Please try again later.");
             break;
-        case 'auth/invalid-email':
-             alert("Error: The email address is not valid. Please check the format.");
-             break;
-        default:
+          case 'auth/invalid-email':
+            alert("Error: The email address is not valid. Please check the format.");
+            break;
+          default:
             alert(`An unexpected error occurred: ${error.message}`);
             break;
-    }
-          });
+        }
+      });
   }
 
   const eventContainer = document.getElementById("events-container");
@@ -109,34 +109,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-function loading(){
-  eventContainer.innerHTML = "";
-  
-  db.ref("events/").get().then((snapshot) => {
-        if (!snapshot.exists()) {
-          eventContainer.innerHTML = "<p>No events available.</p>";
-          return;
-        }
+  function loading() {
+    eventContainer.innerHTML = "";
 
-    snapshot.forEach(childSnap => {
-      const ev = childSnap.val();
-      const card = document.createElement("div");
-      card.className = "box";
-    let notification='';
+    db.ref("events/").get().then((snapshot) => {
+      if (!snapshot.exists()) {
+        eventContainer.innerHTML = "<p>No events available.</p>";
+        return;
+      }
+
+      snapshot.forEach(childSnap => {
+        const ev = childSnap.val();
+        const card = document.createElement("div");
+        card.className = "box";
+        let notification = '';
 
 
-      const title = safe(ev.title);
-      const desc = safe(ev.description || "");
-      const date = safe(ev.date || "");
+        const title = safe(ev.title);
+        const desc = safe(ev.description || "");
+        const date = safe(ev.date || "");
 
-      const typeColors = {
-                    'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
-                    'Workshop': 'background-color: #fefce8; color: #b45309;',
-                    'Event': 'background-color: #eef2ff; color: #4338ca;'
-                };
-                
+        const typeColors = {
+          'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+          'Workshop': 'background-color: #fefce8; color: #b45309;',
+          'Event': 'background-color: #eef2ff; color: #4338ca;'
+        };
 
-      card.innerHTML = `
+
+        card.innerHTML = `
                     <div class="event-card card-hover-effect">
                         <div class="event-card-content">
                             <div class="event-card-header">
@@ -152,27 +152,27 @@ function loading(){
                         </div>
                         ${notification}
                     </div>`;
-        
 
-      eventContainer.appendChild(card);
+
+        eventContainer.appendChild(card);
+      })
     })
-  })
- }
+  }
 
-const togglePasswordIcon = document.getElementById("togglePassword");
+  const togglePasswordIcon = document.getElementById("togglePassword");
 
-window.togglePass = function () {
+  window.togglePass = function () {
     const type = password.getAttribute("type") === "password" ? "text" : "password";
     password.setAttribute("type", type);
-    
+
     togglePasswordIcon.classList.toggle("fa-eye");
     togglePasswordIcon.classList.toggle("fa-eye-slash");
 
-};
+  };
 
-  window.fun = function(e) {
+  window.fun = function (e) {
     if (e && typeof e.preventDefault === "function") e.preventDefault();
-  
+
     db.ref("events").push({
       title: "Sample Workshop",
       description: "Hands-on web dev workshop",
@@ -180,54 +180,63 @@ window.togglePass = function () {
       club: "CSI",
       type: "Seminar"
     })
-    .then(() => {
-      alert("Event added");
-      loading();
-    })
-    .catch((error) => {
-      console.error("Error adding event:", error);
-      alert("Error adding event: " + error.message);
-    });
-}
+      .then(() => {
+        alert("Event added");
+        loading();
+      })
+      .catch((error) => {
+        console.error("Error adding event:", error);
+        alert("Error adding event: " + error.message);
+      });
+  }
   if (eventContainer) {
     loading();
   }
 
-  const profileSection = document.querySelector("profile-section")
-  const profilename = document.getElementById("profilename");
-  const logoutBtn = document.getElementById("logout-btn");
-  const signbutton = document.querySelector("sign")
-  
+  const profileSection = document.querySelector(".profile-section");
+
   auth.onAuthStateChanged((user) => {
     if (user) {
       const emailv = user.email.replace(/\./g, "_");
-       db.ref("users/" + emailv).get().then((snap) => {
+
+      db.ref("users/" + emailv).get().then((snap) => {
         if (snap.exists()) {
           const userData = snap.val();
           if (userData.username) {
-            profilename.innerHTML = userData.username;
-            profilename.style.display = "inline";
+            profileSection.innerHTML = `
+            <span id="profilename" class="profile-name font-comic">${userData.username}</span>
+            <a href="profile.html" class="profile-icon-link">
+              <i data-lucide="user" style="width: 1.5rem; height: 1.5rem; color: #475569;"></i>
+            </a>
+            <button class="custom-button" onclick="logOut()" style="background-color: #f44336;">Logout</button>
+          `;
+
+            if (typeof lucide !== 'undefined') {
+              lucide.createIcons();
+            }
           }
+        } else {
+          console.log("User data does not exist.");
         }
       });
-      profileSection.style.display = "none";
-      logoutBtn.style.display = "inline";
 
     } else {
-      profileSection.style.display = "none";
-      logoutBtn.style.display = "none";
-      sign.style.display = "inline";
+      profileSection.innerHTML = `
+        <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
+          Login
+        </a>
+    `;
     }
+
+
   });
 
-  window.logOut = function (){
+  window.logOut = function () {
     auth.signOut().then(() => {
-      profileSection.style.display = "none";
-      logoutBtn.style.display = "none";
-      window.location.href = "index.html";
+      console.log("User signed out successfully.");
     }).catch((error) => {
-      console.error("❌ Logout error:", error);
+      console.error("Sign out error:", error);
     });
-}
+  }
 
 });
