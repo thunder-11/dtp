@@ -109,11 +109,8 @@
                             })
                         }
                     }).catch((error) => {
-                        console.error("Error adding user:", error);
+                        alert("Error adding user:", error);
                     })
-                    .catch((error) => {
-                        console.error('Sign up error:', error);
-                    });
             } else {
                 alert("Password does not match.")
             }
