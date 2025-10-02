@@ -10,7 +10,9 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #1e293b;
             background-color: #f8fafc;
         }
 
@@ -20,25 +22,94 @@
             -webkit-text-fill-color: transparent;
         }
 
+        .card-hover-effect {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
         .card-hover-effect:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .event-card {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .event-card-content {
+            padding: 1.5rem;
+        }
+
+        .event-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .event-type-badge {
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+        }
+
+        .event-date {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .event-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-description {
+            color: #475569;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .event-organizer {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        @media (min-width: 768px) {
+
+            /* md breakpoint */
+            .admin-profile {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                /* space-x-3 */
+            }
+
+            .events-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* md:grid-cols-2 */
+            }
+        }
+
+        @media (min-width: 1024px) {
+
+            /* lg breakpoint */
+            .events-grid {
+                grid-template-columns: repeat(3, 1fr);
+                /* lg:grid-cols-3 */
+            }
         }
 
         .tab-button.active {
             border-color: #4f46e5;
             color: #4f46e5;
             background-color: #eef2ff;
-        }
-
-        .admin-control-card {
-            transition: all 0.2s ease-in-out;
-        }
-
-        .admin-control-card.active {
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 2px #4f46e5;
-            transform: scale(1.02);
         }
 
         .gradient-button {
@@ -50,32 +121,161 @@
         .gradient-button:hover {
             background-position: right center;
         }
+
+        .btn {
+            font-weight: 600;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
+        }
+
+        .modal-overlay.is-visible {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        .modal-card {
+            background-color: white;
+            width: 100%;
+            max-width: 32rem;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal-overlay.is-visible .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            line-height: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .modal-footer {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            line-height: 1;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .close-button:hover {
+            color: #1f2937;
+        }
+
+        .form-group+.form-group,
+        .form-grid+.form-group,
+        .form-group+.form-grid {
+            margin-top: 1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+                align-items: end;
+            }
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 2px #a5b4fc;
+        }
     </style>
 </head>
 
 <body class="text-slate-800">
-    <section class="modal-container">
-        <div class="modal">
-            <button class="modal-content" id="close-modal">x</button>
-            <div class="modal-content">
-                <form class="modal-form">
-                    <div>
-                        <label for="e-name">Event Name</label>
-                        <input class="form-input" type="text" id="e-name" placeholder="Event Name">
-                        <label for="e-description">Event Name</label>
-                        <input class="form-input" type="text" id="e-description" placeholder="Event Description">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-    <!-- Header -->
+
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-3xl font-bold gradient-text">ClubHub - Admin</a>
+            <a class="text-3xl font-bold gradient-text">ClubHub - Admin</a>
             <div class="hidden md:flex items-center space-x-3">
                 <span class="font-semibold text-slate-700">Admin User</span>
-                <a href="profile.html"
+                <a
                     class="flex items-center justify-center w-12 h-12 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors duration-300">
                     <i data-lucide="user-cog" class="w-6 h-6 text-slate-600"></i>
                 </a>
@@ -83,379 +283,232 @@
         </nav>
     </header>
 
-    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-6 py-12">
 
-        <!-- Events Section with Tabs -->
         <section id="events" class="py-16">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-2">Manage Events</h2>
-                <p class="text-slate-500">View, add, modify, or delete events for the Tech Titans club.</p>
+            <div class="flex justify-between items-center mb-12">
+                <div>
+                    <h2 class="text-4xl font-bold mb-2">Manage Events</h2>
+                    <p class="text-slate-500">View, add, modify, or delete events for the Tech Titans club.</p>
+                </div>
+                <button id="open-modal-btn" class="btn btn-primary">
+                    Create New Event
+                </button>
             </div>
-            <div class="flex justify-center mb-8 border-b">
-                <button
-                    class="tab-button active py-4 px-6 text-lg font-semibold border-b-2 border-transparent transition"
-                    data-tab="upcoming">Upcoming</button>
-                <button
-                    class="tab-button py-4 px-6 text-lg font-semibold border-b-2 border-transparent text-slate-500 transition"
-                    data-tab="ongoing">Ongoing</button>
-                <button
-                    class="tab-button py-4 px-6 text-lg font-semibold border-b-2 border-transparent text-slate-500 transition"
-                    data-tab="past">Past</button>
-            </div>
-            <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Event cards will be inserted here -->
-            </div>
+
+            <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </section>
 
-        <!-- Admin Controls Section -->
-        <section id="admin-controls" class="py-16 bg-slate-100 rounded-3xl">
-            <div class="max-w-4xl mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-slate-900">Admin Controls</h2>
-                    <p class="text-slate-500 mt-2">Select an action to perform.</p>
+        <div id="modal-container" class="modal-overlay">
+            <div id="modal-content" class="modal-card">
+                <div class="modal-header">
+                    <h2>New Event Details</h2>
+                    <button id="close-modal-btn" class="close-button">&times;</button>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                    <!-- Add Card -->
-                    <div id="add-control" data-target="add-event-form"
-                        class="admin-control-card active bg-white p-6 rounded-xl shadow-md text-center cursor-pointer border-2 border-transparent">
-                        <i data-lucide="plus-circle" class="w-10 h-10 mx-auto mb-4 text-indigo-500"></i>
-                        <h3 class="font-bold text-lg text-slate-800">Add Event</h3>
-                        <p class="text-sm text-slate-500 mt-1">Create a new event from scratch.</p>
-                    </div>
-                    <!-- Modify Card -->
-                    <div id="modify-control" data-target="modify-event-form"
-                        class="admin-control-card bg-white p-6 rounded-xl shadow-md text-center cursor-pointer border-2 border-transparent">
-                        <i data-lucide="edit" class="w-10 h-10 mx-auto mb-4 text-slate-500"></i>
-                        <h3 class="font-bold text-lg text-slate-800">Modify Event</h3>
-                        <p class="text-sm text-slate-500 mt-1">Edit details of an existing event.</p>
-                    </div>
-                    <!-- Delete Card -->
-                    <div id="delete-control" data-target="delete-event-form"
-                        class="admin-control-card bg-white p-6 rounded-xl shadow-md text-center cursor-pointer border-2 border-transparent">
-                        <i data-lucide="trash-2" class="w-10 h-10 mx-auto mb-4 text-slate-500"></i>
-                        <h3 class="font-bold text-lg text-slate-800">Delete Event</h3>
-                        <p class="text-sm text-slate-500 mt-1">Permanently remove an event.</p>
-                    </div>
-                </div>
+                <form id="event-form">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" id="title" name="title" required class="form-input"
+                                placeholder="e.g., Annual Tech Conference">
+                        </div>
 
-                <!-- Add Event Form -->
-                <div id="add-event-form" class="admin-form bg-white p-8 rounded-2xl shadow-lg">
-                    <h3 class="text-3xl font-bold mb-6 gradient-text">Add a New Event</h3>
-                    <form id="event-form" class="space-y-6">
-                        <div>
-                            <label for="event-name" class="block text-sm font-medium text-slate-700 mb-1">Event
-                                Name</label>
-                            <div class="relative">
-                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"><i
-                                        data-lucide="clipboard-list" class="h-5 w-5 text-slate-400"></i></div><input
-                                    type="text" id="event-name" name="event-name" required
-                                    class="block w-full rounded-md border-slate-400 py-3 pl-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
-                                    placeholder="e.g., Python Workshop">
-                            </div>
+                        <div class="form-group">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea id="description" name="description" rows="3" required class="form-input"
+                                placeholder="Provide details about the event..."></textarea>
                         </div>
-                        <div>
-                            <label for="event-description" class="block text-sm font-medium text-slate-700 mb-1">Event
-                                Description</label>
-                            <textarea id="event-description" name="event-description" rows="3" required
-                                class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="A short summary of the event..."></textarea>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="event-date" class="block text-sm font-medium text-slate-700 mb-1">Event
-                                    Date</label>
-                                <div class="relative">
-                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"><i
-                                            data-lucide="calendar" class="h-5 w-5 text-slate-400"></i></div><input
-                                        type="date" id="event-date" name="event-date" required
-                                        class="block w-full rounded-md border-slate-400 py-3 pl-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
-                                </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="datetime-local" id="date" name="date" required class="form-input">
                             </div>
-                            <div>
-                                <label for="event-type" class="block text-sm font-medium text-slate-700 mb-1">Event
-                                    Type</label>
-                                <select id="event-type" name="event-type"
-                                    class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
-                                    <option>Workshop</option>
-                                    <option>Seminar</option>
-                                    <option>Event</option>
+
+                            <div class="form-group">
+                                <label for="club" class="form-label">Club / Organizer</label>
+                                <select id="club" name="club" required class="form-select">
+                                    <option value="" disabled selected>Select a club</option>
+                                    <option value="Debuggers">Debuggers</option>
                                 </select>
                             </div>
                         </div>
-                        <div>
-                            <button type="submit"
-                                class="w-full justify-center py-3 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white gradient-button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Add
-                                Event</button>
-                        </div>
-                    </form>
-                </div>
 
-                <!-- Modify Event Form -->
-                <div id="modify-event-form" class="admin-form hidden bg-white p-8 rounded-2xl shadow-lg">
-                    <h3 class="text-3xl font-bold mb-6 gradient-text">Modify an Existing Event</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <label for="modify-event-select"
-                                class="block text-sm font-medium text-slate-700 mb-1">Select Event to Modify</label>
-                            <select id="modify-event-select" name="modify-event-select"
-                                class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
-                                <option value="">-- Select an event --</option>
+                        <div class="form-group">
+                            <label for="eventType" class="form-label">Event Type</label>
+                            <select id="eventType" name="eventType" required class="form-select">
+                                <option value="" disabled selected>Select a type</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Seminar">Seminar</option>
+                                <option value="Event">Event</option>
                             </select>
                         </div>
-                        <form id="modify-form-details" class="space-y-6 hidden">
-                            <input type="hidden" id="original-event-name">
-                            <div>
-                                <label for="modify-event-name"
-                                    class="block text-sm font-medium text-slate-700 mb-1">Event Name</label>
-                                <div class="relative">
-                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"><i
-                                            data-lucide="clipboard-list" class="h-5 w-5 text-slate-400"></i></div><input
-                                        type="text" id="modify-event-name" name="modify-event-name" required
-                                        class="block w-full rounded-md border-slate-400 py-3 pl-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
-                                </div>
-                            </div>
-                            <div>
-                                <label for="modify-event-description"
-                                    class="block text-sm font-medium text-slate-700 mb-1">Event Description</label>
-                                <textarea id="modify-event-description" name="modify-event-description" rows="3"
-                                    required
-                                    class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"></textarea>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="modify-event-date"
-                                        class="block text-sm font-medium text-slate-700 mb-1">Event Date</label>
-                                    <div class="relative">
-                                        <div
-                                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                            <i data-lucide="calendar" class="h-5 w-5 text-slate-400"></i>
-                                        </div><input type="date" id="modify-event-date" name="modify-event-date"
-                                            required
-                                            class="block w-full rounded-md border-slate-400 py-3 pl-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="modify-event-type"
-                                        class="block text-sm font-medium text-slate-700 mb-1">Event Type</label>
-                                    <select id="modify-event-type" name="modify-event-type"
-                                        class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
-                                        <option>Workshop</option>
-                                        <option>Seminar</option>
-                                        <option>Event</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <button type="submit"
-                                    class="w-full justify-center py-3 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white gradient-button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save
-                                    Changes</button>
-                            </div>
-                        </form>
                     </div>
-                </div>
 
-                <!-- Delete Event Form -->
-                <div id="delete-event-form" class="admin-form hidden bg-white p-8 rounded-2xl shadow-lg">
-                    <h3 class="text-3xl font-bold mb-6 gradient-text">Delete an Event</h3>
-                    <form id="delete-form" class="space-y-6">
-                        <div>
-                            <label for="delete-event-select"
-                                class="block text-sm font-medium text-slate-700 mb-1">Select Event to Delete</label>
-                            <select id="delete-event-select" name="delete-event-select"
-                                class="block w-full rounded-md border-slate-400 py-3 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
-                                <option value="">-- Select an event --</option>
-                            </select>
-                        </div>
-                        <div>
-                            <button type="submit"
-                                class="w-full justify-center py-3 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete
-                                Event</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Event</button>
+                    </div>
+                </form>
             </div>
-        </section>
-
+        </div>
     </main>
 
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrawO7KtgK6xe9zioTJ851ii_OmQwgL5E",
+            authDomain: "eventms-3f505.firebaseapp.com",
+            projectId: "eventms-3f505",
+            storageBucket: "eventms-3f505.firebasestorage.app",
+            messagingSenderId: "462891335836",
+            appId: "1:462891335836:web:9d2638e06783b330a2ed59",
+            measurementId: "G-V6MP0Q86JT"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        const auth = firebase.auth()
+        const db = firebase.database();
+
         document.addEventListener('DOMContentLoaded', () => {
+
             lucide.createIcons();
 
-            const today = new Date();
-            let clubEvents = {
-                upcoming: [{ name: 'Advanced Python Workshop', date: new Date(today.getTime() + 10 * 24 * 60 * 60 * 1000), description: 'Master advanced Python concepts...', type: 'Workshop' }, { name: 'Guest Lecture on Quantum Computing', date: new Date(today.getTime() + 25 * 24 * 60 * 60 * 1000), description: 'A deep dive into the next generation...', type: 'Seminar' }, { name: 'Web Dev Crash Course', date: new Date(today.getTime() + 50 * 24 * 60 * 60 * 1000), description: 'A weekend bootcamp on HTML, CSS, and JavaScript.', type: 'Workshop' }],
-                ongoing: [{ name: '30-Day Coding Challenge', date: new Date(), description: 'Sharpen your problem-solving skills...', type: 'Event' }],
-                past: [{ name: 'AI & Machine Learning Seminar', date: new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000), description: 'Explored the future of AI with industry experts...', type: 'Seminar' }, { name: 'Cybersecurity Workshop', date: new Date(today.getTime() - 45 * 24 * 60 * 60 * 1000), description: 'A hands-on workshop on ethical hacking principles.', type: 'Workshop' }, { name: 'Web Dev Challenge: Build a Portfolio', date: new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000), description: 'A 24-hour challenge where participants built and deployed their personal portfolio websites.', type: 'Event' }, { name: 'Annual Tech Summit 2024', date: new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000), description: 'Our flagship event featuring talks, workshops, and networking sessions.', type: 'Event' }, { name: 'Introduction to Git & GitHub', date: new Date(today.getTime() - 120 * 24 * 60 * 60 * 1000), description: 'A beginner-friendly session covering version control basics for collaborative projects.', type: 'Workshop' }]
-            };
-
-            const eventsContainer = document.getElementById('events-container');
-            const tabButtons = document.querySelectorAll('.tab-button');
+            const eventContainer = document.getElementById('events-container');
+            const openModalBtn = document.getElementById('open-modal-btn');
+            const modalContainer = document.getElementById('modal-container');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
             const eventForm = document.getElementById('event-form');
-            const controlCards = document.querySelectorAll('.admin-control-card');
-            const adminForms = document.querySelectorAll('.admin-form');
-            const modifyEventSelect = document.getElementById('modify-event-select');
-            const modifyFormDetails = document.getElementById('modify-form-details');
-            const deleteEventSelect = document.getElementById('delete-event-select');
-            const deleteForm = document.getElementById('delete-form');
+            const dateTimeInput = document.getElementById('date');
 
-            const createEventCard = (event, status) => {
-                let dateInfo;
-                if (status === 'upcoming') dateInfo = `<span class="text-sm font-medium bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">Upcoming</span>`;
-                else if (status === 'ongoing') dateInfo = `<span class="text-sm font-medium bg-orange-100 text-orange-800 px-3 py-1 rounded-full animate-pulse">Live Now</span>`;
-                else dateInfo = `<span class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Completed</span>`;
-                return `<div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover-effect flex flex-col"><div class="p-6 flex-grow"><div class="flex items-center justify-between mb-3"><h3 class="text-xl font-bold">${event.name}</h3>${dateInfo}</div><p class="text-slate-600 text-sm">${event.description}</p><p class="text-xs text-slate-400 mt-4">${event.date.toDateString()}</p></div></div>`;
+            function openModal() {
+                modalContainer.classList.add('is-visible');
             };
 
-            const populateDropdowns = () => {
-                const allEvents = [...clubEvents.upcoming, ...clubEvents.ongoing, ...clubEvents.past];
-                if (modifyEventSelect) modifyEventSelect.innerHTML = '<option value="">-- Select an event --</option>';
-                if (deleteEventSelect) deleteEventSelect.innerHTML = '<option value="">-- Select an event --</option>';
-                allEvents.forEach(event => {
-                    const option = document.createElement('option');
-                    option.value = event.name;
-                    option.textContent = event.name;
-                    if (modifyEventSelect) modifyEventSelect.appendChild(option.cloneNode(true));
-                    if (deleteEventSelect) deleteEventSelect.appendChild(option);
-                });
+            function closeModal() {
+                modalContainer.classList.remove('is-visible');
             };
 
-            const renderEvents = (activeTab) => {
-                eventsContainer.innerHTML = '';
-                const eventsToRender = clubEvents[activeTab] || [];
-                if (eventsToRender.length > 0) {
-                    eventsToRender.sort((a, b) => a.date - b.date).forEach(event => {
-                        eventsContainer.innerHTML += createEventCard(event, activeTab);
-                    });
-                } else {
-                    eventsContainer.innerHTML = `<p class="text-center text-slate-500 col-span-3">No ${activeTab} events found.</p>`;
-                }
-                populateDropdowns();
-                lucide.createIcons();
+            const setMinDateTime = () => {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+
+                const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+                dateTimeInput.setAttribute('min', localDateTime);
             };
 
-            let activeTab = 'upcoming';
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    activeTab = button.dataset.tab;
-                    renderEvents(activeTab);
-                });
-            });
+            setMinDateTime();
 
-            controlCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    controlCards.forEach(c => {
-                        c.classList.remove('active');
-                        const icon = c.querySelector('i');
-                        if (icon) icon.classList.replace('text-indigo-500', 'text-slate-500');
-                    });
-                    card.classList.add('active');
-                    const icon = card.querySelector('i');
-                    if (icon) icon.classList.replace('text-slate-500', 'text-indigo-500');
-                    const targetFormId = card.dataset.target;
-                    adminForms.forEach(form => {
-                        if (form.id === targetFormId) {
-                            form.classList.remove('hidden');
-                        } else {
-                            form.classList.add('hidden');
-                        }
-                    });
-                });
-            });
+            openModalBtn.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelBtn.addEventListener('click', closeModal);
 
-            if (eventForm) eventForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const newEvent = { name: document.getElementById('event-name').value, description: document.getElementById('event-description').value, date: new Date(document.getElementById('event-date').value + 'T00:00:00'), type: document.getElementById('event-type').value };
-                const now = new Date(); now.setHours(0, 0, 0, 0);
-                if (newEvent.date < now) clubEvents.past.push(newEvent); else clubEvents.upcoming.push(newEvent);
-                renderEvents(activeTab);
+
+            eventForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const formData = new FormData(eventForm);
+                const eventData = {
+                    title: formData.get('title'),
+                    description: formData.get('description'),
+                    date: formData.get('date'),
+                    club: formData.get('club'),
+                    eventType: formData.get('eventType'),
+                };
+                db.ref("events").push({
+                    title: formData.get('title'),
+                    description: formData.get('description'),
+                    date: formData.get('date'),
+                    club: formData.get('club'),
+                    type: formData.get('eventType'),
+                })
+                    .then(() => {
+                        alert(`Event "${eventData.title}" created successfully!`);
+                        loading();
+                    })
+                    .catch((error) => {
+                        console.error("Error adding event:", error);
+                        alert("Error adding event: " + error.message);
+                    });
+
                 eventForm.reset();
-                const submitButton = eventForm.querySelector('button[type="submit"]');
-                submitButton.textContent = 'Event Added!';
-                setTimeout(() => { submitButton.textContent = 'Add Event'; }, 2000);
+                closeModal();
             });
 
-            if (modifyEventSelect) modifyEventSelect.addEventListener('change', (e) => {
-                const eventName = e.target.value;
-                if (!eventName) {
-                    modifyFormDetails.classList.add('hidden');
-                    return;
-                }
-                const allEvents = [...clubEvents.upcoming, ...clubEvents.ongoing, ...clubEvents.past];
-                const eventToModify = allEvents.find(event => event.name === eventName);
-                if (eventToModify) {
-                    document.getElementById('original-event-name').value = eventToModify.name;
-                    document.getElementById('modify-event-name').value = eventToModify.name;
-                    document.getElementById('modify-event-description').value = eventToModify.description;
-                    document.getElementById('modify-event-date').value = eventToModify.date.toISOString().split('T')[0];
-                    document.getElementById('modify-event-type').value = eventToModify.type;
-                    modifyFormDetails.classList.remove('hidden');
-                }
-            });
+            function safe(s = "") {
+                return String(s)
+                    .replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll('"', "&quot;")
+                    .replaceAll("'", "&#39;");
+            }
 
-            if (modifyFormDetails) modifyFormDetails.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const originalName = document.getElementById('original-event-name').value;
-                const newName = document.getElementById('modify-event-name').value;
-                const newDescription = document.getElementById('modify-event-description').value;
-                const newDate = new Date(document.getElementById('modify-event-date').value + 'T00:00:00');
-                const newType = document.getElementById('modify-event-type').value;
+            function loading() {
+                eventContainer.innerHTML = "";
 
-                for (const status in clubEvents) {
-                    const eventIndex = clubEvents[status].findIndex(event => event.name === originalName);
-                    if (eventIndex !== -1) {
-                        const [eventToMove] = clubEvents[status].splice(eventIndex, 1);
-                        eventToMove.name = newName;
-                        eventToMove.description = newDescription;
-                        eventToMove.date = newDate;
-                        eventToMove.type = newType;
-                        const now = new Date(); now.setHours(0, 0, 0, 0);
-                        let newStatus = 'ongoing';
-                        if (newDate < now) newStatus = 'past';
-                        else if (newDate > now) newStatus = 'upcoming';
-                        clubEvents[newStatus].push(eventToMove);
-                        break;
+                db.ref("events/").get().then((snapshot) => {
+                    if (!snapshot.exists()) {
+                        eventContainer.innerHTML = "<p>No events available.</p>";
+                        return;
                     }
-                }
-                renderEvents(activeTab);
-                modifyFormDetails.classList.add('hidden');
-                modifyEventSelect.value = '';
-                const submitButton = modifyFormDetails.querySelector('button[type="submit"]');
-                submitButton.textContent = 'Changes Saved!';
-                setTimeout(() => { submitButton.textContent = 'Save Changes'; }, 2000);
-            });
 
-            if (deleteForm) deleteForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const eventNameToDelete = deleteEventSelect.value;
-                if (!eventNameToDelete) return;
+                    snapshot.forEach(childSnap => {
+                        const ev = childSnap.val();
+                        const card = document.createElement("div");
+                        card.className = "box";
+                        let notification = '';
 
-                for (const status in clubEvents) {
-                    const eventIndex = clubEvents[status].findIndex(event => event.name === eventNameToDelete);
-                    if (eventIndex !== -1) {
-                        clubEvents[status].splice(eventIndex, 1);
-                        break;
-                    }
-                }
-                renderEvents(activeTab);
-                deleteEventSelect.value = '';
-                const submitButton = deleteForm.querySelector('button[type="submit"]');
-                submitButton.textContent = 'Event Deleted!';
-                submitButton.classList.replace('bg-red-600', 'bg-green-600');
-                submitButton.classList.replace('hover:bg-red-700', 'hover:bg-green-700');
-                setTimeout(() => {
-                    submitButton.textContent = 'Delete Event';
-                    submitButton.classList.replace('bg-green-600', 'bg-red-600');
-                    submitButton.classList.replace('hover:bg-green-700', 'hover:bg-red-700');
-                }, 2000);
-            });
 
-            renderEvents(activeTab);
+                        const title = safe(ev.title);
+                        const desc = safe(ev.description || "");
+                        const date = safe(ev.date || "");
+
+                        const typeColors = {
+                            'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+                            'Workshop': 'background-color: #fefce8; color: #b45309;',
+                            'Event': 'background-color: #eef2ff; color: #4338ca;'
+                        };
+
+
+                        card.innerHTML = `
+                    <div class="event-card card-hover-effect">
+                        <div class="event-card-content">
+                            <div class="event-card-header">
+                              <span class="event-type-badge" style="${typeColors[ev.type]}">${ev.type}</span>
+                                <span class="event-date">${ev.date}</span>
+                            </div>
+                            <h3 class="event-title">${ev.title}</h3>
+                            <p class="event-description">${ev.description}</p>
+                            <div class="event-organizer">
+                                <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                                <span>Organized by <strong>${ev.club}</strong></span>
+                            </div>
+                        </div>
+                        ${notification}
+                    </div>`;
+
+
+                        eventContainer.appendChild(card);
+                    })
+                })
+            }
+
+            loading();
+
         });
+
     </script>
 </body>
 
