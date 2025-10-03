@@ -378,8 +378,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
 
-            lucide.createIcons();
-
             const eventContainer = document.getElementById('events-container');
             const openModalBtn = document.getElementById('open-modal-btn');
             const modalContainer = document.getElementById('modal-container');
@@ -501,6 +499,8 @@
 
 
                         eventContainer.appendChild(card);
+
+            lucide.createIcons();
                     })
                 })
             }
