@@ -617,7 +617,6 @@ section.active .modal-box {
     transition: all 0.3s ease;
 }
 
-/* small responsive tweaks kept from target */
 @media (max-width: 480px) {
     .register {
         padding: 30px 25px;

@@ -24,20 +24,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const username = document.getElementById("username")
   const email = document.getElementById("email");
   const password = document.getElementById("password");
-  let uid = null;
+  let currentUserID = null;
   let currentEmail = null;
-
+  const eventContainer = document.getElementById("events-container");
+  const modalContainer = document.getElementById('modal-container');
+  const registrationEmail = document.getElementById("registration-email");
+  const modalRegistrationButton = document.getElementById("modal-registration-btn");
+  const eventForm = document.getElementById('event-form');
+  const togglePasswordIcon = document.getElementById("togglePassword");
   const profileSection = document.querySelector(".profile-section");
 
   auth.onAuthStateChanged((user) => {
     if (user) {
       const emailv = user.email.replace(/\./g, "_");
-      currentUserEmail = user.email;
+      currentEmail = user.email;
+      currentUserID = user.uid;
 
       if (registrationEmail) {
-            registrationEmail.value = currentUserEmail;
-            registrationEmail.setAttribute('readonly', true);
-        }
+        registrationEmail.value = currentEmail;
+        registrationEmail.setAttribute('readonly', true);
+      }
 
       db.ref("users/" + emailv).get().then((snap) => {
         if (snap.exists()) {
@@ -64,9 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
 
       if (registrationEmail) {
-            registrationEmail.value = "";
-            registrationEmail.removeAttribute('readonly');
-        }
+        registrationEmail.value = "";
+        registrationEmail.removeAttribute('readonly');
+      }
 
       profileSection.innerHTML = `
         <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
@@ -77,6 +83,72 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   });
+
+  function safe(s = "") {
+    return String(s)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+
+  function loading() {
+    eventContainer.innerHTML = "";
+
+    db.ref("events/").get().then((snapshot) => {
+      if (!snapshot.exists()) {
+        eventContainer.innerHTML = "<p>No events available.</p>";
+        return;
+      }
+
+      snapshot.forEach(childSnap => {
+        const ev = childSnap.val();
+        const card = document.createElement("div");
+        card.className = "box";
+        let notification = '';
+
+
+        const title = safe(ev.title);
+        const desc = safe(ev.description || "");
+        const date = safe(ev.date || "");
+
+        const typeColors = {
+          'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+          'Workshop': 'background-color: #fefce8; color: #b45309;',
+          'Event': 'background-color: #eef2ff; color: #4338ca;'
+        };
+
+
+        card.innerHTML = `
+                    <div class="event-card card-hover-effect">
+                        <div class="event-card-content">
+                            <div class="event-card-header">
+                              <span class="event-type-badge" style="${typeColors[ev.type]}">${ev.type}</span>
+                                <span class="event-date">${ev.date}</span>
+                            </div>
+                            <h3 class="event-title">${ev.title}</h3>
+                            <p class="event-description">${ev.description}</p>
+                            <div class="event-organizer">
+                                <div class="clubname">
+                                <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                                <span>Organized by <strong>${ev.club}</strong></span>
+                                </div>
+
+                            <button class="custom-button" id="registration-btn" data-id="${childSnap.key}" onclick="openModal(event)">Register</button>
+                            </div>
+                        </div>
+                        ${notification}
+                    </div>`;
+
+
+        eventContainer.appendChild(card);
+
+        lucide.createIcons();
+      })
+    })
+  }
 
 
   window.addData = function (event) {
@@ -151,86 +223,56 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-            const eventContainer = document.getElementById("events-container");
-            const modalContainer = document.getElementById('modal-container');
-            const registrationEmail = document.getElementById("registration-email");
-            const eventForm = document.getElementById('event-form');
+  window.openModal = function (event) {
+    const target = event.target;
+    modalContainer.classList.add('is-visible');
+    modalRegistrationButton.setAttribute('data-id', target.getAttribute('data-id'));
+  };
 
-            window.openModal = function () {
-                modalContainer.classList.add('is-visible');
-            };
+  window.closeModal = function (event) {
+    modalContainer.classList.remove('is-visible');
+  };
 
-            window.closeModal = function() {
-                modalContainer.classList.remove('is-visible');
-            };
-
-  function safe(s = "") {
-    return String(s)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#39;");
-  }
+  window.exitModal = function () {
+    section.classList.remove("active");
+  };
 
 
-  function loading() {
-    eventContainer.innerHTML = "";
+  window.registration = function (event) {
+    event.preventDefault();
+    const eventID = modalRegistrationButton.getAttribute('data-id');
+    const formData = new FormData(eventForm);
+    const name = formData.get('name');
+    const email = formData.get('email');
 
-    db.ref("events/").get().then((snapshot) => {
-      if (!snapshot.exists()) {
-        eventContainer.innerHTML = "<p>No events available.</p>";
+      if (!email) {
+        alert("Please login first");
+        return;
+      }
+      if (!name) {
+        alert("Enter name");
         return;
       }
 
-      snapshot.forEach(childSnap => {
-        const ev = childSnap.val();
-        const card = document.createElement("div");
-        card.className = "box";
-        let notification = '';
 
-
-        const title = safe(ev.title);
-        const desc = safe(ev.description || "");
-        const date = safe(ev.date || "");
-
-        const typeColors = {
-          'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
-          'Workshop': 'background-color: #fefce8; color: #b45309;',
-          'Event': 'background-color: #eef2ff; color: #4338ca;'
-        };
-
-
-        card.innerHTML = `
-                    <div class="event-card card-hover-effect">
-                        <div class="event-card-content">
-                            <div class="event-card-header">
-                              <span class="event-type-badge" style="${typeColors[ev.type]}">${ev.type}</span>
-                                <span class="event-date">${ev.date}</span>
-                            </div>
-                            <h3 class="event-title">${ev.title}</h3>
-                            <p class="event-description">${ev.description}</p>
-                            <div class="event-organizer">
-                                <div class="clubname">
-                                <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
-                                <span>Organized by <strong>${ev.club}</strong></span>
-                                </div>
-
-                            <button class="custom-button" id="registration-btn" onclick="openModal()">Register</button>
-                            </div>
-                        </div>
-                        ${notification}
-                    </div>`;
-
-
-        eventContainer.appendChild(card);
-
-        lucide.createIcons();
-      })
+    db.ref(`registrations/${eventID}/${currentUserID}/`).get().then((snapshot) => {
+      if (!snapshot.exists()) {
+        db.ref(`registrations/${eventID}/${currentUserID}/`).set({
+          name: formData.get('name'),
+          email: formData.get('email')
+        }).then(() => {
+          section.classList.add("active");
+          closeModal();
+        }).catch((error) => {
+          alert("Error:" + error.message)
+        })
+      } else {
+        alert("Email already registered")
+      }
+    }).catch((error) => {
+      alert("Error:" + error.message)
     })
   }
-
-  const togglePasswordIcon = document.getElementById("togglePassword");
 
   window.togglePass = function () {
     const type = password.getAttribute("type") === "password" ? "text" : "password";
