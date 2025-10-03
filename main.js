@@ -146,8 +146,12 @@ document.addEventListener("DOMContentLoaded", () => {
                             <h3 class="event-title">${ev.title}</h3>
                             <p class="event-description">${ev.description}</p>
                             <div class="event-organizer">
+                                <div class="clubname">
                                 <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
                                 <span>Organized by <strong>${ev.club}</strong></span>
+                                </div>
+
+                            <button class="custom-button" id="register">Register</button>
                             </div>
                         </div>
                         ${notification}
@@ -155,6 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         eventContainer.appendChild(card);
+
+        lucide.createIcons();
       })
     })
   }
