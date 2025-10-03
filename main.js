@@ -14,7 +14,7 @@ firebase.analytics();
 const auth = firebase.auth()
 const db = firebase.database();
 
-const userData = null;
+let userData = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   const section = document.querySelector("section");
@@ -24,6 +24,59 @@ document.addEventListener("DOMContentLoaded", () => {
   const username = document.getElementById("username")
   const email = document.getElementById("email");
   const password = document.getElementById("password");
+  let uid = null;
+  let currentEmail = null;
+
+  const profileSection = document.querySelector(".profile-section");
+
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      const emailv = user.email.replace(/\./g, "_");
+      currentUserEmail = user.email;
+
+      if (registrationEmail) {
+            registrationEmail.value = currentUserEmail;
+            registrationEmail.setAttribute('readonly', true);
+        }
+
+      db.ref("users/" + emailv).get().then((snap) => {
+        if (snap.exists()) {
+          const userData = snap.val();
+          if (userData.username) {
+
+            profileSection.innerHTML = `
+            <span id="profilename" class="profile-name font-comic">${userData.username}</span>
+            <a href="profile.html" class="profile-icon-link">
+              <i data-lucide="user" style="width: 1.5rem; height: 1.5rem; color: #475569;"></i>
+            </a>
+            <button class="custom-button" onclick="logOut()" style="background-color: #f44336;">Logout</button>
+          `;
+
+            if (typeof lucide !== 'undefined') {
+              lucide.createIcons();
+            }
+          }
+        } else {
+          console.log("User data does not exist.");
+        }
+      });
+
+    } else {
+
+      if (registrationEmail) {
+            registrationEmail.value = "";
+            registrationEmail.removeAttribute('readonly');
+        }
+
+      profileSection.innerHTML = `
+        <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
+          Login
+        </a>
+    `;
+    }
+
+
+  });
 
 
   window.addData = function (event) {
@@ -98,7 +151,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  const eventContainer = document.getElementById("events-container");
+            const eventContainer = document.getElementById("events-container");
+            const modalContainer = document.getElementById('modal-container');
+            const registrationEmail = document.getElementById("registration-email");
+            const eventForm = document.getElementById('event-form');
+
+            window.openModal = function () {
+                modalContainer.classList.add('is-visible');
+            };
+
+            window.closeModal = function() {
+                modalContainer.classList.remove('is-visible');
+            };
+
   function safe(s = "") {
     return String(s)
       .replaceAll("&", "&amp;")
@@ -151,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span>Organized by <strong>${ev.club}</strong></span>
                                 </div>
 
-                            <button class="custom-button" id="register">Register</button>
+                            <button class="custom-button" id="registration-btn" onclick="openModal()">Register</button>
                             </div>
                         </div>
                         ${notification}
@@ -198,44 +263,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (eventContainer) {
     loading();
   }
-
-  const profileSection = document.querySelector(".profile-section");
-
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      const emailv = user.email.replace(/\./g, "_");
-
-      db.ref("users/" + emailv).get().then((snap) => {
-        if (snap.exists()) {
-          const userData = snap.val();
-          if (userData.username) {
-            profileSection.innerHTML = `
-            <span id="profilename" class="profile-name font-comic">${userData.username}</span>
-            <a href="profile.html" class="profile-icon-link">
-              <i data-lucide="user" style="width: 1.5rem; height: 1.5rem; color: #475569;"></i>
-            </a>
-            <button class="custom-button" onclick="logOut()" style="background-color: #f44336;">Logout</button>
-          `;
-
-            if (typeof lucide !== 'undefined') {
-              lucide.createIcons();
-            }
-          }
-        } else {
-          console.log("User data does not exist.");
-        }
-      });
-
-    } else {
-      profileSection.innerHTML = `
-        <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
-          Login
-        </a>
-    `;
-    }
-
-
-  });
 
   window.logOut = function () {
     auth.signOut().then(() => {
