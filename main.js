@@ -34,6 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const togglePasswordIcon = document.getElementById("togglePassword");
   const profileSection = document.querySelector(".profile-section");
 
+
+  function fileName() {
+    let path = window.location.pathname;
+    let file = path.substring(path.lastIndexOf('/') + 1);
+    return file;
+  }
+
   auth.onAuthStateChanged((user) => {
     if (user) {
       const emailv = user.email.replace(/\./g, "_");
@@ -93,11 +100,16 @@ document.addEventListener("DOMContentLoaded", () => {
       .replaceAll("'", "&#39;");
   }
 
-
   function loading() {
+    let dbref = null;
     eventContainer.innerHTML = "";
+    if (fileName() == "index.html"){
+      dbref= db.ref("events/").orderByChild('date').limitToFirst(3);
+    } else {
+      dbref = db.ref("events/").orderByChild('date');
+    }
 
-    db.ref("events/").get().then((snapshot) => {
+    dbref.get().then((snapshot) => {
       if (!snapshot.exists()) {
         eventContainer.innerHTML = "<p>No events available.</p>";
         return;
@@ -245,14 +257,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = formData.get('name');
     const email = formData.get('email');
 
-      if (!email) {
-        alert("Please login first");
-        return;
-      }
-      if (!name) {
-        alert("Enter name");
-        return;
-      }
+    if (!email) {
+      alert("Please login first");
+      return;
+    }
+    if (!name) {
+      alert("Enter name");
+      return;
+    }
 
 
     db.ref(`registrations/${eventID}/${currentUserID}/`).get().then((snapshot) => {
