@@ -12,7 +12,7 @@
 </head>
 
 <body>
-     <section>
+    <section>
         <span class="overlay"></span>
         <div class="modal-box">
             <i class="fa-regular fa-circle-check"></i>
@@ -28,7 +28,7 @@
             <a href="#" class="gradient-text" style="font-size: 1.875rem; font-weight: 700;">ClubHub</a>
             <div class="nav-links">
                 <a href="#home" class="nav-link">Home</a>
-                <a onclick="window.location.href = 'events.html'" class="nav-link">Events</a>
+                <a href="#events" class="nav-link">Events</a>
                 <a href="#clubs" class="nav-link">Clubs</a>
                 <a href="#gallery" class="nav-link">Gallery</a>
                 <a href="#leaderboard" class="nav-link">Winners</a>
@@ -49,57 +49,16 @@
         </div>
     </header>
 
-    <main class="container">
-        <section id="home">
-            <h1>Discover, Engage, <span class="gradient-text">Excel.</span></h1>
-            <p>Your central hub for all club activities, workshops, and events. Dive into a vibrant campus community and
-                never miss an opportunity.</p>
-            <a class="hero-button" onclick="fun(event)">Explore Upcoming Events</a>
-        </section>
+    <main class="max-w-7xl mx-auto px-6 py-12">
 
-        <section id="events" class="section">
-            <div class="section-header">
-                <h2 class="section-title">Upcoming Events & Workshops</h2>
-                <p class="section-subtitle">Stay ahead of the curve. Here's what's happening on campus soon.</p>
-            </div>
-            <div id="events-container" class="grid-container grid-container-3-col"></div>
-            <div class="all-events">
-                <button id="all-events" class="btn" onclick="window.location.href = 'events.html'">View All Events <span class="arrow" style="display: inline-block;" data-lucide="arrow-right"></span></button>
-                </div>
-        </section>
-
-        <section id="gallery" class="section">
-            <div class="section-header">
-                <h2 class="section-title">Event Snapshots</h2>
-                <p class="section-subtitle">A glimpse into the vibrant moments from our past events.</p>
-            </div>
-            <div class="slider">
-                <div class="slide-track">
-                    <div class="slide"><img src="./src/photo1.jpg" alt="Event 1"></div>
-                    <div class="slide"><img src="./src/photo2.jpg" alt="Hackathon"></div>
-                    <div class="slide"><img src="./src/photo3.jpg" alt="Workshop"></div>
-                    <div class="slide"><img src="./src/photo4.jpg" alt="Winners"></div>
-                    <div class="slide"><img src="./src/photo5.jpg" alt="Projects"></div>
-                    <div class="slide"><img src="./src/photo6.jpg" alt="Teamwork"></div>
-                    <div class="slide"><img src="./src/photo7.jpg" alt="Coding"></div>
-                    <div class="slide"><img src="./src/photo8.jpg" alt="Innovate"></div>
-                    <div class="slide"><img src="./src/photo9.jpg" alt="Community"></div>
-                    <div class="slide"><img src="./src/photo10.jpg" alt="Fun"></div>
-
-
-
-                    <div class="slide"><img src="./src/photo1.jpg" alt="Event 1"></div>
-                    <div class="slide"><img src="./src/photo2.jpg" alt="Hackathon"></div>
-                    <div class="slide"><img src="./src/photo3.jpg" alt="Workshop"></div>
-                    <div class="slide"><img src="./src/photo4.jpg" alt="Winners"></div>
-                    <div class="slide"><img src="./src/photo5.jpg" alt="Projects"></div>
-                    <div class="slide"><img src="./src/photo6.jpg" alt="Teamwork"></div>
-                    <div class="slide"><img src="./src/photo7.jpg" alt="Coding"></div>
-                    <div class="slide"><img src="./src/photo8.jpg" alt="Innovate"></div>
-                    <div class="slide"><img src="./src/photo9.jpg" alt="Community"></div>
-                    <div class="slide"><img src="./src/photo10.jpg" alt="Fun"></div>
+        <section id="events" class="py-16">
+            <div class="flex justify-center items-center mb-12">
+                <div>
+                    <h2 class="text-4xl font-bold mb-2">All Events</h2>
                 </div>
             </div>
+
+            <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </section>
     </main>
 
@@ -130,19 +89,6 @@
         </div>
     </footer>
 
-    <div id="all-news-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="section-header" style="margin-bottom: 1.5rem;">
-                <h2 class="section-title">All News Updates</h2>
-                <p class="section-subtitle">The complete feed of updates from all our clubs.</p>
-            </div>
-            <div id="all-news-feed" class="modal-body"></div>
-            <button id="close-news-modal" class="modal-close-btn">
-                <i data-lucide="x" style="width: 2rem; height: 2rem;"></i>
-            </button>
-        </div>
-    </div>
-
     <div id="modal-container" class="modal-overlay">
             <div id="modal-content" class="modal-card">
                 <div class="modal-header">
@@ -171,7 +117,6 @@
                 </form>
             </div>
         </div>
-    </main>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
