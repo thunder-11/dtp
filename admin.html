@@ -435,7 +435,7 @@
                     participantsCount: 0
                 })
                     .then(() => {
-                        alert(`Event "${eventData.title}" created successfully!`);
+                        alert(`Event "${formData.get('title')}" created successfully!`);
                         loading();
                     })
                     .catch((error) => {

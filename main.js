@@ -140,6 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="event-card-header">
                               <span class="event-type-badge" style="${typeColors[ev.type]}">${ev.type}</span>
                                 <span class="event-date">${ev.date}</span>
+                                <span class="event-date">${ev.time}</span>
                             </div>
                             <h3 class="event-title">${ev.title}</h3>
                             <p class="event-description">${ev.description}</p>
