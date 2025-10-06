@@ -14,6 +14,7 @@ firebase.analytics();
 const auth = firebase.auth()
 const db = firebase.database();
 
+
 let userData = null;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -273,6 +274,10 @@ document.addEventListener("DOMContentLoaded", () => {
           name: formData.get('name'),
           email: formData.get('email')
         }).then(() => {
+          db.ref(`events/${eventID}/participantsCount/`).transaction((currentValue) => {
+           return (currentValue || 0) + 1;
+          });
+            
           section.classList.add("active");
           closeModal();
         }).catch((error) => {
