@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span>Organized by <strong>${ev.club}</strong></span>
                                 </div>
 
-                            <button class="custom-button" id="registration-btn" data-id="${childSnap.key}" onclick="openModal(event)">Register</button>
+                            <button class="custom-button" id="registration-btn" data-id="${childSnap.key}" onclick="openDetails(event)">Register</button>
                             </div>
                         </div>
                         ${notification}
@@ -236,6 +236,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
   }
+
+
+window.openDetails = function (event) {
+  const target = event.target;
+  const eventID = target.getAttribute('data-id');
+
+  if (eventID) {
+    window.location.href = `eventdetails.html?id=${eventID}`;
+  } else {
+    alert("Could not find event!");
+  }
+};
 
   window.openModal = function (event) {
     const target = event.target;
