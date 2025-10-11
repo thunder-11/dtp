@@ -33,8 +33,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalRegistrationButton = document.getElementById("modal-registration-btn");
   const eventForm = document.getElementById('event-form');
   const togglePasswordIcon = document.getElementById("togglePassword");
-  const profileSection = document.querySelector(".profile-section");
+  const profileSection = document.querySelector(".profile-section"); 
+  const eventDetailsContainer = document.getElementById('event-details-container');
+  const urlParams = new URLSearchParams(window.location.search);
+    const eventID = urlParams.get('id');
 
+    if (eventID) {
+      db.ref(`events/${eventID}`).get().then((snapshot) => {
+        if (snapshot.exists()) {
+          const eventval = snapshot.val();
+          
+          eventDetailsContainer.innerHTML = `
+            <h2>${eventval.title}</h2>
+            <p><strong>Date:</strong> ${eventval.date}</p>
+            <p><strong>Description:</strong> ${eventval.description}</p>
+          `;
+        } else {
+          eventDetailsContainer.innerHTML = `<p>Error: Event not found.</p>`;
+        }
+      }).catch((error) => {
+        console.error("Firebase fetch error:", error);
+        eventDetailsContainer.innerHTML = `<p>Error loading event details.</p>`;
+      });
+    } else {
+      eventDetailsContainer.innerHTML = `<p>Error: No event ID provided in URL.</p>`;
+    }
 
   function fileName() {
     let path = window.location.pathname;
