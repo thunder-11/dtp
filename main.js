@@ -179,7 +179,6 @@ function isDirectory() {
     })
   }
 
-
   window.addData = function (event) {
     event.preventDefault();
     const emailv = email.value.replace(/\./g, "_");
