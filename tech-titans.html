@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Titans - ClubHub</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+        }
+        .font-comic {
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .container {
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            box-sizing: border-box;
+        }
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1024px;
+            }
+        }
+        @media (min-width: 1280px) {
+            .container {
+                max-width: 1280px;
+            }
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .header {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        .nav-links {
+            display: none;
+        }
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+            }
+        }
+        .nav-link {
+            color: #475569;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #4f46e5;
+        }
+        .profile-section {
+            display: none;
+        }
+         @media (min-width: 768px) {
+            .profile-section {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+        }
+        .profile-name {
+            font-weight: 600;
+            color: #334155;
+        }
+        .profile-icon-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background-color: #f1f5f9;
+            border-radius: 9999px;
+            transition: background-color 0.3s;
+        }
+        .profile-icon-link:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .section {
+            padding: 4rem 0;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .section-subtitle {
+            color: #64748b;
+        }
+        .grid-container {
+            display: grid;
+            gap: 2rem;
+        }
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .grid-container.lg-3-col {
+                 grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+        .hero-icon-container {
+            background-color: white;
+            width: 10rem;
+            height: 10rem;
+            margin: 0 auto 1.5rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            border: 4px solid #c7d2fe;
+        }
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 4.5rem;
+            }
+        }
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: #475569;
+            max-width: 56rem;
+            margin: 0 auto;
+        }
+        .read-more-btn {
+            margin-top: 1.5rem;
+            color: #4f46e5;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .read-more-btn .arrow {
+            transition: transform 0.3s;
+        }
+        .read-more-btn.expanded .arrow {
+            transform: rotate(180deg);
+        }
+        .long-intro {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+            text-align: left;
+            max-width: 56rem;
+            margin: 1rem auto 0;
+            color: #475569;
+        }
+        .long-intro.expanded {
+            max-height: 1000px;
+        }
+        .long-intro p {
+            margin-bottom: 1rem;
+        }
+
+        .domain-item, .achievement-item {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+        }
+        .achievement-item {
+            align-items: flex-start;
+        }
+
+        /* Events Section */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .tab-button {
+            padding: 1rem 1.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-button.active {
+            color: #4f46e5;
+            border-color: #4f46e5;
+        }
+
+        .bg-slate-section {
+            background-color: #f1f5f9;
+            border-radius: 1.5rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.06);
+        }
+        .card-hover-effect {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .gallery-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (min-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: repeat(2, auto);
+            }
+        }
+        .gallery-grid img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+        .gallery-grid-item-1 { grid-row: span 2; }
+        .gallery-grid-item-4 { grid-row: span 2; }
+        .gallery-grid-item-5 { grid-column: span 2; }
+        .gallery-button {
+            display: inline-block;
+            margin-top: 3rem;
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .gallery-button:hover {
+            background-color: #e0e7ff;
+        }
+
+        /* Join Us & Feedback Buttons */
+        .primary-button {
+            display: inline-block;
+            background-color: #4f46e5;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4), 0 4px 6px -2px rgba(79, 70, 229, 0.2);
+            border: none;
+            cursor: pointer;
+        }
+        .primary-button:hover {
+            background-color: #4338ca;
+            transform: scale(1.05);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 1rem;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 56rem; /* max-w-4xl */
+            position: relative;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            color: #64748b;
+            font-size: 1.875rem;
+            font-weight: 700;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .modal-close-btn:hover {
+            color: #1e293b;
+        }
+        .modal-form-container {
+            background-color: #f8fafc;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05);
+        }
+        .form-label {
+            display: block;
+            color: #334155;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .footer {
+            background-color: #0f172a;
+            color: white;
+            padding-top: 3rem;
+        }
+        .footer-container {
+            display: grid;
+            gap: 2rem;
+        }
+        @media (min-width: 768px) {
+            .footer-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .footer-text {
+            color: #94a3b8;
+        }
+        .footer-heading {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .footer-link {
+            color: #94a3b8;
+            transition: color 0.3s;
+        }
+        .footer-link:hover {
+            color: white;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        .footer-bottom {
+            border-top: 1px solid #1e293b;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        .copyright-text {
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="container nav-container">
+            <a href="index.html" class="gradient-text" style="font-size: 1.875rem; font-weight: 700;">ClubHub</a>
+            <div class="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#events" class="nav-link">Events</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#council" class="nav-link">Council</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
+                <a href="#feedback" class="nav-link">Feedback</a>
+            </div>
+            <div class="profile-section">
+                <span class="profile-name font-comic">abc</span>
+                <a href="profile.html" class="profile-icon-link">
+                    <i data-lucide="user" style="width: 1.5rem; height: 1.5rem; color: #475569;"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero-section">
+            <div class="hero-icon-container"><i data-lucide="cpu" style="width: 6rem; height: 6rem; color: #4f46e5;"></i></div>
+            <h1 class="hero-title">Tech Titans</h1>
+            <p class="hero-subtitle">The official technology and coding club of the campus. We are a community of thinkers, creators, and innovators passionate about leveraging technology to solve real-world problems.</p>
+            <div id="long-intro" class="long-intro">
+                <p>Founded in 2015, Tech Titans has grown from a small group of coding enthusiasts into the largest and most active technical club on campus. Our mission is three-fold: to foster a culture of collaborative learning, to provide a platform for students to work on real-world projects, and to bridge the gap between academia and industry.</p>
+                <p>We believe in learning by doing. Through our regular workshops, hackathons, and long-term projects, members get hands-on experience with cutting-edge technologies. Our vibrant community supports members at all skill levels, from absolute beginners taking their first steps in coding to seasoned developers building complex applications.</p>
+            </div>
+            <button id="read-more-btn" class="read-more-btn">
+                <span id="read-more-text">Read More</span>
+                <i id="read-more-icon" data-lucide="chevron-down" class="arrow" style="width: 1.25rem; height: 1.25rem; margin-left: 0.25rem;"></i>
+            </button>
+        </section>
+
+        <section id="about" class="section grid-container">
+             <div>
+                <h2 class="section-title" style="font-size: 1.875rem; margin-bottom: 1.5rem;">Our Domains</h2>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                    <div class="domain-item"><i data-lucide="brain-circuit" style="width: 1.5rem; height: 1.5rem; margin-right: 0.75rem; color: #4f46e5;"></i> Artificial Intelligence</div>
+                    <div class="domain-item"><i data-lucide="globe" style="width: 1.5rem; height: 1.5rem; margin-right: 0.75rem; color: #4f46e5;"></i> Web & App Dev</div>
+                    <div class="domain-item"><i data-lucide="shield-check" style="width: 1.5rem; height: 1.5rem; margin-right: 0.75rem; color: #4f46e5;"></i> Cybersecurity</div>
+                    <div class="domain-item"><i data-lucide="code-2" style="width: 1.5rem; height: 1.5rem; margin-right: 0.75rem; color: #4f46e5;"></i> Competitive Coding</div>
+                    <div class="domain-item"><i data-lucide="cloud" style="width: 1.5rem; height: 1.5rem; margin-right: 0.75rem; color: #4f46e5;"></i> Cloud Computing</div>
+                </div>
+            </div>
+            <div>
+                <h2 class="section-title" style="font-size: 1.875rem; margin-bottom: 1.5rem;">Key Achievements</h2>
+                <ul style="display: flex; flex-direction: column; gap: 1rem;">
+                    <li class="achievement-item"><i data-lucide="award" style="width: 1.5rem; height: 1.5rem; margin-right: 0.75rem; color: #f59e0b; flex-shrink: 0; margin-top: 0.25rem;"></i> <span><strong>Winners</strong> of National Smart India Hackathon 2024</span></li>
+                    <li class="achievement-item"><i data-lucide="users" style="width: 1.5rem; height: 1.5rem; margin-right: 0.75rem; color: #f59e0b; flex-shrink: 0; margin-top: 0.25rem;"></i> <span>Hosted the <strong>largest university-level CodeFest</strong> in the state</span></li>
+                    <li class="achievement-item"><i data-lucide="file-text" style="width: 1.5rem; height: 1.5rem; margin-right: 0.75rem; color: #f59e0b; flex-shrink: 0; margin-top: 0.25rem;"></i> <span>Published <strong>5 research papers</strong> in international journals</span></li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="events" class="section">
+            <div class="section-header">
+                <h2 class="section-title">Our Events</h2>
+                <p class="section-subtitle">Everything we're working on, have accomplished, and are planning for the future.</p>
+            </div>
+            <div class="tabs-container">
+                <button class="tab-button active" data-tab="upcoming">Upcoming</button>
+                <button class="tab-button" data-tab="ongoing">Ongoing</button>
+                <button class="tab-button" data-tab="past">Past</button>
+            </div>
+            <div id="events-container" class="grid-container lg-3-col"></div>
+        </section>
+
+        <section id="projects" class="section bg-slate-section">
+            <div class="section-header">
+                <h2 class="section-title">Project Spotlight</h2>
+                <p class="section-subtitle">A look at what we've built.</p>
+            </div>
+            <div id="project-spotlight-container" class="grid-container lg-3-col" style="max-width: 72rem; margin: 0 auto;"></div>
+        </section>
+
+        <section id="council" class="section">
+            <div class="section-header">
+                <h2 class="section-title">Meet the Council</h2>
+                <p class="section-subtitle">The leadership team behind Tech Titans.</p>
+            </div>
+            <div id="council-container" class="grid-container" style="grid-template-columns: repeat(2, 1fr); max-width: 48rem; margin: 0 auto; @media (min-width: 768px) { grid-template-columns: repeat(4, 1fr); }"></div>
+        </section>
+
+        <section class="section bg-slate-section">
+            <div class="section-header">
+                <h2 class="section-title">What Our Members Say</h2>
+                <p class="section-subtitle">Experiences from inside the club.</p>
+            </div>
+            <div id="testimonials-container" class="grid-container" style="max-width: 56rem; margin: 0 auto;"></div>
+        </section>
+
+        <section id="gallery" class="section">
+            <div class="section-header">
+                <h2 class="section-title">Our Moments</h2>
+                <p class="section-subtitle">A snapshot from the Tech Titans journey.</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-grid-item-1"><img class="card-hover-effect" src="https://placehold.co/500x800/818cf8/ffffff?text=Tech+Summit" alt="Tech Summit"></div>
+                <div><img class="card-hover-effect" src="https://placehold.co/500x500/fbbf24/ffffff?text=CodeFest" alt="CodeFest"></div>
+                <div><img class="card-hover-effect" src="https://placehold.co/500x500/34d399/ffffff?text=AI+Workshop" alt="AI Workshop"></div>
+                <div class="gallery-grid-item-4"><img class="card-hover-effect" src="https://placehold.co/500x800/f472b6/ffffff?text=Prize+Giving" alt="Prize Giving"></div>
+                <div class="gallery-grid-item-5"><img class="card-hover-effect" src="https://placehold.co/1000x500/fb7185/ffffff?text=Group+Photo" alt="Group Photo"></div>
+           </div>
+           <div style="text-align: center;">
+                <a href="#" class="gallery-button">View Full Gallery</a>
+           </div>
+        </section>
+
+        <section class="section" style="text-align: center;">
+             <h2 class="section-title">Ready to Innovate?</h2>
+             <p class="section-subtitle" style="max-width: 42rem; margin: 0 auto 2rem;">Become a part of the most dynamic tech community on campus...</p>
+             <a href="#" class="primary-button">Join The Titans Today!</a>
+        </section>
+        
+        <section id="feedback" class="section bg-slate-section" style="text-align: center;">
+            <h2 class="section-title">Have Feedback or an Idea?</h2>
+            <p class="section-subtitle" style="max-width: 42rem; margin: 0 auto;">Your input is invaluable...</p>
+            <button id="open-feedback-btn" class="primary-button" style="margin-top: 2rem;">
+                <i class="fas fa-bullhorn" style="margin-right: 0.5rem;"></i>Give Feedback & Suggestions
+            </button>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <div>
+                <h3 class="footer-title gradient-text">Tech Titans</h3>
+                <p class="footer-text">Innovate. Collaborate. Dominate.</p>
+            </div>
+            <div>
+                <h4 class="footer-heading">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#events" class="footer-link">All Events</a></li>
+                    <li><a href="#" class="footer-link">Other Clubs</a></li>
+                    <li><a href="#gallery" class="footer-link">Our Gallery</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-heading">Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="footer-link"><i data-lucide="github"></i></a>
+                    <a href="#" class="footer-link"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="footer-link"><i data-lucide="linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="copyright-text">&copy; 2025 ClubHub. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div id="feedback-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-feedback-modal" class="modal-close-btn">&times;</button>
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h2 class="section-title" style="font-size: 1.875rem;">Feedback & Suggestions</h2>
+                <p class="section-subtitle">Help us improve! Share your thoughts and ideas.</p>
+           </div>
+            <div class="grid-container" style="gap: 2.5rem;">
+                <div class="modal-form-container">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Post-Event Feedback</h3>
+                    <form id="feedback-form">
+                        <div style="margin-bottom: 1rem;">
+                            <label for="event-select" class="form-label">Select Event</label>
+                            <select id="event-select" class="form-input"></select>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label for="experience" class="form-label">Overall Experience</label>
+                            <textarea id="experience" rows="4" placeholder="How was the event for you?" class="form-textarea" required></textarea>
+                        </div>
+                        <button type="submit" class="primary-button" style="width: 100%; padding: 0.75rem 1rem;">Submit Feedback</button>
+                    </form>
+                </div>
+                <div class="modal-form-container">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Future Suggestions</h3>
+                    <form id="suggestion-form">
+                        <div style="margin-bottom: 1rem;">
+                           <label for="suggestion-type" class="form-label">I'm interested in...</label>
+                            <select id="suggestion-type" class="form-input">
+                                <option>A new Workshop</option>
+                                <option>A new Seminar Topic</option>
+                                <option>A new Competition Idea</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label for="expectations" class="form-label">What are you expecting?</label>
+                            <textarea id="expectations" rows="4" placeholder="Tell us what you'd like to see..." class="form-textarea" required></textarea>
+                        </div>
+                        <button type="submit" class="primary-button" style="width: 100%; padding: 0.75rem 1rem;">Share Idea</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="thank-you-modal" class="modal-overlay hidden" style="z-index: 60;">
+        <div class="card" style="text-align: center;">
+            <h2 class="section-title gradient-text" style="font-size: 1.875rem;">Thank You!</h2>
+            <p class="section-subtitle">Your feedback has been submitted.</p>
+            <button id="close-thank-you-modal" class="primary-button" style="margin-top: 1.5rem;">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            const clubEvents = {
+                upcoming: [ { name: 'Advanced Python Workshop', date: new Date(today.getTime() + 10 * 24 * 60 * 60 * 1000), description: 'Master advanced Python concepts for data science and backend development.' }, { name: 'Guest Lecture on Quantum Computing', date: new Date(today.getTime() + 25 * 24 * 60 * 60 * 1000), description: 'A deep dive into the next generation of computing with Dr. Eva Rostova.' }, { name: 'Code & Coffee: Open Source Contributions', date: new Date(today.getTime() + 40 * 24 * 60 * 60 * 1000), description: 'A casual session to learn how to contribute to popular open source projects.' } ],
+                ongoing: [ { name: '30-Day Coding Challenge', date: new Date(), description: 'Sharpen your problem-solving skills with daily coding problems on our platform.' } ],
+                past: [ { name: 'AI & Machine Learning Seminar', date: new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000), description: 'Explored the future of AI with industry experts. A huge success with over 500 attendees.' }, { name: 'Cybersecurity Workshop: Ethical Hacking 101', date: new Date(today.getTime() - 45 * 24 * 60 * 60 * 1000), description: 'A hands-on workshop on the basics of cybersecurity and ethical hacking principles.'}, { name: 'Web Dev Challenge: Build a Portfolio', date: new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000), description: 'A 24-hour challenge where participants built and deployed their personal portfolio websites.'}, { name: 'Annual Tech Summit 2024', date: new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000), description: 'Our flagship event featuring talks, workshops, and networking sessions.' }, { name: 'Introduction to Git & GitHub', date: new Date(today.getTime() - 120 * 24 * 60 * 60 * 1000), description: 'A beginner-friendly session covering version control basics for collaborative projects.'} ]
+            };
+            const projects = [ { title: 'SIH 2024 Winner', icon: 'award', description: 'Our team developed an AI-powered platform to optimize agricultural supply chains, reducing waste by 30%. This project won the top prize at the Smart India Hackathon.', link: '#', linkText: 'View on GitHub' }, { title: 'Campus Navigator App', icon: 'smartphone', description: 'The official campus mobile app, built by Tech Titans, featuring event schedules, maps, and a notice board. It\'s used daily by over 5,000 students and faculty.', link: '#', linkText: 'Download App' }, { title: 'MediBot AI Assistant', icon: 'heart-pulse', description: 'An NLP-powered chatbot to provide preliminary medical information and schedule appointments, which won \'Best Social Innovation\' at a 48-hour hackathon.', link: '#', linkText: 'Try the Demo' } ];
+            const council = [ { name: 'Aarav Kumar', role: 'President', img: 'A.K.' }, { name: 'Sneha Mehta', role: 'Vice President', img: 'S.M.' }, { name: 'Rohan Singh', role: 'Technical Head', img: 'R.S.' }, { name: 'Priya Jain', role: 'Events Head', img: 'P.J.' } ];
+            const testimonials = [ { quote: "Joining Tech Titans was the best decision of my college life. I went from knowing basic code to leading a hackathon team. The mentorship here is incredible.", author: 'Anjali Rao, Class of 2024' }, { quote: "The hands-on projects and workshops gave me the practical skills I needed to land my dream internship. It's a fantastic community of learners.", author: 'Vikram Patel, 3rd Year CSE' }, { quote: "The club's focus on competitive programming drastically improved my problem-solving skills. I went from being intimidated by contests to placing in the top 10.", author: 'Rahul Verma, 2nd Year IT' }, { quote: "Tech Titans isn't just about code; it's about community. I found my project partners and some of my best friends here. The collaborative environment is unmatched.", author: 'Meera Desai, Alumna 2023' } ];
+
+            const eventsContainer = document.getElementById('events-container');
+            const projectContainer = document.getElementById('project-spotlight-container');
+            const councilContainer = document.getElementById('council-container');
+            const testimonialsContainer = document.getElementById('testimonials-container');
+            const eventSelect = document.getElementById('event-select');
+
+            function renderEvents(tab) {
+                eventsContainer.innerHTML = '';
+                const eventsToRender = clubEvents[tab] || [];
+                if (eventsToRender.length === 0) {
+                    eventsContainer.innerHTML = `<p style="text-align: center; color: #64748b; grid-column: 1 / -1;">No ${tab} events to show right now.</p>`;
+                    return;
+                }
+                eventsToRender.sort((a, b) => b.date - a.date).forEach(event => {
+                    let dateInfo;
+                    const formattedDate = event.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+                    switch(tab) {
+                        case 'upcoming':
+                            const daysRemaining = Math.ceil((event.date - new Date()) / (1000 * 60 * 60 * 24));
+                            dateInfo = `<span style="background-color: #dcfce7; color: #166534; font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px;">Starts in ${daysRemaining} days</span>`;
+                            break;
+                        case 'ongoing':
+                            dateInfo = `<span style="background-color: #fff7ed; color: #c2410c; font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px;">Live Now</span>`;
+                            break;
+                        case 'past':
+                            dateInfo = `<span style="background-color: #eff6ff; color: #1d4ed8; font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px;">Completed on ${formattedDate}</span>`;
+                            break;
+                    }
+
+                    const registrationButton = tab === 'upcoming' ? `
+                        <a href="#" class="primary-button" style="padding: 0.5rem 1rem; font-size: 0.875rem; margin-top: 1rem; box-shadow: none;">Register Now</a>
+                    ` : '';
+
+                    const card = document.createElement('div');
+                    card.className = 'card card-hover-effect';
+                    card.style.display = 'flex';
+                    card.style.flexDirection = 'column';
+                    card.style.justifyContent = 'space-between';
+                    
+                    card.innerHTML = `
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                                <h3 style="font-size: 1.25rem; font-weight: 700;">${event.name}</h3>
+                                ${dateInfo}
+                            </div>
+                            <p style="color: #475569; font-size: 0.875rem;">${event.description}</p>
+                        </div>
+                        <div>${registrationButton}</div>
+                    `;
+                    eventsContainer.appendChild(card);
+                });
+            }
+
+            projects.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'card card-hover-effect';
+                card.innerHTML = `<div style="display: flex; align-items: center; color: #4f46e5; margin-bottom: 0.75rem;"><i data-lucide="${project.icon}" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;"></i><h3 style="font-size: 1.5rem; font-weight: 700; color: #0f172a;">${project.title}</h3></div><p style="color: #475569; margin-bottom: 1rem;">${project.description}</p><a href="${project.link}" style="font-weight: 600; color: #4f46e5; text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${project.linkText} &rarr;</a>`;
+                projectContainer.appendChild(card);
+            });
+
+            council.forEach(member => {
+                const card = document.createElement('div');
+                card.className = 'card-hover-effect';
+                card.style.textAlign = 'center';
+                card.innerHTML = `<img style="width: 8rem; height: 8rem; border-radius: 9999px; margin: 0 auto 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" src="https://placehold.co/200x200/e0e7ff/4f46e5?text=${member.img}" alt="${member.name}"><h3 style="font-size: 1.25rem; font-weight: 700;">${member.name}</h3><p style="color: #64748b;">${member.role}</p>`;
+                councilContainer.appendChild(card);
+            });
+            
+            testimonials.forEach(testimonial => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<i data-lucide="quote" style="width: 2rem; height: 2rem; color: #e0e7ff; margin-bottom: 0.5rem;"></i><p style="color: #475569; font-style: italic; margin-bottom: 1rem;">"${testimonial.quote}"</p><p style="font-weight: 700; text-align: right;">- ${testimonial.author}</p>`;
+                testimonialsContainer.appendChild(card);
+            });
+            
+            [...clubEvents.ongoing, ...clubEvents.past].forEach(event => {
+                const option = document.createElement('option');
+                option.value = event.name;
+                option.textContent = event.name;
+                eventSelect.appendChild(option);
+            });
+
+            lucide.createIcons();
+            
+            document.getElementById('read-more-btn').addEventListener('click', function() {
+                this.classList.toggle('expanded');
+                document.getElementById('long-intro').classList.toggle('expanded');
+                document.getElementById('read-more-text').textContent = this.classList.contains('expanded') ? 'Read Less' : 'Read More';
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    renderEvents(this.dataset.tab);
+                });
+            });
+
+            const feedbackModal = document.getElementById('feedback-modal');
+            const thankYouModal = document.getElementById('thank-you-modal');
+            document.getElementById('open-feedback-btn').addEventListener('click', () => feedbackModal.classList.remove('hidden'));
+            document.getElementById('close-feedback-modal').addEventListener('click', () => feedbackModal.classList.add('hidden'));
+
+            const handleFormSubmit = (e) => {
+                e.preventDefault();
+                feedbackModal.classList.add('hidden');
+                thankYouModal.classList.remove('hidden');
+                e.target.reset();
+            };
+
+            document.getElementById('feedback-form').addEventListener('submit', handleFormSubmit);
+            document.getElementById('suggestion-form').addEventListener('submit', handleFormSubmit);
+            document.getElementById('close-thank-you-modal').addEventListener('click', () => thankYouModal.classList.add('hidden'));
+            
+            renderEvents('upcoming');
+        });
+    </script>
+</body>
+</html>
