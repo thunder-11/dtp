@@ -55,8 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Firebase fetch error:", error);
         eventDetailsContainer.innerHTML = `<p>Error loading event details.</p>`;
       });
-    } else {
-      eventDetailsContainer.innerHTML = `<p>Error: No event ID provided in URL.</p>`;
     }
 
   function fileName() {
