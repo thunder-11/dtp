@@ -44,50 +44,5 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="main.js"></script>
-    <script>
-        const firebaseConfig = {
-  apiKey: "AIzaSyDrawO7KtgK6xe9zioTJ851ii_OmQwgL5E",
-  authDomain: "eventms-3f505.firebaseapp.com",
-  projectId: "eventms-3f505",
-  storageBucket: "eventms-3f505.firebasestorage.app",
-  messagingSenderId: "462891335836",
-  appId: "1:462891335836:web:9d2638e06783b330a2ed59",
-  measurementId: "G-V6MP0Q86JT"
-};
-
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
-
-const auth = firebase.auth()
-const db = firebase.database();
-        document.addEventListener("DOMContentLoaded", () => {
-    
-    const eventDetailsContainer = document.getElementById('event-details-container');
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    const eventID = urlParams.get('id');
-
-    if (eventID) {
-      db.ref(`events/${eventID}`).get().then((snapshot) => {
-        if (snapshot.exists()) {
-          const eventval = snapshot.val();
-          
-          eventDetailsContainer.innerHTML = `
-            <h2>${eventval.title}</h2>
-            <p><strong>Date:</strong> ${eventval.date}</p>
-            <p><strong>Description:</strong> ${eventval.description}</p>
-          `;
-        } else {
-          eventDetailsContainer.innerHTML = `<p>Error: Event not found.</p>`;
-        }
-      }).catch((error) => {
-        console.error("Firebase fetch error:", error);
-        eventDetailsContainer.innerHTML = `<p>Error loading event details.</p>`;
-      });
-    } else {
-      eventDetailsContainer.innerHTML = `<p>Error: No event ID provided in URL.</p>`;
-    }
-  });
-    </script>
 </body>
 </html>
