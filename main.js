@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let file = path.substring(path.lastIndexOf('/') + 1);
     return file;
   }
-console.log(filename);
+
   auth.onAuthStateChanged((user) => {
     if (user) {
       const emailv = user.email.replace(/\./g, "_");
@@ -110,6 +110,7 @@ console.log(filename);
       dbref = db.ref("events/").orderByChild('date');
     }
 
+console.log(filename());
     dbref.get().then((snapshot) => {
       if (!snapshot.exists()) {
         eventContainer.innerHTML = "<p>No events available.</p>";
