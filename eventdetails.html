@@ -34,6 +34,46 @@
         <div id="mobile-menu" class="mobile-menu">
         </div>
     </header>
+    <section>
+        <span class="overlay"></span>
+        <div class="modal-box">
+            <i class="fa-regular fa-circle-check"></i>
+            <h2 id="message">Registered successfully</h2>
+
+            <div class="buttons">
+                <button class="close-btn" onclick="exitModal()">Ok</button>
+            </div>
+        </div>
+    </section>
+     <div id="modal-container" class="modal-overlay">
+            <div id="modal-content" class="modal-card">
+                <div class="modal-header">
+                    <h2>Event Registration Form</h2>
+                    <button id="close-modal-btn" onclick="closeModal(event)" class="close-button">&times;</button>
+                </div>
+
+                <form id="event-form">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="registration-name" name="name" required class="form-input"
+                                placeholder="Name">
+                        </div>
+
+                         <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="registration-email" name="email" readonly class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="cancel-btn" onclick="closeModal(event)" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" id="modal-registration-btn" onclick="registration(event)" class="custom-button">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     <section class="event-details-container" id="event-details-container">
             
     </section>
