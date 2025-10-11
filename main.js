@@ -14,6 +14,7 @@ firebase.analytics();
 const auth = firebase.auth()
 const db = firebase.database();
 
+
 let userData = null;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -139,6 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="event-card-header">
                               <span class="event-type-badge" style="${typeColors[ev.type]}">${ev.type}</span>
                                 <span class="event-date">${ev.date}</span>
+                                <span class="event-date">${ev.time}</span>
                             </div>
                             <h3 class="event-title">${ev.title}</h3>
                             <p class="event-description">${ev.description}</p>
@@ -148,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span>Organized by <strong>${ev.club}</strong></span>
                                 </div>
 
-                            <button class="custom-button" id="registration-btn" data-id="${childSnap.key}" onclick="openModal(event)">Register</button>
+                            <button class="custom-button" id="registration-btn" data-id="${childSnap.key}" onclick="openDetails(event)">Register</button>
                             </div>
                         </div>
                         ${notification}
@@ -235,6 +237,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
+
+window.openDetails = function (event) {
+  const target = event.target;
+  const eventID = target.getAttribute('data-id');
+
+  if (eventID) {
+    window.location.href = `eventdetails.html?id=${eventID}`;
+  } else {
+    alert("Could not find event!");
+  }
+};
+
   window.openModal = function (event) {
     const target = event.target;
     modalContainer.classList.add('is-visible');
@@ -273,6 +287,10 @@ document.addEventListener("DOMContentLoaded", () => {
           name: formData.get('name'),
           email: formData.get('email')
         }).then(() => {
+          db.ref(`events/${eventID}/participantsCount/`).transaction((currentValue) => {
+           return (currentValue || 0) + 1;
+          });
+            
           section.classList.add("active");
           closeModal();
         }).catch((error) => {

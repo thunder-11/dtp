@@ -323,9 +323,16 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="datetime-local" id="date" name="date" required class="form-input">
+                                <input type="date" id="date" name="date" required class="form-input">
                             </div>
 
+                            <div class="form-group">
+                                <label for="time" class="form-label">time</label>
+                                <input type="time" id="time" name="time" required class="form-input">
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
                             <div class="form-group">
                                 <label for="club" class="form-label">Club / Organizer</label>
                                 <select id="club" name="club" required class="form-select">
@@ -336,8 +343,6 @@
                                     <option value="DESOC">DESOC</option>
                                 </select>
                             </div>
-                        </div>
-
                         <div class="form-group">
                             <label for="eventType" class="form-label">Event Type</label>
                             <select id="eventType" name="eventType" required class="form-select">
@@ -420,22 +425,17 @@
                 event.preventDefault();
 
                 const formData = new FormData(eventForm);
-                const eventData = {
-                    title: formData.get('title'),
-                    description: formData.get('description'),
-                    date: formData.get('date'),
-                    club: formData.get('club'),
-                    eventType: formData.get('eventType'),
-                };
                 db.ref("events").push({
                     title: formData.get('title'),
                     description: formData.get('description'),
                     date: formData.get('date'),
+                    time: formData.get('time'),
                     club: formData.get('club'),
                     type: formData.get('eventType'),
+                    participantsCount: 0
                 })
                     .then(() => {
-                        alert(`Event "${eventData.title}" created successfully!`);
+                        alert(`Event "${formData.get('title')}" created successfully!`);
                         loading();
                     })
                     .catch((error) => {
@@ -489,6 +489,7 @@
                             <div class="event-card-header">
                               <span class="event-type-badge" style="${typeColors[ev.type]}">${ev.type}</span>
                                 <span class="event-date">${ev.date}</span>
+                                <span class="event-date">${ev.time}</span>
                             </div>
                             <h3 class="event-title">${ev.title}</h3>
                             <p class="event-description">${ev.description}</p>
