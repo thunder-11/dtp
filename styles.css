@@ -598,6 +598,30 @@ body {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.custom-button:hover {
+    transform: scale(1.05);
+}
+
+.view-more {
+    background-color: #4f46e5;
+    color: #ffffff;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 7px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(79, 70, 229, 0.3);
+    transition-property: transform;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.view-more:hover {
+    transform: scale(1.05);
+}
+
 .btn {
     background-color: #fff;
     color: #4f46e5;
@@ -635,10 +659,6 @@ body {
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
-}
-
-.custom-button:hover {
-    transform: scale(1.05);
 }
 
 .modal-overlay {
@@ -961,24 +981,6 @@ section.active .modal-box {
 .ticket-box span {
     color: #4B5563;
 }
-
-.ticket-button {
-    width: 100%;
-    background-color: #4F46E5;
-    color: #FFFFFF;
-    font-weight: 700;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.ticket-button:hover {
-    background-color: #4338CA;
-    transform: scale(1.05);
-}
-
 
 .about-text {
     font-size: 1.125rem;

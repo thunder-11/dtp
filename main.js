@@ -214,7 +214,7 @@ function isDirectory() {
                                 <span>Organized by <strong>${ev.club}</strong></span>
                                 </div>
 
-                            <button class="custom-button" id="registration-btn" data-id="${childSnap.key}" onclick="openDetails(event)">Register</button>
+                            <button class="view-more" id="view-more-btn" data-id="${childSnap.key}" onclick="openDetails(event)">View more</button>
                             </div>
                         </div>
                         ${notification}
