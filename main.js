@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let file = path.substring(path.lastIndexOf('/') + 1);
     return file;
   }
-consolelog(filename);
+console.log(filename);
   auth.onAuthStateChanged((user) => {
     if (user) {
       const emailv = user.email.replace(/\./g, "_");
