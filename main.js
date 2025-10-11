@@ -42,6 +42,21 @@ document.addEventListener("DOMContentLoaded", () => {
     return file;
   }
 
+function isDirectory() {
+  let path = window.location.pathname;
+  let file = path.substring(path.lastIndexOf('/') + 1);
+
+  if (path.endsWith('/') || file === '') {
+    return true; 
+  }
+
+  if (file.indexOf('.') === -1) {
+    return true; 
+  }
+
+  return false;
+}
+
   auth.onAuthStateChanged((user) => {
     if (user) {
       const emailv = user.email.replace(/\./g, "_");
@@ -104,13 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function loading() {
     let dbref = null;
     eventContainer.innerHTML = "";
-    if (fileName() == "index.html"){
+    if (fileName() == "index.html" || isDirectory()){
       dbref= db.ref("events/").orderByChild('date').limitToFirst(3);
     } else {
       dbref = db.ref("events/").orderByChild('date');
     }
 
-console.log(filename());
     dbref.get().then((snapshot) => {
       if (!snapshot.exists()) {
         eventContainer.innerHTML = "<p>No events available.</p>";
