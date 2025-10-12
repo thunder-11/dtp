@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             margin: 0;
@@ -83,26 +84,26 @@
 
         @media (min-width: 768px) {
 
-            /* md breakpoint */
+            
             .admin-profile {
                 display: flex;
                 align-items: center;
                 gap: 0.75rem;
-                /* space-x-3 */
+                
             }
 
             .events-grid {
                 grid-template-columns: repeat(2, 1fr);
-                /* md:grid-cols-2 */
+                
             }
         }
 
         @media (min-width: 1024px) {
 
-            /* lg breakpoint */
+            
             .events-grid {
                 grid-template-columns: repeat(3, 1fr);
-                /* lg:grid-cols-3 */
+                
             }
         }
 
@@ -273,12 +274,8 @@
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a class="text-3xl font-bold gradient-text">ClubHub - Admin</a>
-            <div class="hidden md:flex items-center space-x-3">
-                <span class="font-semibold text-slate-700">Admin User</span>
-                <a
-                    class="flex items-center justify-center w-12 h-12 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors duration-300">
-                    <i data-lucide="user-cog" class="w-6 h-6 text-slate-600"></i>
-                </a>
+            <div class="profile-section">
+                
             </div>
         </nav>
     </header>
@@ -367,153 +364,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDrawO7KtgK6xe9zioTJ851ii_OmQwgL5E",
-            authDomain: "eventms-3f505.firebaseapp.com",
-            projectId: "eventms-3f505",
-            storageBucket: "eventms-3f505.firebasestorage.app",
-            messagingSenderId: "462891335836",
-            appId: "1:462891335836:web:9d2638e06783b330a2ed59",
-            measurementId: "G-V6MP0Q86JT"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-
-        const auth = firebase.auth()
-        const db = firebase.database();
-
-        document.addEventListener('DOMContentLoaded', () => {
-
-            const eventContainer = document.getElementById('events-container');
-            const openModalBtn = document.getElementById('open-modal-btn');
-            const modalContainer = document.getElementById('modal-container');
-            const closeModalBtn = document.getElementById('close-modal-btn');
-            const cancelBtn = document.getElementById('cancel-btn');
-            const eventForm = document.getElementById('event-form');
-            const dateTimeInput = document.getElementById('date');
-
-            function openModal() {
-                modalContainer.classList.add('is-visible');
-            };
-
-            function closeModal() {
-                modalContainer.classList.remove('is-visible');
-            };
-
-            const setMinDateTime = () => {
-                const now = new Date();
-                const year = now.getFullYear();
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const day = String(now.getDate()).padStart(2, '0');
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-
-                const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
-                dateTimeInput.setAttribute('min', localDateTime);
-            };
-
-            setMinDateTime();
-
-            openModalBtn.addEventListener('click', openModal);
-            closeModalBtn.addEventListener('click', closeModal);
-            cancelBtn.addEventListener('click', closeModal);
-
-
-            eventForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-
-                const formData = new FormData(eventForm);
-                db.ref("events").push({
-                    title: formData.get('title'),
-                    description: formData.get('description'),
-                    date: formData.get('date'),
-                    time: formData.get('time'),
-                    club: formData.get('club'),
-                    type: formData.get('eventType'),
-                    participantsCount: 0
-                })
-                    .then(() => {
-                        alert(`Event "${formData.get('title')}" created successfully!`);
-                        loading();
-                    })
-                    .catch((error) => {
-                        console.error("Error adding event:", error);
-                        alert("Error adding event: " + error.message);
-                    });
-
-                eventForm.reset();
-                closeModal();
-            });
-
-            function safe(s = "") {
-                return String(s)
-                    .replaceAll("&", "&amp;")
-                    .replaceAll("<", "&lt;")
-                    .replaceAll(">", "&gt;")
-                    .replaceAll('"', "&quot;")
-                    .replaceAll("'", "&#39;");
-            }
-
-            function loading() {
-                eventContainer.innerHTML = "";
-
-                db.ref("events/").get().then((snapshot) => {
-                    if (!snapshot.exists()) {
-                        eventContainer.innerHTML = "<p>No events available.</p>";
-                        return;
-                    }
-
-                    snapshot.forEach(childSnap => {
-                        const ev = childSnap.val();
-                        const card = document.createElement("div");
-                        card.className = "box";
-                        let notification = '';
-
-
-                        const title = safe(ev.title);
-                        const desc = safe(ev.description || "");
-                        const date = safe(ev.date || "");
-
-                        const typeColors = {
-                            'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
-                            'Workshop': 'background-color: #fefce8; color: #b45309;',
-                            'Event': 'background-color: #eef2ff; color: #4338ca;'
-                        };
-
-
-                        card.innerHTML = `
-                    <div class="event-card card-hover-effect">
-                        <div class="event-card-content">
-                            <div class="event-card-header">
-                              <span class="event-type-badge" style="${typeColors[ev.type]}">${ev.type}</span>
-                                <span class="event-date">${ev.date}</span>
-                                <span class="event-date">${ev.time}</span>
-                            </div>
-                            <h3 class="event-title">${ev.title}</h3>
-                            <p class="event-description">${ev.description}</p>
-                            <div class="event-organizer">
-                                <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
-                                <span>Organized by <strong>${ev.club}</strong></span>
-                            </div>
-                        </div>
-                        ${notification}
-                    </div>`;
-
-
-                        eventContainer.appendChild(card);
-
-            lucide.createIcons();
-                    })
-                })
-            }
-
-            loading();
-
-        });
-
-    </script>
+    <script src="main.js"></script>
 </body>
 
 </html>

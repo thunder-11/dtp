@@ -33,17 +33,98 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalRegistrationButton = document.getElementById("modal-registration-btn");
   const eventForm = document.getElementById('event-form');
   const togglePasswordIcon = document.getElementById("togglePassword");
-  const profileSection = document.querySelector(".profile-section"); 
+  const profileSection = document.querySelector(".profile-section");
   const eventDetailsContainer = document.getElementById('event-details-container');
   const urlParams = new URLSearchParams(window.location.search);
-    const eventID = urlParams.get('id');
+  const eventID = urlParams.get('id');
+  const openModalBtn = document.getElementById('open-modal-btn');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  const cancelBtn = document.getElementById('cancel-btn');
+  const dateTimeInput = document.getElementById('date');
 
-    if (eventID) {
-      db.ref(`events/${eventID}`).get().then((snapshot) => {
-        if (snapshot.exists()) {
-          const eventval = snapshot.val();
-          
-          eventDetailsContainer.innerHTML = `
+  function fileName() {
+    let path = window.location.pathname;
+    let file = path.substring(path.lastIndexOf('/') + 1);
+    return file;
+  }
+
+
+  function isDirectory() {
+    let path = window.location.pathname;
+    let file = path.substring(path.lastIndexOf('/') + 1);
+
+    if (path.endsWith('/') || file === '') {
+      return true;
+    }
+
+    if (file.indexOf('.') === -1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (fileName() == 'admin.html') {
+    function OpenModal() {
+      modalContainer.classList.add('is-visible');
+    };
+
+    function CloseModal() {
+      modalContainer.classList.remove('is-visible');
+    };
+
+    const setMinDateTime = () => {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+
+      const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+      dateTimeInput.setAttribute('min', localDateTime);
+    };
+
+    setMinDateTime();
+
+    openModalBtn.addEventListener('click', OpenModal);
+    closeModalBtn.addEventListener('click', CloseModal);
+    cancelBtn.addEventListener('click', CloseModal);
+
+
+    eventForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(eventForm);
+      db.ref("events").push({
+        title: formData.get('title'),
+        description: formData.get('description'),
+        date: formData.get('date'),
+        time: formData.get('time'),
+        club: formData.get('club'),
+        type: formData.get('eventType'),
+        participantsCount: 0
+      })
+        .then(() => {
+          alert(`Event "${formData.get('title')}" created successfully!`);
+          loading();
+        })
+        .catch((error) => {
+          console.error("Error adding event:", error);
+          alert("Error adding event: " + error.message);
+        });
+
+      eventForm.reset();
+      closeModal();
+    });
+  }
+
+  if (eventID) {
+    db.ref(`events/${eventID}`).get().then((snapshot) => {
+      if (snapshot.exists()) {
+        const eventval = snapshot.val();
+
+        eventDetailsContainer.innerHTML = `
           <main class="main-container">
             <section id="details" class="card">
                 <div class="details-grid">
@@ -76,35 +157,14 @@ document.addEventListener("DOMContentLoaded", () => {
             </section>
         </main>
           `;
-        } else {
-          eventDetailsContainer.innerHTML = `<p>Error: Event not found.</p>`;
-        }
-      }).catch((error) => {
-        console.error("Firebase fetch error:", error);
-        eventDetailsContainer.innerHTML = `<p>Error loading event details.</p>`;
-      });
-    }
-
-  function fileName() {
-    let path = window.location.pathname;
-    let file = path.substring(path.lastIndexOf('/') + 1);
-    return file;
+      } else {
+        eventDetailsContainer.innerHTML = `<p>Error: Event not found.</p>`;
+      }
+    }).catch((error) => {
+      console.error("Firebase fetch error:", error);
+      eventDetailsContainer.innerHTML = `<p>Error loading event details.</p>`;
+    });
   }
-
-function isDirectory() {
-  let path = window.location.pathname;
-  let file = path.substring(path.lastIndexOf('/') + 1);
-
-  if (path.endsWith('/') || file === '') {
-    return true; 
-  }
-
-  if (file.indexOf('.') === -1) {
-    return true; 
-  }
-
-  return false;
-}
 
   auth.onAuthStateChanged((user) => {
     if (user) {
@@ -113,8 +173,7 @@ function isDirectory() {
       currentUserID = user.uid;
 
       if (registrationEmail) {
-        registrationEmail.value = currentEmail;
-        registrationEmail.setAttribute('readonly', true);
+          registrationEmail.value = currentEmail;
       }
 
       db.ref("users/" + emailv).get().then((snap) => {
@@ -135,22 +194,23 @@ function isDirectory() {
             }
           }
         } else {
-          console.log("User data does not exist.");
+          alert("User not found");
         }
       });
 
     } else {
-
-      if (registrationEmail) {
-        registrationEmail.value = "";
-        registrationEmail.removeAttribute('readonly');
-      }
 
       profileSection.innerHTML = `
         <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
           Login
         </a>
     `;
+      if (registrationEmail) {
+        registrationEmail.value = "Please login first"; 
+      }
+
+      currentEmail = null;
+      currentUserID = null;
     }
 
 
@@ -168,8 +228,8 @@ function isDirectory() {
   function loading() {
     let dbref = null;
     eventContainer.innerHTML = "";
-    if (fileName() == "index.html" || isDirectory()){
-      dbref= db.ref("events/").orderByChild('date').limitToFirst(3);
+    if (fileName() == "index.html" || isDirectory()) {
+      dbref = db.ref("events/").orderByChild('date').limitToFirst(3);
     } else {
       dbref = db.ref("events/").orderByChild('date');
     }
@@ -264,13 +324,21 @@ function isDirectory() {
     });
   } */
 
+  window.checkAdmin = function () {
+    if (userData.admin && userData.admin == true) {
+      window.location.href = 'admin.html';
+    } else {
+      window.location.href = 'index.html';
+    }
+  }
+
   window.login = function (event) {
     if (event && typeof event.preventDefault === "function") { event.preventDefault(); }
     auth.signInWithEmailAndPassword(email.value, password.value)
       .then((userCredential) => {
         const emailv = email.value.replace(/\./g, "_");
         db.ref("users/" + emailv).get().then((snap) => {
-          const userData = snap.val();
+          userData = snap.val();
         })
         const user = userCredential.user;
         console.log("User signed in:", user.email);
@@ -301,16 +369,16 @@ function isDirectory() {
   }
 
 
-window.openDetails = function (event) {
-  const target = event.target;
-  const eventID = target.getAttribute('data-id');
+  window.openDetails = function (event) {
+    const target = event.target;
+    const eventID = target.getAttribute('data-id');
 
-  if (eventID) {
-    window.location.href = `eventdetails.html?id=${eventID}`;
-  } else {
-    alert("Could not find event!");
-  }
-};
+    if (eventID) {
+      window.location.href = `eventdetails.html?id=${eventID}`;
+    } else {
+      alert("Could not find event!");
+    }
+  };
 
   window.openModal = function (event) {
     const target = event.target;
@@ -334,7 +402,7 @@ window.openDetails = function (event) {
     const name = formData.get('name');
     const email = formData.get('email');
 
-    if (!email) {
+    if (!email || email == "Please login first") {
       alert("Please login first");
       return;
     }
@@ -351,9 +419,9 @@ window.openDetails = function (event) {
           email: formData.get('email')
         }).then(() => {
           db.ref(`events/${eventID}/participantsCount/`).transaction((currentValue) => {
-           return (currentValue || 0) + 1;
+            return (currentValue || 0) + 1;
           });
-            
+
           section.classList.add("active");
           closeModal();
         }).catch((error) => {
