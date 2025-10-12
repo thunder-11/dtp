@@ -14,7 +14,7 @@ firebase.analytics();
 const auth = firebase.auth()
 const db = firebase.database();
 
-
+let emailv = null;
 let userData = null;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -41,6 +41,79 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeModalBtn = document.getElementById('close-modal-btn');
   const cancelBtn = document.getElementById('cancel-btn');
   const dateTimeInput = document.getElementById('date');
+  const clubNames = document.getElementById("club");
+
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      emailv = user.email.replace(/\./g, "_");
+      currentEmail = user.email;
+      currentUserID = user.uid;
+
+      if (registrationEmail) {
+        registrationEmail.value = currentEmail;
+      }
+
+      db.ref("users/" + emailv).get().then((snap) => {
+        if (snap.exists()) {
+          const userData = snap.val();
+          if (userData.username) {
+
+            profileSection.innerHTML = `
+            <span id="profilename" class="profile-name font-comic">${userData.username}</span>
+            <a href="profile.html" class="profile-icon-link">
+              <i data-lucide="user" style="width: 1.5rem; height: 1.5rem; color: #475569;"></i>
+            </a>
+            <button class="custom-button" onclick="logOut()" style="background-color: #f44336;">Logout</button>
+          `;
+
+            if (typeof lucide !== 'undefined') {
+              lucide.createIcons();
+            }
+          }
+
+          if (fileName() == 'admin.html') {
+          db.ref(`users/${emailv}/access/`).get().then((snapshot) => {
+            if (!snapshot.exists()) {
+              return;
+            }
+
+            snapshot.forEach((childSnap) => {
+              console.log(childSnap);
+              const clubName = childSnap.key;
+              const hasAccess = childSnap.val();
+              if (hasAccess === true) {
+                const club = document.createElement('option');
+                club.value = clubName;
+                club.innerHTML = clubName;
+                clubNames.appendChild(club);
+              }
+
+            })
+          }).catch((error) => {
+            console.error("Error:", error);
+          });
+        }
+        } else {
+          alert("User not found");
+        }
+      });
+  
+
+    } else {
+
+      profileSection.innerHTML = `
+        <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
+          Login
+        </a>
+    `;
+      if (registrationEmail) {
+        registrationEmail.value = "Please login first";
+      }
+
+      currentEmail = null;
+      currentUserID = null;
+    }
+  });
 
   function fileName() {
     let path = window.location.pathname;
@@ -165,56 +238,6 @@ document.addEventListener("DOMContentLoaded", () => {
       eventDetailsContainer.innerHTML = `<p>Error loading event details.</p>`;
     });
   }
-
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      const emailv = user.email.replace(/\./g, "_");
-      currentEmail = user.email;
-      currentUserID = user.uid;
-
-      if (registrationEmail) {
-          registrationEmail.value = currentEmail;
-      }
-
-      db.ref("users/" + emailv).get().then((snap) => {
-        if (snap.exists()) {
-          const userData = snap.val();
-          if (userData.username) {
-
-            profileSection.innerHTML = `
-            <span id="profilename" class="profile-name font-comic">${userData.username}</span>
-            <a href="profile.html" class="profile-icon-link">
-              <i data-lucide="user" style="width: 1.5rem; height: 1.5rem; color: #475569;"></i>
-            </a>
-            <button class="custom-button" onclick="logOut()" style="background-color: #f44336;">Logout</button>
-          `;
-
-            if (typeof lucide !== 'undefined') {
-              lucide.createIcons();
-            }
-          }
-        } else {
-          alert("User not found");
-        }
-      });
-
-    } else {
-
-      profileSection.innerHTML = `
-        <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
-          Login
-        </a>
-    `;
-      if (registrationEmail) {
-        registrationEmail.value = "Please login first"; 
-      }
-
-      currentEmail = null;
-      currentUserID = null;
-    }
-
-
-  });
 
   function safe(s = "") {
     return String(s)
