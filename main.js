@@ -475,6 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "Hands-on web dev workshop",
       date: "2025-10-20",
       club: "CSI",
+      time: "10:00",
       type: "Seminar"
     })
       .then(() => {
