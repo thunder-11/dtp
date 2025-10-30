@@ -8,10 +8,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-    <!-- Assuming styles.css is in the same folder -->
     <!-- <link rel="stylesheet" href="styles.css"> -->
     <style>
         /* Placeholder styles to match the structure */
+        html { scroll-behavior: smooth; }
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: #f8fafc;
@@ -129,7 +129,106 @@
         .site-footer { background-color: #0f172a; color: white; }
         .footer-grid { display: grid; gap: 2rem; padding: 3rem 0; }
         @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
-        .modal-overlay { display: none; } /* Simplified */
+        
+        /* Styles from homepage1.html */
+        .two-col-layout {
+            display: grid;
+            gap: 4rem;
+            padding: 4rem 0;
+        }
+        @media (min-width: 1024px) {
+            .two-col-layout {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+        .leaderboard-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            height: 350px;
+            overflow-y: auto;
+        }
+        .news-item {
+            background-color: white;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            transition: box-shadow 0.3s;
+        }
+        .news-item:hover {
+             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .news-meta {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+        .leaderboard-rank {
+            font-weight: 700;
+            color: #334155;
+            width: 1.5rem;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+        .leaderboard-name {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .leaderboard-event {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 1rem;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 48rem; /* max-w-3xl */
+            position: relative;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-body {
+            overflow-y: auto;
+            padding-right: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #94a3b8; /* slate-400 */
+        }
+        .modal-close-btn:hover {
+            color: #1e293b; /* slate-800 */
+        }
+        .hidden {
+            display: none;
+        }
+        /* End styles from homepage1.html */
     </style>
 </head>
 
@@ -191,7 +290,37 @@
                 </div>
         </section>
 
-        <!-- Gallery and other sections... -->
+        <!-- CLUBS SECTION IS MISSING FROM YOUR FILE, YOU MAY WANT TO ADD IT BACK -->
+        <!-- <section id="clubs" class="section"> ... </section> -->
+
+        <!-- NEW SECTIONS ADDED FROM homepage1.html -->
+        <div class="two-col-layout">
+            <section id="news">
+                <div class="section-header" style="text-align: left; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2 class="section-title" style="margin-bottom: 0;">Latest News</h2>
+                        <p class="section-subtitle">The freshest updates from across the clubs.</p>
+                    </div>
+                    <a href="#" id="view-all-news-btn" class="nav-link" style="font-weight: 600; display:flex; align-items:center; gap: 0.25rem;">
+                        <span>View All News</span>
+                        <i data-lucide="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
+                    </a>
+                </div>
+                <div id="news-feed" style="display: flex; flex-direction: column; gap: 1.5rem;"></div>
+            </section>
+            <section id="leaderboard">
+                 <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+                    <h2 class="section-title">Hall of Fame</h2>
+                    <p class="section-subtitle">Celebrating our recent winners.</p>
+                </div>
+                <div class="leaderboard-container">
+                    <ul id="leaderboard-list" style="display: flex; flex-direction: column; gap: 1rem;"></ul>
+                </div>
+            </section>
+        </div>
+        <!-- END OF NEW SECTIONS -->
+
+
         <section id="gallery" class="section">
              <div class="section-header">
                 <h2 class="section-title">Event Snapshots</h2>
@@ -224,7 +353,6 @@
             </div>
         </section>
 
-        <!-- Other sections like footer... -->
          <footer class="site-footer">
             <div class="container footer-grid">
                 <div>
@@ -255,7 +383,7 @@
     </main>
 
     <!-- Modals from original file are assumed to be in styles.css or main.js -->
-     <div id="modal-container" class="modal-overlay">
+     <div id="modal-container" class="modal-overlay hidden">
             <div id="modal-content" class="modal-card">
                 <div class="modal-header">
                     <h2>Event Registration Form</h2>
@@ -284,27 +412,68 @@
             </div>
         </div>
 
+    <!-- All News Modal (Copied from homepage1.html) -->
+    <div id="all-news-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="section-header" style="margin-bottom: 1.5rem;">
+                <h2 class="section-title">All News Updates</h2>
+                <p class="section-subtitle">The complete feed of updates from all our clubs.</p>
+            </div>
+            <div id="all-news-feed" class="modal-body"></div>
+            <button id="close-news-modal" class="modal-close-btn">
+                <i data-lucide="x" style="width: 2rem; height: 2rem;"></i>
+            </button>
+        </div>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Updated main.js logic -->
+    <!-- Assuming main.js is loaded -->
+    <!-- <script src="main.js"></script> -->
+    
     <script>
-        // Assuming main.js is loaded, we add this script to modify its data
+        // Data from homepage1.html
+        const news = [
+            { title: 'CodeWave Hackathon Registrations Now Open!', club: 'Creative Coders', date: new Date(2025, 8, 27) },
+            { title: 'Highlights from the Annual Tech Summit', club: 'Tech Titans', date: new Date(2025, 8, 24) },
+            { title: 'Art Expo Winners Announced', club: 'Art & Design', date: new Date(2025, 8, 20) },
+            { title: 'E-Cell Secures Funding for Startup Incubator', club: 'E-Cell', date: new Date(2025, 8, 18) },
+            { title: 'Music Mavericks Announce Battle of the Bands', club: 'Music Mavericks', date: new Date(2025, 8, 15) },
+            { title: 'Poetry Slam Night Was a Resounding Success', club: 'Literary Society', date: new Date(2025, 8, 12) },
+            { title: 'Eco Warriors Lead Campus Green Drive', club: 'Eco Warriors', date: new Date(2025, 8, 9) },
+            { title: 'Film Club Announces 48-Hour Film Challenge', club: 'Film Club', date: new Date(2025, 8, 5) },
+            { title: 'Debate Union Qualifies for National Championship', club: 'Debate Union', date: new Date(2025, 8, 2) },
+            { title: 'Inter-Departmental Sports Tournament Dates Released', club: 'Sports Club', date: new Date(2025, 7, 30) },
+            { title: 'New Photography Workshop by Art & Design Club', club: 'Art & Design', date: new Date(2025, 7, 28) },
+            { title: 'Tech Titans Launch Mentorship Program', club: 'Tech Titans', date: new Date(2025, 7, 25) }
+        ];
+        const leaderboard = [
+            { rank: 1, name: 'Team Alpha', event: 'CodeWave 2024' },
+            { rank: 2, name: 'Priya Sharma', event: 'Debate Finals' },
+            { rank: 3, name: 'Rohan & Co.', event: 'Startup Pitch' },
+            { rank: 4, name: 'The Canvas Crew', event: 'Art Expo' },
+            { rank: 5, name: 'Byte Brigade', event: 'Code Jam' },
+            { rank: 6, name: 'Acoustic Souls', event: 'Music Fest' },
+            { rank: 7, 'name': 'Eco Innovators', event: 'Green Challenge' },
+            { rank: 8, name: 'The Orators', event: 'MUN' },
+            { rank: 9, name: 'Pixel Perfect', event: 'Designathon' },
+            { rank: 10, name: 'Poetic Justice', event: 'Poetry Slam' }
+        ];
         
         // This is a simplified version of what might be in main.js
-        // We will define the events data here for this example.
         const today = new Date();
         const events = [
             { 
                 club: 'Tech Titans', 
-                name: 'Generative AI Hackathon', // <-- RENAMED EVENT
+                name: 'Generative AI Hackathon', 
                 date: new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000),
                 type: 'Hackathon', 
                 description: 'Build innovative apps with Generative AI in 24 hours.',
-                id: 'gen-ai-hackathon' // Added an ID
+                id: 'gen-ai-hackathon'
             },
             { 
                 club: 'Creative Coders', 
@@ -328,24 +497,19 @@
         function createEventCard(event) {
             const timeDiff = event.date.getTime() - new Date().getTime();
             const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            
             let notification = '';
             if (daysRemaining > 0 && daysRemaining <= 3) {
                  notification = `<div style="position: absolute; bottom: 1rem; right: 1rem; background-color: #22c55e; color: white; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px;">
                     ${daysRemaining} Day${daysRemaining > 1 ? 's' : ''} Left!
                 </div>`;
             }
-
             const typeColors = {
                 'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
                 'Workshop': 'background-color: #fefce8; color: #b45309;',
                 'Event': 'background-color: #eef2ff; color: #4338ca;',
                 'Hackathon': 'background-color: #fdf2f8; color: #db2777;'
             };
-            
-            // This is the new part for the button
             const viewMoreButton = `<button onclick="window.open('${event.id}.html', '_blank')" class="btn" style="margin-top: 1rem; background-color: #f1f5f9; color: #475569;">View More</button>`;
-
             return `
                 <div style="background-color: white; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); overflow: hidden; position: relative; padding: 1.5rem;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
@@ -372,26 +536,70 @@
                 events.sort((a, b) => a.date - b.date).forEach(event => {
                     eventList.innerHTML += createEventCard(event);
                 });
-                lucide.createIcons(); // Re-run lucide for dynamically added icons
+            }
+
+            // --- Populate News, Leaderboard, and Modal (from homepage1.html) ---
+            const newsFeed = document.getElementById('news-feed');
+            const leaderboardList = document.getElementById('leaderboard-list');
+            const allNewsFeed = document.getElementById('all-news-feed');
+
+            // Populate News (Homepage - latest 3)
+            if (newsFeed) {
+                news.slice(0, 3).forEach(item => {
+                    const timeAgo = Math.round((new Date() - item.date) / (1000*60*60*24));
+                    newsFeed.innerHTML += `<div class="news-item"><p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p><div class="news-meta"><span>By ${item.club}</span><span>${timeAgo} day${timeAgo != 1 ? 's' : ''} ago</span></div></div>`;
+                });
+            }
+
+            // Populate Leaderboard
+            if (leaderboardList) {
+                const medalColors = { 1: '#facc15', 2: '#94a3b8', 3: '#f97316', 4: '#38bdf8', 5: '#84cc16', 6: '#22d3ee', 7: '#10b981', 8: '#f43f5e', 9: '#8b5cf6', 10: '#14b8a6' };
+                leaderboard.forEach(entry => {
+                    leaderboardList.innerHTML += `<li class="leaderboard-item"><i data-lucide="medal" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: ${medalColors[entry.rank]};"></i><span class="leaderboard-rank">${entry.rank}.</span><div><p class="leaderboard-name">${entry.name}</p><p class="leaderboard-event">${entry.event}</p></div></li>`;
+                });
+            }
+
+            // Populate All News Modal
+            if (allNewsFeed) {
+                news.forEach(item => {
+                    const timeAgo = Math.round((new Date() - item.date) / (1000*60*60*24));
+                    allNewsFeed.innerHTML += `<div class="news-item" style="background-color: #f8fafc; border: 1px solid #e2e8f0;"><p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p><div class="news-meta"><span>By <strong>${item.club}</strong></span><span>${timeAgo} day${timeAgo != 1 ? 's' : ''} ago</span></div></div>`;
+                });
             }
             
+            lucide.createIcons(); // Re-run lucide for all new icons
+
             // Mobile menu toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileMenuButton && mobileMenu) {
-                // Populate mobile menu
                 const navLinks = document.querySelector('.nav-links');
                 mobileMenu.innerHTML = navLinks.innerHTML;
                 const profileSection = document.querySelector('.profile-section');
                 mobileMenu.innerHTML += `<div style="border-top: 1px solid #e2e8f0; margin-top: 1rem; padding-top: 1rem;">${profileSection.innerHTML}</div>`;
-
                 mobileMenuButton.addEventListener('click', () => {
                     mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
                 });
             }
+
+            // News Modal Logic
+            const viewAllNewsBtn = document.getElementById('view-all-news-btn');
+            const allNewsModal = document.getElementById('all-news-modal');
+            const closeNewsModalBtn = document.getElementById('close-news-modal');
+            
+            if(viewAllNewsBtn) {
+                viewAllNewsBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    allNewsModal.classList.remove('hidden');
+                });
+            }
+            if(closeNewsModalBtn) {
+                closeNewsModalBtn.addEventListener('click', () => {
+                    allNewsModal.classList.add('hidden');
+                });
+            }
         });
         
-        // Modal and other functions from your main.js would be here
         // Placeholder for functions referenced in your HTML:
         function fun(event) { 
             const eventsSection = document.getElementById('events');
