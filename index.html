@@ -28,6 +28,7 @@
             margin-right: auto;
             padding-left: 1.5rem;
             padding-right: 1.5rem;
+            max-width: 1024px; /* This will constrain the content inside full-width sections */
         }
         .header {
             background-color: rgba(255, 255, 255, 0.8);
@@ -42,10 +43,12 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
-            max-width: 1024px;
-            margin: auto;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
             padding-left: 1.5rem;
             padding-right: 1.5rem;
+            max-width: 1024px;
         }
         .nav-links { display: none; }
         @media (min-width: 768px) {
@@ -384,93 +387,104 @@
         </div>
     </header>
 
-    <main class="container">
+    <!-- Main content is no longer constrained by .container -->
+    <main>
         <section id="home">
-            <h1>Discover, Engage, <span class="gradient-text">Excel.</span></h1>
-            <p>Your central hub for all club activities, workshops, and events. Dive into a vibrant campus community and
-                never miss an opportunity.</p>
-            <a class="hero-button" onclick="fun(event)">Explore Upcoming Events</a>
+            <div class="container">
+                <h1>Discover, Engage, <span class="gradient-text">Excel.</span></h1>
+                <p>Your central hub for all club activities, workshops, and events. Dive into a vibrant campus community and
+                    never miss an opportunity.</p>
+                <a class="hero-button" onclick="fun(event)">Explore Upcoming Events</a>
+            </div>
         </section>
 
         <section id="events" class="section">
-            <div class="section-header">
-                <h2 class="section-title">Upcoming Events & Workshops</h2>
-                <p class="section-subtitle">Stay ahead of the curve. Here's what's happening on campus soon.</p>
-            </div>
-            <div id="events-container" class="grid-container grid-container-3-col">
-                <!-- Events will be populated by main.js -->
-            </div>
-            <div class="all-events">
-                <button id="all-events" class="btn" onclick="window.location.href = 'events.html'">View All Events <span class="arrow" style="display: inline-block;" data-lucide="arrow-right"></span></button>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Upcoming Events & Workshops</h2>
+                    <p class="section-subtitle">Stay ahead of the curve. Here's what's happening on campus soon.</p>
                 </div>
+                <div id="events-container" class="grid-container grid-container-3-col">
+                    <!-- Events will be populated by main.js -->
+                </div>
+                <div class="all-events">
+                    <button id="all-events" class="btn" onclick="window.location.href = 'events.html'">View All Events <span class="arrow" style="display: inline-block;" data-lucide="arrow-right"></span></button>
+                </div>
+            </div>
         </section>
 
-        <!-- NEWLY ADDED CLUBS SECTION -->
+        <!-- CLUBS SECTION: Background is full-width, content is in a container -->
         <section id="clubs" class="section">
-            <div class="section-header">
-                <h2 class="section-title">Featured Clubs</h2>
-                <p class="section-subtitle">Explore the diverse clubs driving our campus culture.</p>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Clubs</h2>
+                    <p class="section-subtitle">Explore the diverse clubs driving our campus culture.</p>
+                </div>
+                <div id="club-list" class="grid-container grid-container-5-col" style="padding: 0 1rem;"></div>
             </div>
-            <div id="club-list" class="grid-container grid-container-5-col" style="padding: 0 1rem;"></div>
         </section>
-        <!-- END OF NEW CLUBS SECTION -->
+        <!-- END OF CLUBS SECTION -->
 
-        <!-- SECTIONS FROM homepage1.html -->
-        <div class="two-col-layout">
-            <section id="news">
-                <div class="section-header" style="text-align: left; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h2 class="section-title" style="margin-bottom: 0;">Latest News</h2>
-                        <p class="section-subtitle">The freshest updates from across the clubs.</p>
+        <!-- NEWS/LEADERBOARD: Content is in a container -->
+        <div class="container">
+            <div class="two-col-layout">
+                <section id="news">
+                    <div class="section-header" style="text-align: left; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h2 class="section-title" style="margin-bottom: 0;">Latest News</h2>
+                            <p class="section-subtitle">The freshest updates from across the clubs.</p>
+                        </div>
+                        <a href="#" id="view-all-news-btn" class="nav-link" style="font-weight: 600; display:flex; align-items:center; gap: 0.25rem;">
+                            <span>View All News</span>
+                            <i data-lucide="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
+                        </a>
                     </div>
-                    <a href="#" id="view-all-news-btn" class="nav-link" style="font-weight: 600; display:flex; align-items:center; gap: 0.25rem;">
-                        <span>View All News</span>
-                        <i data-lucide="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
-                    </a>
-                </div>
-                <div id="news-feed" style="display: flex; flex-direction: column; gap: 1.5rem;"></div>
-            </section>
-            <section id="leaderboard">
-                 <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
-                    <h2 class="section-title">Hall of Fame</h2>
-                    <p class="section-subtitle">Celebrating our recent winners.</p>
-                </div>
-                <div class="leaderboard-container">
-                    <ul id="leaderboard-list" style="display: flex; flex-direction: column; gap: 1rem;"></ul>
-                </div>
-            </section>
+                    <div id="news-feed" style="display: flex; flex-direction: column; gap: 1.5rem;"></div>
+                </section>
+                <section id="leaderboard">
+                     <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+                        <h2 class="section-title">Hall of Fame</h2>
+                        <p class="section-subtitle">Celebrating our recent winners.</p>
+                    </div>
+                    <div class="leaderboard-container">
+                        <ul id="leaderboard-list" style="display: flex; flex-direction: column; gap: 1rem;"></ul>
+                    </div>
+                </section>
+            </div>
         </div>
-        <!-- END OF SECTIONS FROM homepage1.html -->
+        <!-- END OF NEWS/LEADERBOARD -->
 
 
         <section id="gallery" class="section">
-             <div class="section-header">
-                <h2 class="section-title">Event Snapshots</h2>
-                <p class="section-subtitle">A glimpse into the vibrant moments from our past events.</p>
-            </div>
-            <div class="slider">
-                <div class="slide-track">
-                    <div class="slide"><img src="https://placehold.co/300x200/a78bfa/ffffff?text=Event+1" alt="Event 1"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/ec4899/ffffff?text=Hackathon" alt="Hackathon"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/8b5cf6/ffffff?text=Workshop" alt="Workshop"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/ef4444/ffffff?text=Winners" alt="Winners"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/f59e0b/ffffff?text=Projects" alt="Projects"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/10b981/ffffff?text=Teamwork" alt="Teamwork"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/3b82f6/ffffff?text=Coding" alt="Coding"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/6366f1/ffffff?text=Innovate" alt="Innovate"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/14b8a6/ffffff?text=Community" alt="Community"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/f43f5e/ffffff?text=Fun" alt="Fun"></div>
+             <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Event Snapshots</h2>
+                    <p class="section-subtitle">A glimpse into the vibrant moments from our past events.</p>
+                </div>
+                <div class="slider">
+                    <div class="slide-track">
+                        <div class="slide"><img src="https://placehold.co/300x200/a78bfa/ffffff?text=Event+1" alt="Event 1"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/ec4899/ffffff?text=Hackathon" alt="Hackathon"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/8b5cf6/ffffff?text=Workshop" alt="Workshop"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/ef4444/ffffff?text=Winners" alt="Winners"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/f59e0b/ffffff?text=Projects" alt="Projects"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/10b981/ffffff?text=Teamwork" alt="Teamwork"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/3b82f6/ffffff?text=Coding" alt="Coding"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/6366f1/ffffff?text=Innovate" alt="Innovate"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/14b8a6/ffffff?text=Community" alt="Community"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/f43f5e/ffffff?text=Fun" alt="Fun"></div>
 
-                    <div class="slide"><img src="https://placehold.co/300x200/a78bfa/ffffff?text=Event+1" alt="Event 1"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/ec4899/ffffff?text=Hackathon" alt="Hackathon"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/8b5cf6/ffffff?text=Workshop" alt="Workshop"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/ef4444/ffffff?text=Winners" alt="Winners"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/f59e0b/ffffff?text=Projects" alt="Projects"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/10b981/ffffff?text=Teamwork" alt="Teamwork"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/3b82f6/ffffff?text=Coding" alt="Coding"></div>
-                    <div class="slide"><img src="httpsS://placehold.co/300x200/6366f1/ffffff?text=Innovate" alt="Innovate"></div>
-                    <div class="slide"><img src="httpsD://placehold.co/300x200/14b8a6/ffffff?text=Community" alt="Community"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/f43f5e/ffffff?text=Fun" alt="Fun"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/a78bfa/ffffff?text=Event+1" alt="Event 1"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/ec4899/ffffff?text=Hackathon" alt="Hackathon"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/8b5cf6/ffffff?text=Workshop" alt="Workshop"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/ef4444/ffffff?text=Winners" alt="Winners"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/f59e0b/ffffff?text=Projects" alt="Projects"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/10b981/ffffff?text=Teamwork" alt="Teamwork"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/3b82f6/ffffff?text=Coding" alt="Coding"></div>
+                        <div class="slide"><img src="httpsS://placehold.co/300x200/6366f1/ffffff?text=Innovate" alt="Innovate"></div>
+                        <div class="slide"><img src="httpsD://placehold.co/300x200/14b8a6/ffffff?text=Community" alt="Community"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/f43f5e/ffffff?text=Fun" alt="Fun"></div>
+                    </div>
                 </div>
             </div>
         </section>
