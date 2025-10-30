@@ -61,6 +61,14 @@
             cursor: pointer;
         }
         .nav-link:hover { color: #4f46e5; }
+        .footer-nav-link {
+            color: #94a3b8;
+            transition: color 0.3s;
+        }
+        .footer-nav-link:hover {
+            color: white;
+        }
+
         .profile-section { display: none; }
         @media (min-width: 768px) {
             .profile-section { display: flex; align-items: center; gap: 0.75rem; }
@@ -126,9 +134,72 @@
         .slide { flex-shrink: 0; width: 300px; padding: 10px; }
         .slide img { width: 100%; border-radius: 0.5rem; }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-3000px); } }
-        .site-footer { background-color: #0f172a; color: white; }
-        .footer-grid { display: grid; gap: 2rem; padding: 3rem 0; }
-        @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
+        
+        /* Footer */
+        .site-footer { 
+            background-color: #0f172a; 
+            color: white; 
+            padding-top: 4rem;
+            border-top-left-radius: 1.5rem; /* rounded-t-3xl */
+            border-top-right-radius: 1.5rem; /* rounded-t-3xl */
+        }
+        .footer-grid { 
+            display: grid; 
+            gap: 2rem; 
+            padding-bottom: 3rem;
+            grid-template-columns: repeat(1, 1fr);
+        }
+        @media (min-width: 640px) {
+             .footer-grid {
+                grid-template-columns: repeat(3, 1fr);
+             }
+        }
+        .footer-grid h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        .footer-grid p, .footer-grid li {
+            color: #94a3b8;
+        }
+        .footer-grid .footer-about {
+            grid-column: span 1;
+        }
+        @media (min-width: 640px) {
+            .footer-grid .footer-about {
+                grid-column: span 3 / span 3;
+            }
+        }
+         @media (min-width: 768px) {
+            .footer-grid .footer-about {
+                grid-column: span 1 / span 1;
+            }
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
         
         /* Styles from homepage1.html */
         .two-col-layout {
@@ -199,8 +270,8 @@
         }
         .modal-content {
             background-color: white;
-            padding: 2rem;
-            border-radius: 1.5rem;
+            padding: 0; /* Changed */
+            border-radius: 1.5rem; /* rounded-3xl */
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
             width: 100%;
             max-width: 48rem; /* max-w-3xl */
@@ -208,25 +279,69 @@
             max-height: 90vh;
             display: flex;
             flex-direction: column;
+            overflow: hidden; /* For rounded corners */
         }
         .modal-body {
-            overflow-y: auto;
-            padding-right: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            overflow-y: auto; /* <-- THIS ENABLES SCROLLING */
+            padding: 2rem; /* Inner padding */
+            flex-grow: 1; /* Allows body to fill remaining space */
         }
         .modal-close-btn {
             position: absolute;
             top: 1rem;
             right: 1rem;
             color: #94a3b8; /* slate-400 */
+            z-index: 60; /* Ensure it's above content */
         }
         .modal-close-btn:hover {
             color: #1e293b; /* slate-800 */
         }
         .hidden {
             display: none;
+        }
+
+        /* NEW STYLES FOR CLUBS */
+        @media (min-width: 1024px) {
+            .grid-container-5-col {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        #clubs {
+            background-color: #f1f5f9;
+            border-radius: 1.5rem;
+        }
+        .club-item {
+            text-align: center;
+        }
+        .club-logo-container {
+            background-color: white;
+            width: 8rem;
+            height: 8rem;
+            margin: 0 auto;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .club-item:hover .club-logo-container {
+            background-color: #4f46e5;
+            transform: scale(1.1);
+        }
+        .club-logo {
+            width: 4rem;
+            height: 4rem;
+            color: #4f46e5;
+            transition: color 0.3s;
+        }
+        .club-item:hover .club-logo {
+            color: white;
+        }
+        .club-name {
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
         }
         /* End styles from homepage1.html */
     </style>
@@ -290,10 +405,17 @@
                 </div>
         </section>
 
-        <!-- CLUBS SECTION IS MISSING FROM YOUR FILE, YOU MAY WANT TO ADD IT BACK -->
-        <!-- <section id="clubs" class="section"> ... </section> -->
+        <!-- NEWLY ADDED CLUBS SECTION -->
+        <section id="clubs" class="section">
+            <div class="section-header">
+                <h2 class="section-title">Featured Clubs</h2>
+                <p class="section-subtitle">Explore the diverse clubs driving our campus culture.</p>
+            </div>
+            <div id="club-list" class="grid-container grid-container-5-col" style="padding: 0 1rem;"></div>
+        </section>
+        <!-- END OF NEW CLUBS SECTION -->
 
-        <!-- NEW SECTIONS ADDED FROM homepage1.html -->
+        <!-- SECTIONS FROM homepage1.html -->
         <div class="two-col-layout">
             <section id="news">
                 <div class="section-header" style="text-align: left; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
@@ -318,7 +440,7 @@
                 </div>
             </section>
         </div>
-        <!-- END OF NEW SECTIONS -->
+        <!-- END OF SECTIONS FROM homepage1.html -->
 
 
         <section id="gallery" class="section">
@@ -346,7 +468,7 @@
                     <div class="slide"><img src="https://placehold.co/300x200/f59e0b/ffffff?text=Projects" alt="Projects"></div>
                     <div class="slide"><img src="https://placehold.co/300x200/10b981/ffffff?text=Teamwork" alt="Teamwork"></div>
                     <div class="slide"><img src="https://placehold.co/300x200/3b82f6/ffffff?text=Coding" alt="Coding"></div>
-                    <div class="slide"><img src="https://placehold.co/300x200/6366f1/ffffff?text=Innovate" alt="Innovate"></div>
+                    <div class="slide"><img src="httpsS://placehold.co/300x200/6366f1/ffffff?text=Innovate" alt="Innovate"></div>
                     <div class="slide"><img src="httpsD://placehold.co/300x200/14b8a6/ffffff?text=Community" alt="Community"></div>
                     <div class="slide"><img src="https://placehold.co/300x200/f43f5e/ffffff?text=Fun" alt="Fun"></div>
                 </div>
@@ -355,28 +477,36 @@
 
          <footer class="site-footer">
             <div class="container footer-grid">
-                <div>
+                <div class="footer-about">
                     <h3 class="gradient-text" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">ClubHub</h3>
-                    <p style="color: #94a3b8;">Connecting students, fostering talent, and creating memories.</p>
+                    <p>Connecting students, fostering talent, and creating memories.</p>
                 </div>
                 <div>
-                    <h4 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Quick Links</h4>
-                    <ul style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        <li><a href="#events" class="nav-link" style="color: #94a3b8;">Upcoming Events</a></li>
-                        <li><a href="#clubs" class="nav-link" style="color: #94a3b8;">Find a Club</a></li>
+                    <h4>Navigate</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home" class="footer-nav-link">Home</a></li>
+                        <li><a href="#events" class="footer-nav-link">Events</a></li>
+                        <li><a href="#clubs" class="footer-nav-link">Clubs</a></li>
+                        <li><a href="#gallery" class="footer-nav-link">Gallery</a></li>
+                        <li><a href="#leaderboard" class="footer-nav-link">Winners</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Follow Us</h4>
-                    <div style="display: flex; gap: 1rem;">
-                        <a href="#" class="nav-link" style="color: #94a3b8;"><i data-lucide="twitter"></i></a>
-                        <a href="#" class="nav-link" style="color: #94a3b8;"><i data-lucide="instagram"></i></a>
-                        <a href="#" class="nav-link" style="color: #94a3b8;"><i data-lucide="linkedin"></i></a>
-                    </div>
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-nav-link">Start a Club</a></li>
+                        <li><a href="#" class="footer-nav-link">Event Guidelines</a></li>
+                        <li><a href="admin.html" class="footer-nav-link">Admin Login</a></li>
+                    </ul>
                 </div>
             </div>
-            <div style="border-top: 1px solid #1e293b; text-align: center; padding: 1.5rem 0;">
-                <p style="color: #64748b;">&copy; 2025 ClubHub. All Rights Reserved.</p>
+            <div class="container footer-bottom">
+                <p style="color: #64748b; font-size: 0.875rem;">&copy; 2025 ClubHub. All Rights Reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="footer-nav-link"><i data-lucide="twitter"></i></a>
+                    <a href="#" class="footer-nav-link"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="footer-nav-link"><i data-lucide="linkedin"></i></a>
+                </div>
             </div>
         </footer>
         
@@ -425,6 +555,43 @@
             </button>
         </div>
     </div>
+    
+    <!-- NEW Event Detail Modal -->
+    <div id="event-detail-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-event-detail-modal" class="modal-close-btn">
+                <i data-lucide="x" style="width: 1.5rem; height: 1.5rem;"></i>
+            </button>
+            
+            <!-- Modal Header -->
+            <div id="event-detail-header" style="padding: 2rem; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; flex-shrink: 0;">
+                <span id="event-detail-type" style="font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px;"></span>
+                <h1 id="event-detail-name" style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-top: 1rem;"></h1>
+                <p id="event-detail-host" style="font-size: 1.25rem; color: #475569; margin-top: 0.5rem;"></p>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; @media (min-width: 768px) { grid-template-columns: repeat(3, 1fr); }">
+                    <!-- Left Column: Details -->
+                    <div id="event-detail-desc" style="grid-column: span 1; @media (min-width: 768px) { grid-column: span 2; } display: flex; flex-direction: column; gap: 1rem; color: #475569;">
+                        <!-- Description will be populated by JS -->
+                    </div>
+                    
+                    <!-- Right Column: Info Box -->
+                    <div style="grid-column: span 1;">
+                        <div id="event-detail-info-box" style="background-color: #f1f5f9; border-radius: 1rem; padding: 1.5rem; display: flex; flex-direction: column;">
+                            <!-- Info items will be populated by JS -->
+                        </div>
+                        <button id="event-detail-register-btn" style="width: 100%; background-color: #4f46e5; color: white; font-weight: 700; padding: 0.75rem 1.5rem; border-radius: 0.5rem; margin-top: 1.5rem; transition: background-color 0.3s; cursor: pointer; border: none;">
+                            Register Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
@@ -463,8 +630,20 @@
             { rank: 9, name: 'Pixel Perfect', event: 'Designathon' },
             { rank: 10, name: 'Poetic Justice', event: 'Poetry Slam' }
         ];
+        // Data for clubs (from homepage1.html)
+        const clubs = [
+            { name: 'Tech Titans', logo: 'cpu', page: 'tech-titans.html' },
+            { name: 'Creative Coders', logo: 'code-2', page: 'creative-coders.html' },
+            { name: 'Art & Design', logo: 'palette', page: 'art-design.html' },
+            { name: 'E-Cell', logo: 'lightbulb', page: 'e-cell.html' },
+            { name: 'Music Mavericks', logo: 'music', page: 'music-mavericks.html' },
+            { name: 'Literary Society', logo: 'book-open', page: 'literary-society.html' },
+            { name: 'Eco Warriors', logo: 'leaf', page: 'eco-warriors.html' },
+            { name: 'Film Club', logo: 'film', page: 'film-club.html' },
+            { name: 'Debate Union', logo: 'messages-square', page: 'debate-union.html' },
+            { name: 'Sports Club', logo: 'swords', page: 'sports-club.html' }
+        ];
         
-        // This is a simplified version of what might be in main.js
         const today = new Date();
         const events = [
             { 
@@ -472,28 +651,45 @@
                 name: 'Generative AI Hackathon', 
                 date: new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000),
                 type: 'Hackathon', 
-                description: 'Build innovative apps with Generative AI in 24 hours.',
-                id: 'gen-ai-hackathon'
+                description_short: 'Build innovative apps with Generative AI in 24 hours.',
+                id: 'gen-ai-hackathon',
+                // --- NEW DETAILS ---
+                description_full: `<p>Dive deep into the world of Generative AI! This 24-hour hackathon challenges you to build innovative applications using the latest in large language models, diffusion models, and other generative technologies.</p><p style="margin-top: 1rem;">Whether you're a coder, a designer, or just an idea person, team up to create something amazing. We'll provide access to cutting-edge APIs, datasets, and mentors from the industry to help bring your vision to life.</p><h3 style="font-size: 1.25rem; font-weight: 600; padding-top: 1rem; margin-top: 1rem;">What to Expect:</h3><ul style="list-style-type: disc; list-style-position: inside; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;"><li>24 hours of focused building and collaboration.</li><li>Expert mentors from top AI companies.</li><li>Workshops on API integration and prompt engineering.</li><li>Amazing prizes for top teams.</li></ul>`,
+                time: '9:00 AM (24 Hours)',
+                venue: 'Central Auditorium',
+                participants: 128,
+                fees: 'Free (Includes Meals & Swag)'
             },
             { 
                 club: 'Creative Coders', 
                 name: 'Annual Hackathon "CodeWave"', 
                 date: new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000),
                 type: 'Event', 
-                description: '24 hours of intense coding, innovation, and fun. Prizes worth thousands!',
-                id: 'codewave'
+                description_short: '24 hours of intense coding, innovation, and fun. Prizes worth thousands!',
+                id: 'codewave',
+                // --- PLACEHOLDER DETAILS ---
+                description_full: '<p>Join us for the most exciting 24 hours of the year! CodeWave is back, bringing together the brightest minds on campus to solve real-world problems. Food, swag, and prizes await!</p>',
+                time: '12:00 PM (24 Hours)',
+                venue: 'Main Building, Hall A',
+                participants: 92,
+                fees: 'Free'
             },
             { 
                 club: 'Art & Design Circle', 
                 name: 'Digital Illustration Workshop', 
                 date: new Date(today.getTime() + 12 * 24 * 60 * 60 * 1000),
                 type: 'Workshop', 
-                description: 'Learn the basics of digital art from professional artists.',
-                id: 'digital-art'
+                description_short: 'Learn the basics of digital art from professional artists.',
+                id: 'digital-art',
+                // --- PLACEHOLDER DETAILS ---
+                description_full: '<p>Unleash your creativity! This beginner-friendly workshop will cover the fundamentals of digital illustration using popular software. No prior experience needed, just bring your laptop and a creative spirit.</p>',
+                time: '4:00 PM - 6:00 PM',
+                venue: 'Art Studio, Bldg. C',
+                participants: 45,
+                fees: '₹100 (for materials)'
             },
         ];
 
-        // This function simulates the event card creation from your main.js
         function createEventCard(event) {
             const timeDiff = event.date.getTime() - new Date().getTime();
             const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
@@ -509,7 +705,10 @@
                 'Event': 'background-color: #eef2ff; color: #4338ca;',
                 'Hackathon': 'background-color: #fdf2f8; color: #db2777;'
             };
-            const viewMoreButton = `<button onclick="window.open('${event.id}.html', '_blank')" class="btn" style="margin-top: 1rem; background-color: #f1f5f9; color: #475569;">View More</button>`;
+            
+            // --- UPDATED BUTTON ONCLICK ---
+            const viewMoreButton = `<button onclick="openEventDetail('${event.id}')" class="btn" style="margin-top: 1rem; background-color: #f1f5f9; color: #475569;">View More</button>`;
+
             return `
                 <div style="background-color: white; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); overflow: hidden; position: relative; padding: 1.5rem;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
@@ -517,7 +716,7 @@
                         <span style="font-size: 0.875rem; color: #64748b;">${event.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                     </div>
                     <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">${event.name}</h3>
-                    <p style="color: #475569; margin-bottom: 1rem; font-size: 0.875rem;">${event.description}</p>
+                    <p style="color: #475569; margin-bottom: 1rem; font-size: 0.875rem;">${event.description_short}</p>
                     <div style="display: flex; align-items: center; font-size: 0.875rem; color: #64748b;">
                         <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
                         <span>Organized by <strong>${event.club}</strong></span>
@@ -525,6 +724,58 @@
                     ${viewMoreButton}
                     ${notification}
                 </div>`;
+        }
+        
+        // --- NEW FUNCTION TO OPEN EVENT DETAIL MODAL ---
+        function openEventDetail(eventId) {
+            const event = events.find(e => e.id === eventId);
+            if (!event) return;
+
+            const modal = document.getElementById('event-detail-modal');
+            const typeEl = document.getElementById('event-detail-type');
+            const nameEl = document.getElementById('event-detail-name');
+            const hostEl = document.getElementById('event-detail-host');
+            const descEl = document.getElementById('event-detail-desc');
+            const infoBoxEl = document.getElementById('event-detail-info-box');
+
+            const typeColors = {
+                'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+                'Workshop': 'background-color: #fefce8; color: #b45309;',
+                'Event': 'background-color: #eef2ff; color: #4338ca;',
+                'Hackathon': 'background-color: #fdf2f8; color: #db2777;'
+            };
+            
+            typeEl.textContent = event.type;
+            typeEl.style.cssText = `font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; ${typeColors[event.type] || typeColors['Event']}`;
+            nameEl.textContent = event.name;
+            hostEl.innerHTML = `Hosted by <a href="#" class="nav-link" style="font-weight: 600;">${event.club}</a>`;
+            descEl.innerHTML = event.description_full || event.description_short;
+
+            infoBoxEl.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="calendar" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Date</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="clock" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Time</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.time || 'TBA'}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="map-pin" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Venue</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.venue || 'TBA'}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="users" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Participants</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.participants ? event.participants + ' Registered' : 'TBA'}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="ticket" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Fees</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.fees || 'Free'}</p>
+                </div>
+            `;
+            
+            lucide.createIcons();
+            modal.classList.remove('hidden');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -538,11 +789,26 @@
                 });
             }
 
-            // --- Populate News, Leaderboard, and Modal (from homepage1.html) ---
+            // --- Populate News, Leaderboard, Modal, and CLUBS (from homepage1.html) ---
             const newsFeed = document.getElementById('news-feed');
             const leaderboardList = document.getElementById('leaderboard-list');
             const allNewsFeed = document.getElementById('all-news-feed');
+            const clubListContainer = document.getElementById('club-list');
 
+            // Populate Clubs
+            if (clubListContainer) {
+                clubs.forEach(club => {
+                    const clubItemHTML = `
+                        <a href="${club.page}" class="club-item">
+                            <div class="club-logo-container">
+                                <i data-lucide="${club.logo}" class="club-logo"></i>
+                            </div>
+                            <p class="club-name">${club.name}</p>
+                        </a>`;
+                    clubListContainer.innerHTML += clubItemHTML;
+                });
+            }
+            
             // Populate News (Homepage - latest 3)
             if (newsFeed) {
                 news.slice(0, 3).forEach(item => {
@@ -598,6 +864,15 @@
                     allNewsModal.classList.add('hidden');
                 });
             }
+            
+            // --- NEW EVENT DETAIL MODAL LOGIC ---
+            const closeEventDetailModalBtn = document.getElementById('close-event-detail-modal');
+            const eventDetailModal = document.getElementById('event-detail-modal');
+            if(closeEventDetailModalBtn) {
+                closeEventDetailModalBtn.addEventListener('click', () => {
+                    eventDetailModal.classList.add('hidden');
+                });
+            }
         });
         
         // Placeholder for functions referenced in your HTML:
@@ -605,8 +880,14 @@
             const eventsSection = document.getElementById('events');
             if(eventsSection) eventsSection.scrollIntoView({ behavior: 'smooth' });
         }
-        function exitModal() { console.log('Modal closed'); }
-        function closeModal(event) { console.log('Modal closed'); }
+        function exitModal() { 
+            const section = document.querySelector('section');
+            if(section) section.style.display = 'none';
+        }
+        function closeModal(event) { 
+            const modal = document.getElementById('modal-container');
+            if(modal) modal.classList.add('hidden');
+        }
         function registration(event) { console.log('Registration submitted'); }
 
     </script>
