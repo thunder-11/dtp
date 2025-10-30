@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details - Generative AI Hackathon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="gradient-text" style="font-size: 1.875rem; font-weight: 700;">ClubHub</a>
+            <a href="index.html" class="bg-indigo-600 text-white px-5 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-lg shadow-indigo-500/30">
+                Back to Home
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
+            <!-- Event Header -->
+            <div class="p-8 md:p-12 bg-slate-50 border-b border-slate-200">
+                <span class="text-sm font-medium bg-fuchsia-100 text-fuchsia-800 px-3 py-1 rounded-full">Hackathon</span>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mt-4">Generative AI Hackathon</h1>
+                <p class="text-xl text-slate-600 mt-2">Hosted by <a href="tech-titans.html" class="font-semibold text-indigo-600 hover:underline">Tech Titans</a></p>
+            </div>
+            
+            <div class="p-8 md:p-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Left Column: Details -->
+                    <div class="md:col-span-2">
+                        <h2 class="text-2xl font-bold mb-4">Event Description</h2>
+                        <div class="space-y-4 text-slate-600">
+                            <p>Dive deep into the world of Generative AI! This 24-hour hackathon challenges you to build innovative applications using the latest in large language models, diffusion models, and other generative technologies.</p>
+                            <p>Whether you're a coder, a designer, or just an idea person, team up to create something amazing. We'll provide access to cutting-edge APIs, datasets, and mentors from the industry to help bring your vision to life.</p>
+                            <h3 class="text-xl font-semibold pt-4">What to Expect:</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>24 hours of focused building and collaboration.</li>
+                                <li>Expert mentors from top AI companies.</li>
+                                <li>Workshops on API integration and prompt engineering.</li>
+                                <li>Amazing prizes for top teams in categories like "Most Innovative," "Best Technical Implementation," and "Best User Experience."</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Info Box -->
+                    <div class="md:col-span-1">
+                        <div class="bg-slate-100 rounded-2xl p-6 space-y-4">
+                            <div class="flex items-center">
+                                <i data-lucide="calendar" class="w-5 h-5 text-indigo-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-500">Date</p>
+                                    <p class="font-semibold">November 15, 2025</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="clock" class="w-5 h-5 text-indigo-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-500">Time</p>
+                                    <p class="font-semibold">9:00 AM (24 Hours)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-indigo-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-500">Venue</p>
+                                    <p class="font-semibold">Central Auditorium</p>
+                                </div>
+                            </div>
+                             <div class="flex items-center">
+                                <i data-lucide="users" class="w-5 h-5 text-indigo-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-500">Participants</p>
+                                    <p class="font-semibold">128 Registered</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="ticket" class="w-5 h-5 text-indigo-500 mr-3"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-500">Fees</p>
+                                    <p class="font-semibold">Free (Includes Meals & Swag)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg mt-6 hover:bg-indigo-700 transition duration-300">
+                            Register Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+
