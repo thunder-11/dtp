@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Event Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #1e293b;
+            background-color: #f8fafc;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #ec4899);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(to bottom, #1e293b, #0f172a);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .menu-item.active {
+            background-color: rgba(79, 70, 229, 0.2);
+            color: #fff;
+            border-left-color: #4f46e5;
+        }
+
+        .menu-item i {
+            margin-right: 0.75rem;
+            width: 20px;
+        }
+
+        .hamburger {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4f46e5, #ec4899);
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, left 0.3s ease-in-out;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.05);
+        }
+
+        body.sidebar-active .hamburger {
+            left: calc(280px + 1.5rem);
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background-color: white;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .main-content {
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            padding-top: 80px;
+        }
+
+        body.sidebar-active .main-content {
+            margin-left: 280px;
+        }
+
+        .card-hover-effect {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card-hover-effect:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .event-card {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
+            z-index: 2000;
+        }
+
+        .modal-overlay.is-visible {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        .modal-card {
+            background-color: white;
+            width: 100%;
+            max-width: 40rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal-overlay.is-visible .modal-card {
+            transform: scale(1);
+        }
+
+        .btn {
+            font-weight: 600;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 2px #a5b4fc;
+        }
+
+        .feedback-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-suggestion {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-feedback {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-replied {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .badge-workshop {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .badge-seminar {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-event {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-announcement {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-achievement {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-update {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0.5rem;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+
+        /* NEW: Styles for filter buttons */
+        .filter-btn {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover {
+            background-color: #d1d5db;
+        }
+
+        .filter-btn.active {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 class="text-xl font-bold text-white">Admin Panel</h2>
+            <p class="text-sm text-slate-400 mt-1">ClubHub Management</p>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-item active" data-section="events">
+                <i data-lucide="calendar"></i>
+                <span>Events</span>
+            </div>
+            <div class="menu-item" data-section="news">
+                <i data-lucide="newspaper"></i>
+                <span>News & Updates</span>
+            </div>
+            <div class="menu-item" data-section="gallery">
+                <i data-lucide="image"></i>
+                <span>Media Gallery</span>
+            </div>
+            <div class="menu-item" data-section="suggestions">
+                <i data-lucide="message-square"></i>
+                <span>Suggestions</span>
+            </div>
+            <div class="menu-item" data-section="feedback">
+                <i data-lucide="star"></i>
+                <span>Feedback</span>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+
+            <section id="events-section" class="content-section active">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-4xl font-bold mb-2">Manage Events</h2>
+                        <p class="text-slate-500">Create, edit, and manage club events</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openEventModal()">
+                        <i data-lucide="plus"
+                            style="display: inline; width: 20px; height: 20px; vertical-align: middle; margin-right: 0.5rem;"></i>
+                        Create Event
+                    </button>
+                </div>
+
+                <div id="event-filter-buttons" class="flex gap-2 mb-6">
+                    <button class="filter-btn active" data-filter="upcoming">Upcoming</button>
+                    <button class="filter-btn" data-filter="ongoing">Today's</button>
+                    <button class="filter-btn" data-filter="past">Past</button>
+                </div>
+
+                <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+            </section>
+            <section id="news-section" class="content-section">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-4xl font-bold mb-2">News & Updates</h2>
+                        <p class="text-slate-500">Post and manage news updates</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openNewsModal()">
+                        <i data-lucide="plus"
+                            style="display: inline; width: 20px; height: 20px; vertical-align: middle; margin-right: 0.5rem;"></i>
+                        Post News
+                    </button>
+                </div>
+                <div id="news-container"></div>
+            </section>
+
+            <section id="gallery-section" class="content-section">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-4xl font-bold mb-2">Media Gallery</h2>
+                        <p class="text-slate-500">Upload and manage media files</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openGalleryModal()">
+                        <i data-lucide="upload"
+                            style="display: inline; width: 20px; height: 20px; vertical-align: middle; margin-right: 0.5rem;"></i>
+                        Upload Media
+                    </button>
+                </div>
+                <div id="gallery-container" class="gallery-grid"></div>
+            </section>
+
+            <section id="suggestions-section" class="content-section">
+                <div class="mb-8">
+                    <h2 class="text-4xl font-bold mb-2">Pre-Event Suggestions</h2>
+                    <p class="text-slate-500">Review and respond to user suggestions</p>
+                </div>
+                <div id="suggestions-container"></div>
+            </section>
+
+            <section id="feedback-section" class="content-section">
+                <div class="mb-8">
+                    <h2 class="text-4xl font-bold mb-2">Post-Event Feedback</h2>
+                    <p class="text-slate-500">Review and respond to user feedback</p>
+                </div>
+                <div id="feedback-container"></div>
+            </section>
+        </div>
+    </main>
+
+    <div id="event-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Create Event</h3>
+                <button class="text-2xl text-gray-500 hover:text-gray-700" onclick="closeEventModal()">&times;</button>
+            </div>
+            <form id="event-form" onsubmit="handleEventSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" name="description" rows="3" required></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Time</label>
+                        <input type="time" class="form-input" name="time" required>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="form-label">Club/Organizer</label>
+                        <input type="text" class="form-input" name="club" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Event Type</label>
+                        <select class="form-select" name="eventType" required>
+                            <option value="">Select type</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="Seminar">Seminar</option>
+                            <option value="Event">Event</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" class="btn btn-secondary" onclick="closeEventModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="news-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Post News</h3>
+                <button class="text-2xl text-gray-500 hover:text-gray-700" onclick="closeNewsModal()">&times;</button>
+            </div>
+            <form id="news-form" onsubmit="handleNewsSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Content</label>
+                    <textarea class="form-textarea" name="content" rows="5" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" name="category" required>
+                        <option value="">Select category</option>
+                        <option value="Announcement">Announcement</option>
+                        <option value="Achievement">Achievement</option>
+                        <option value="Update">Update</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" class="btn btn-secondary" onclick="closeNewsModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Post News</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="gallery-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Upload Media</h3>
+                <button class="text-2xl text-gray-500 hover:text-gray-700" onclick="closeGalleryModal()">&times;</button>
+            </div>
+            <form id="gallery-form" onsubmit="handleGallerySubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Image URL</label>
+                    <input type="url" class="form-input" name="imageUrl" placeholder="https://example.com/image.jpg"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Caption</label>
+                    <input type="text" class="form-input" name="caption" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Event/Category</label>
+                    <input type="text" class="form-input" name="category" required>
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" class="btn btn-secondary" onclick="closeGalleryModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="reply-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Reply</h3>
+                <button class="text-2xl text-gray-500 hover:text-gray-700" onclick="closeReplyModal()">&times;</button>
+            </div>
+            <form id="reply-form" onsubmit="handleReplySubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Your Response</label>
+                    <textarea class="form-textarea" name="reply" rows="4" required></textarea>
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" class="btn btn-secondary" onclick="closeReplyModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Send Reply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Sample Data for Events
+        let events = [
+            { id: 1, title: "Web Development Workshop", description: "Learn modern web technologies", date: "2025-11-15", time: "10:00", club: "Tech Titans", eventType: "Workshop" },
+            { id: 2, title: "AI Seminar", description: "Exploring the future of AI", date: "2025-11-20", time: "14:00", club: "AI Club", eventType: "Seminar" },
+            { id: 3, title: "Past Python Workshop", description: "A look back at Python basics", date: "2025-10-01", time: "10:00", club: "Code wizards", eventType: "Workshop" },
+            { id: 4, title: "Today's Career Talk", description: "Discussing future careers in tech", date: "2025-10-30", time: "14:00", club: "Placement Cell", eventType: "Seminar" },
+            { id: 5, title: "Today's Morning Meetup", description: "Quick team sync", date: "2025-10-30", time: "09:00", club: "Admin", eventType: "Event" }
+        ];
+
+        let news = [
+            { id: 1, title: "New Club Registration Open", content: "Applications for new club memberships are now open!", category: "Announcement", date: "2025-10-25" },
+            { id: 2, title: "Hackathon Winners Announced", content: "Congratulations to Team Alpha for winning the annual hackathon!", category: "Achievement", date: "2025-10-20" }
+        ];
+
+        let gallery = [
+            { id: 1, imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87", caption: "Tech Workshop 2024", category: "Workshop" },
+            { id: 2, imageUrl: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678", caption: "Annual Meetup", category: "Event" }
+        ];
+
+        let suggestions = [
+            { id: 1, user: "John Doe", event: "Web Dev Workshop", message: "Can we have more hands-on coding sessions?", status: "pending", date: "2025-10-28", reply: "" },
+            { id: 2, user: "Jane Smith", event: "AI Seminar", message: "Please include practical AI projects", status: "replied", date: "2025-10-27", reply: "Thanks for the suggestion! We'll add a project session." }
+        ];
+
+        let feedbacks = [
+            { id: 1, user: "Mike Johnson", event: "Python Workshop", message: "Great session! Learned a lot about Python.", rating: 5, status: "pending", date: "2025-10-26", reply: "" },
+            { id: 2, user: "Sarah Williams", event: "Design Thinking", message: "Excellent facilitators and content.", rating: 5, status: "replied", date: "2025-10-25", reply: "We're glad you enjoyed it!" }
+        ];
+
+        let currentReplyId = null;
+        let currentReplyType = null;
+
+        // NEW: State for event filter
+        let currentEventFilter = 'upcoming'; // 'upcoming', 'ongoing', 'past'
+
+        // Sidebar Navigation
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            document.body.classList.toggle('sidebar-active');
+        });
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const section = item.getAttribute('data-section');
+                switchSection(section);
+
+                menuItems.forEach(mi => mi.classList.remove('active'));
+                item.classList.add('active');
+
+                if (window.innerWidth < 768) {
+                    hamburger.classList.remove('active');
+                    sidebar.classList.remove('active');
+                    document.body.classList.remove('sidebar-active');
+                }
+            });
+        });
+
+        function switchSection(section) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            const activeSection = document.getElementById(`${section}-section`);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+
+            if (section === 'events') renderEvents();
+            if (section === 'news') renderNews();
+            if (section === 'gallery') renderGallery();
+            if (section === 'suggestions') renderSuggestions();
+            if (section === 'feedback') renderFeedback();
+        }
+
+        // --- Helper function for date formatting ---
+        function getFormattedDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // --- Helper function to create event card HTML ---
+        function createEventCardHTML(event) {
+            return `
+                <div class="event-card card-hover-effect">
+                    <div style="padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
+                            <span class="badge badge-${event.eventType.toLowerCase()}">${event.eventType}</span>
+                            <div>
+                                <button onclick="deleteEvent(${event.id})" class="text-red-500 hover:text-red-700" style="background: none; border: none; cursor: pointer; padding: 0.25rem;">
+                                    <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${event.title}</h3>
+                        <p class="text-slate-600 text-sm mb-3">${event.description}</p>
+                        <div class="flex items-center text-sm text-slate-500 mb-2">
+                            <i data-lucide="calendar" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i>
+                            ${event.date} at ${event.time}
+                        </div>
+                        <div class="flex items-center text-sm text-slate-500">
+                            <i data-lucide="users" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i>
+                            ${event.club}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- MODIFIED: Event Management ---
+        function renderEvents() {
+            // Update active state on filter buttons
+            document.querySelectorAll('#event-filter-buttons .filter-btn').forEach(button => {
+                if (button.getAttribute('data-filter') === currentEventFilter) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+
+            const container = document.getElementById('events-container');
+            
+            const upcoming = [];
+            const ongoing = [];
+            const past = [];
+
+            const now = new Date();
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const tomorrowStart = new Date(todayStart);
+            tomorrowStart.setDate(todayStart.getDate() + 1);
+
+            for (const event of events) {
+                const eventDateTime = new Date(`${event.date}T${event.time}`);
+
+                if (eventDateTime < todayStart) {
+                    past.push(event);
+                } else if (eventDateTime >= todayStart && eventDateTime < tomorrowStart) {
+                    ongoing.push(event);
+                } else {
+                    upcoming.push(event);
+                }
+            }
+
+            // Sort arrays
+            upcoming.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
+            ongoing.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
+            past.sort((a, b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`));
+
+            let eventsToRender = [];
+            let emptyMessage = "No events found.";
+
+            switch (currentEventFilter) {
+                case 'upcoming':
+                    eventsToRender = upcoming;
+                    emptyMessage = "No upcoming events.";
+                    break;
+                case 'ongoing':
+                    eventsToRender = ongoing;
+                    emptyMessage = "No events scheduled for today.";
+                    break;
+                case 'past':
+                    eventsToRender = past;
+                    emptyMessage = "No past events found.";
+                    break;
+            }
+
+            // Render Events
+            if (eventsToRender.length > 0) {
+                container.innerHTML = eventsToRender.map(createEventCardHTML).join('');
+            } else {
+                container.innerHTML = `<p class="text-slate-500 col-span-full">${emptyMessage}</p>`;
+            }
+
+            lucide.createIcons();
+        }
+
+        function openEventModal() {
+            document.getElementById('event-modal').classList.add('is-visible');
+        }
+
+        function closeEventModal() {
+            document.getElementById('event-modal').classList.remove('is-visible');
+            document.getElementById('event-form').reset();
+        }
+
+        function handleEventSubmit(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const newEvent = {
+                id: events.length > 0 ? Math.max(...events.map(e => e.id)) + 1 : 1,
+                title: formData.get('title'),
+                description: formData.get('description'),
+                date: formData.get('date'),
+                time: formData.get('time'),
+                club: formData.get('club'),
+                eventType: formData.get('eventType')
+            };
+            events.push(newEvent);
+            closeEventModal();
+            renderEvents(); // This will now re-sort and re-render
+        }
+
+        function deleteEvent(id) {
+            if (confirm('Are you sure you want to delete this event?')) {
+                events = events.filter(e => e.id !== id);
+                renderEvents(); // This will now re-sort and re-render
+            }
+        }
+
+        // News Management
+        function renderNews() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = news.map(item => `
+                <div class="news-card">
+                    <div class="news-header">
+                        <div>
+                            <span class="badge badge-${item.category.toLowerCase()}">${item.category}</span>
+                            <h3 class="text-xl font-bold mt-2 mb-1">${item.title}</h3>
+                            <p class="text-sm text-slate-500">${item.date}</p>
+                        </div>
+                        <button onclick="deleteNews(${item.id})" class="text-red-500 hover:text-red-700" style="background: none; border: none; cursor: pointer;">
+                            <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
+                        </button>
+                    </div>
+                    <p class="text-slate-600">${item.content}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openNewsModal() {
+            document.getElementById('news-modal').classList.add('is-visible');
+        }
+
+        function closeNewsModal() {
+            document.getElementById('news-modal').classList.remove('is-visible');
+            document.getElementById('news-form').reset();
+        }
+
+        function handleNewsSubmit(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const newItem = {
+                id: news.length > 0 ? Math.max(...news.map(n => n.id)) + 1 : 1,
+                title: formData.get('title'),
+                content: formData.get('content'),
+                category: formData.get('category'),
+                date: getFormattedDate()
+            };
+            news.unshift(newItem); // Add to the top
+            closeNewsModal();
+            renderNews();
+        }
+
+        function deleteNews(id) {
+            if (confirm('Are you sure you want to delete this news post?')) {
+                news = news.filter(n => n.id !== id);
+                renderNews();
+            }
+        }
+
+        // Gallery Management
+        function renderGallery() {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = gallery.map(item => `
+                <div class="gallery-item">
+                    <img src="${item.imageUrl}" alt="${item.caption}">
+                    <div class="gallery-item-overlay">
+                        <button onclick="deleteGallery(${item.id})" class="btn-danger" style="padding: 0.25rem 0.5rem; border-radius: 99px; background-color: rgba(239, 68, 68, 0.8);">
+                            <i data-lucide="trash-2" style="width: 16px; height: 16px; color: white;"></i>
+                        </button>
+                    </div>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); padding: 1.5rem 1rem 1rem;">
+                        <p class="font-bold text-white">${item.caption}</p>
+                        <p class="text-sm text-slate-200">${item.category}</p>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openGalleryModal() {
+            document.getElementById('gallery-modal').classList.add('is-visible');
+        }
+
+        function closeGalleryModal() {
+            document.getElementById('gallery-modal').classList.remove('is-visible');
+            document.getElementById('gallery-form').reset();
+        }
+
+        function handleGallerySubmit(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const newItem = {
+                id: gallery.length > 0 ? Math.max(...gallery.map(g => g.id)) + 1 : 1,
+                imageUrl: formData.get('imageUrl'),
+                caption: formData.get('caption'),
+                category: formData.get('category')
+            };
+            gallery.push(newItem);
+            closeGalleryModal();
+            renderGallery();
+        }
+
+        function deleteGallery(id) {
+            if (confirm('Are you sure you want to delete this media item?')) {
+                gallery = gallery.filter(g => g.id !== id);
+                renderGallery();
+            }
+        }
+
+        // Suggestions Management
+        function renderSuggestions() {
+            const container = document.getElementById('suggestions-container');
+            container.innerHTML = suggestions.map(item => `
+                <div class="feedback-card">
+                    <div class="feedback-header">
+                        <div>
+                            <h4 class="font-bold text-lg">${item.user}</h4>
+                            <p class="text-sm text-slate-500">Suggested for: ${item.event} on ${item.date}</p>
+                        </div>
+                        <span class="badge badge-${item.status}">${item.status}</span>
+                    </div>
+                    <p class="text-slate-700 mb-4">${item.message}</p>
+                    ${item.reply ? `
+                        <div style="background: #f8fafc; border-left: 3px solid #4f46e5; padding: 0.75rem 1rem; border-radius: 0 0.5rem 0.5rem 0; margin-bottom: 1rem;">
+                            <p class="font-semibold text-sm text-indigo-700">Your Reply:</p>
+                            <p class="text-slate-600 text-sm">${item.reply}</p>
+                        </div>
+                    ` : `
+                        <button class="btn btn-primary" style="padding: 0.5rem 1rem;" onclick="openReplyModal(${item.id}, 'suggestion')">
+                            Reply
+                        </button>
+                    `}
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Feedback Management
+        function renderFeedback() {
+            const container = document.getElementById('feedback-container');
+            container.innerHTML = feedbacks.map(item => `
+                <div class="feedback-card">
+                    <div class="feedback-header">
+                        <div>
+                            <h4 class="font-bold text-lg">${item.user}</h4>
+                            <p class="text-sm text-slate-500">Feedback for: ${item.event} on ${item.date}</p>
+                        </div>
+                        <span class="badge badge-${item.status}">${item.status}</span>
+                    </div>
+                    <div class="flex items-center mb-3">
+                        ${[...Array(item.rating)].map(() => `<i data-lucide="star" style="width: 18px; height: 18px; color: #f59e0b; fill: #f59e0b;"></i>`).join('')}
+                    </div>
+                    <p class="text-slate-700 mb-4">${item.message}</p>
+                    ${item.reply ? `
+                        <div style="background: #f8fafc; border-left: 3px solid #4f46e5; padding: 0.75rem 1rem; border-radius: 0 0.5rem 0.5rem 0; margin-bottom: 1rem;">
+                            <p class="font-semibold text-sm text-indigo-700">Your Reply:</p>
+                            <p class="text-slate-600 text-sm">${item.reply}</p>
+                        </div>
+                    ` : `
+                        <button class="btn btn-primary" style="padding: 0.5rem 1rem;" onclick="openReplyModal(${item.id}, 'feedback')">
+                            Reply
+                        </button>
+                    `}
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Reply Modal Management
+        function openReplyModal(id, type) {
+            currentReplyId = id;
+            currentReplyType = type;
+            document.getElementById('reply-modal').classList.add('is-visible');
+        }
+
+        function closeReplyModal() {
+            document.getElementById('reply-modal').classList.remove('is-visible');
+            document.getElementById('reply-form').reset();
+            currentReplyId = null;
+            currentReplyType = null;
+        }
+
+        function handleReplySubmit(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const replyText = formData.get('reply');
+
+            if (currentReplyType === 'suggestion') {
+                const item = suggestions.find(s => s.id === currentReplyId);
+                if (item) {
+                    item.reply = replyText;
+                    item.status = 'replied';
+                }
+                renderSuggestions();
+            } else if (currentReplyType === 'feedback') {
+                const item = feedbacks.find(f => f.id === currentReplyId);
+                if (item) {
+                    item.reply = replyText;
+                    item.status = 'replied';
+                }
+                renderFeedback();
+            }
+
+            closeReplyModal();
+        }
+
+        // Initial Render
+        document.addEventListener('DOMContentLoaded', () => {
+            // NEW: Add event listeners for filter buttons
+            document.querySelectorAll('#event-filter-buttons .filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    currentEventFilter = button.getAttribute('data-filter');
+                    renderEvents();
+                });
+            });
+
+            // Initial section load
+            switchSection('events');
+        });
+    </script>
+</body>
+
+</html>
