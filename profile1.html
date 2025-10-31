@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - ClubHub</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* General Body and Font Styles */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #1e293b; /* slate-800 */
+            margin: 0;
+        }
+
+        /* Prevent scroll on body when modal is open */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        header nav {
+            max-width: 1440px;
+            margin: auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* ClubHub Logo */
+        header nav > a:first-child {
+            font-size: 1.875rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: linear-gradient(to right, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Navigation Links Container */
+        header nav > div:nth-of-type(1) {
+             display: none; /* Hidden on mobile */
+             align-items: center;
+             gap: 2rem;
+        }
+        header nav > div:nth-of-type(1) > a {
+            color: #475569;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        header nav > div:nth-of-type(1) > a:hover {
+            color: #4f46e5;
+        }
+        /* Profile Section Container */
+        header nav > div:nth-of-type(2) {
+            display: none; /* Hidden on mobile */
+            align-items: center;
+            gap: 0.75rem;
+        }
+        header nav > div:nth-of-type(2) > span { /* User Name */
+            font-weight: 600;
+            color: #334155;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+        header nav > div:nth-of-type(2) > a { /* Profile Icon Link */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background-color: #e0e7ff;
+            border-radius: 9999px;
+            box-shadow: 0 0 0 2px #a5b4fc;
+        }
+        header nav > div:nth-of-type(2) > a > i {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #4f46e5;
+        }
+
+        /* Main Container */
+        main {
+            max-width: 1440px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 3rem 1.5rem;
+        }
+
+        /* Profile Header Section */
+        main > section:nth-of-type(1) {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+        }
+        main > section:nth-of-type(1) > div:first-child { /* Image container */
+            position: relative;
+            width: 8rem;
+            height: 8rem;
+            flex-shrink: 0;
+        }
+        main > section:nth-of-type(1) img {
+            width: 100%;
+            height: 100%;
+            border-radius: 9999px;
+            object-fit: cover;
+            box-shadow: 0 0 0 4px #c7d2fe;
+        }
+        main > section:nth-of-type(1) button {
+            position: absolute;
+            bottom: 0.25rem;
+            right: 0.25rem;
+            background-color: #4f46e5;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+         main > section:nth-of-type(1) button:hover {
+            background-color: #4338ca;
+        }
+        main > section:nth-of-type(1) button i {
+             width: 1rem;
+             height: 1rem;
+        }
+        /* Profile Details Container */
+        main > section:nth-of-type(1) > div:last-child {
+            max-width: 100%;
+            word-break: break-word;
+        }
+        main > section:nth-of-type(1) > div:last-child h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+        }
+        main > section:nth-of-type(1) > div:last-child p:nth-of-type(1) {
+            font-size: 1.125rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+        main > section:nth-of-type(1) > div:last-child p:nth-of-type(2) {
+            color: #4f46e5;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            background-color: #eef2ff;
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            max-width: 100%;
+        }
+
+        /* Two Column Layout Wrapper */
+        main > div:nth-of-type(1) {
+             margin-top: 2rem;
+             display: grid;
+             grid-template-columns: 1fr;
+             gap: 2rem;
+        }
+         /* Space between cards */
+        main > div:nth-of-type(1) > div > * + * {
+            margin-top: 2rem;
+        }
+        /* General Card Styles for all sections in the two columns */
+        main > div:nth-of-type(1) section {
+             background-color: white;
+             border-radius: 1.5rem;
+             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+             padding: 2rem;
+        }
+        
+        /* Section Headings */
+        section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+        section h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        /* Activity Dashboard */
+        section:nth-of-type(1) > div:nth-of-type(1) { /* Section with tabs */
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+        }
+        section:nth-of-type(1) > div:nth-of-type(1) > div {
+            display: flex;
+            flex-wrap: wrap; /* Allow tabs to wrap on small screens */
+            gap: 1rem;
+        }
+        section:nth-of-type(1) button[data-tab] {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            border-bottom: 2px solid transparent;
+            background-color: transparent;
+            cursor: pointer;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            color: #64748b; /* text-slate-500 */
+        }
+        
+        /* Achievements & Skills */
+        main > div > div:nth-child(1) > section:nth-child(2) > div {
+            display: grid;
+            gap: 2rem;
+        }
+        main > div > div:nth-child(1) > section:nth-child(2) > div > div:first-child > div { /* Badges container */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Responsive badges */
+            gap: 1rem;
+            text-align: center;
+        }
+        main > div > div:nth-child(1) > section:nth-child(2) .badge-icon-wrapper > div { /* Badge circle */
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        main > div > div:nth-child(1) > section:nth-child(2) .badge-icon-wrapper > div > i {
+            width: 2rem;
+            height: 2rem;
+        }
+        main > div > div:nth-child(1) > section:nth-child(2) .badge-icon-wrapper p {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+        /* Skills container */
+        main > div > div:nth-child(1) > section:nth-child(2) > div > div:last-child > div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        main > div > div:nth-child(1) > section:nth-child(2) > div > div:last-child > div > span {
+            background-color: #e2e8f0;
+            color: #334155;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+        }
+
+        /* Projects Showcase */
+        main > div > div:nth-child(1) > section:nth-child(3) > div {
+             display: grid;
+             gap: 1.5rem;
+        }
+        main > div > div:nth-child(1) > section:nth-child(3) > div > div { /* Project Card */
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            display: flex; /* Use flex for better layout */
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        main > div > div:nth-child(1) > section:nth-child(3) h3 {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: #1e293b;
+            margin: 0 0 0.25rem 0;
+        }
+        main > div > div:nth-child(1) > section:nth-child(3) p {
+            font-size: 0.875rem;
+            color: #475569;
+            margin-top: 0.25rem;
+            margin-bottom: 0.75rem;
+            flex-grow: 1; /* Make description grow */
+        }
+        main > div > div:nth-child(1) > section:nth-child(3) > div > div > div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap; /* Allow wrapping */
+            gap: 0.5rem; /* Add gap for wrapping */
+        }
+        main > div > div:nth-child(1) > section:nth-child(3) > div > div > div > span {
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: #e0e7ff;
+            color: #4338ca;
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.375rem;
+        }
+        main > div > div:nth-child(1) > section:nth-child(3) a {
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        main > div > div:nth-child(1) > section:nth-child(3) a:hover {
+            text-decoration: underline;
+        }
+        main > div > div:nth-child(1) > section:nth-child(3) a > i {
+            width: 1rem;
+            height: 1rem;
+            margin-left: 0.25rem;
+        }
+
+        /* --- Right Column --- */
+
+        /* Participation Stats */
+        main > div > div:nth-child(2) > section:nth-child(1) > div {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        main > div > div:nth-child(2) > section:nth-child(1) > div > div:nth-child(odd) {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        main > div > div:nth-child(2) > section:nth-child(1) > div > div > span:first-child { font-weight: 500; }
+        main > div > div:nth-child(2) > section:nth-child(1) > div > div > span:last-child { font-weight: 700; font-size: 1.125rem; }
+        main > div > div:nth-child(2) > section:nth-child(1) > div > div:nth-of-type(1) > span:last-child { color: #4f46e5; }
+        main > div > div:nth-child(2) > section:nth-child(1) > div > div:nth-of-type(3) > span:last-child { color: #db2777; }
+        main > div > div:nth-child(2) > section:nth-child(1) > div > div:nth-child(even) { /* Progress bar container */
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 9999px;
+            height: 0.625rem;
+        }
+        main > div > div:nth-child(2) > section:nth-child(1) > div > div:nth-child(even) > div { /* Progress bar */
+            height: 0.625rem;
+            border-radius: 9999px;
+            transition: width 0.3s ease-in-out; /* Add transition for progress bar */
+        }
+
+        /* My Contributions */
+        main > div > div:nth-child(2) > section:nth-child(2) > div {
+             display:flex; flex-direction: column; gap: 1.5rem;
+        }
+        main > div > div:nth-child(2) > section:nth-child(2) > div > div > div {
+             font-size: 0.875rem;
+             border-left: 2px solid #e2e8f0;
+             padding-left: 1rem;
+             display: flex;
+             flex-direction: column;
+             gap: 0.75rem;
+        }
+        main > div > div:nth-child(2) > section:nth-child(2) p {
+            color: #475569;
+            margin: 0;
+        }
+        main > div > div:nth-child(2) > section:nth-child(2) p > span { font-weight: 500; }
+
+        /* Personal Calendar */
+        section:has(#calendar-container) > div:first-of-type {
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        section:has(#calendar-container) > div:first-of-type h2 { margin: 0;}
+        section:has(#calendar-container) > div:first-of-type > div { display:flex; align-items: center;}
+        section:has(#calendar-container) button {
+            padding: 0.25rem;
+            border-radius: 9999px;
+            transition: background-color 0.3s;
+            border:none;
+            background: transparent;
+            cursor: pointer;
+        }
+        section:has(#calendar-container) button:hover { background-color: #f1f5f9; }
+        section:has(#calendar-container) button i { width: 1.25rem; height: 1.25rem; color: #475569;}
+        section:has(#calendar-container) h3 {
+             font-weight: 700;
+             font-size: 1.125rem;
+             text-align: center;
+             color: #334155;
+             width: 10rem;
+             margin: 0;
+        }
+        
+        /* Settings */
+        main > div > div:nth-child(2) > section:nth-child(4) > div {
+             display: flex;
+             flex-direction: column;
+             gap: 1rem;
+        }
+        main > div > div:nth-child(2) > section:nth-child(4) button {
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background-color: #f1f5f9;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        main > div > div:nth-child(2) > section:nth-child(4) button:hover { background-color: #e2e8f0; }
+        main > div > div:nth-child(2) > section:nth-child(4) button span { font-size: 1rem; color: #1e293b; }
+        main > div > div:nth-child(2) > section:nth-child(4) button i { width: 1.25rem; height: 1.25rem; }
+        
+        main > div > div:nth-child(2) > section:nth-child(4) > div > div {
+             padding: 0.75rem;
+             background-color: #f1f5f9;
+             border-radius: 0.5rem;
+        }
+        main > div > div:nth-child(2) > section:nth-child(4) label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        main > div > div:nth-child(2) > section:nth-child(4) input[type="checkbox"] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        main > div > div:nth-child(2) > section:nth-child(4) .toggle-switch {
+            position: relative;
+        }
+        main > div > div:nth-child(2) > section:nth-child(4) .toggle-bg {
+            width: 2.75rem;
+            height: 1.5rem;
+            background-color: #cbd5e1;
+            border-radius: 9999px;
+            transition: background-color 0.3s;
+        }
+        main > div > div:nth-child(2) > section:nth-child(4) .toggle-bg::after {
+            content: '';
+            position: absolute;
+            top: 0.125rem;
+            left: 2px;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            border-radius: 9999px;
+            height: 1.25rem;
+            width: 1.25rem;
+            transition: transform 0.3s;
+        }
+        main > div > div:nth-child(2) > section:nth-child(4) input:checked + .toggle-bg {
+            background-color: #4f46e5;
+        }
+        main > div > div:nth-child(2) > section:nth-child(4) input:checked + .toggle-bg::after {
+            transform: translateX(1.125rem);
+            border-color: white;
+        }
+
+        /* --- Modal Styles --- */
+        #profile-modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6); /* slate-900 with opacity */
+            backdrop-filter: blur(8px);
+            z-index: 998;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.modal-open #profile-modal-overlay {
+            display: flex;
+            opacity: 1;
+        }
+
+        #profile-modal-content {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc; /* Use slate-50 for modal bg */
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 90%;
+            max-width: 900px; /* Increased from 700px */
+            max-height: 90vh; /* Set max height */
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body.modal-open #profile-modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        #profile-modal-scroll-container {
+            overflow-y: auto; /* Allow scrolling within this container */
+            padding: 1.5rem 2rem; /* Add more horizontal padding */
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        #profile-modal-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1e293b;
+        }
+
+        #profile-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1.5rem 2rem; /* Match scroll container padding */
+            background-color: white;
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+            flex-shrink: 0; /* Prevent header from shrinking */
+        }
+
+        #profile-modal-close-btn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: none;
+            border-radius: 9999px;
+            width: 2.25rem;
+            height: 2.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        #profile-modal-close-btn:hover {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+        #profile-modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem; /* Increase gap between fieldsets */
+        }
+
+        #profile-modal-form fieldset {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem; /* Increase padding */
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem; /* Increase gap between fields */
+            background-color: white; /* Make fieldsets white */
+        }
+        #profile-modal-form legend {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #4f46e5;
+            padding: 0 0.5rem;
+        }
+
+        #profile-modal-form label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #334155;
+            margin-bottom: 0.375rem; /* Slightly more space */
+        }
+        #profile-modal-form input[type="text"],
+        #profile-modal-form input[type="number"],
+        #profile-modal-form input[type="url"],
+        #profile-modal-form textarea {
+            width: 100%;
+            padding: 0.75rem 1rem; /* Increase padding */
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif; /* Ensure inter font */
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            background-color: #ffffff; /* Clean white background */
+            box-sizing: border-box; /* Important for 100% width */
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        #profile-modal-form input[type="text"]:focus,
+        #profile-modal-form input[type="number"]:focus,
+        #profile-modal-form input[type="url"]:focus,
+        #profile-modal-form textarea:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px #c7d2fe; /* Slightly larger focus ring */
+            outline: none;
+        }
+        #profile-modal-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        /* Project fields in modal */
+        .modal-project-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem; /* Increase gap */
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 1.25rem;
+        }
+        .modal-project-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        /* Make title and tag span full width */
+        .modal-project-item > div:nth-child(1),
+        .modal-project-item > div:nth-child(3) { /* Title and Tag */
+            grid-column: span 2 / span 2;
+        }
+        @media (min-width: 640px) {
+            /* On larger modal, put desc and link side-by-side */
+            .modal-project-item > div:nth-child(2) { /* Description */
+                 grid-column: span 1 / span 1;
+            }
+            .modal-project-item > div:nth-child(4) { /* Link Text */
+                 grid-column: span 1 / span 1;
+            }
+        }
+
+        #modal-projects-container {
+             display: flex;
+             flex-direction: column;
+             gap: 1.25rem;
+        }
+        #profile-modal-form small {
+            font-size: 0.875rem;
+            color: #94a3b8; /* Lighter slate color */
+            margin-top: -0.5rem; /* Pull up slightly */
+        }
+
+        #profile-modal-footer {
+            border-top: 1px solid #e2e8f0;
+            padding: 1.25rem 2rem; /* Match scroll container padding */
+            display: flex;
+            justify-content: flex-end;
+            background-color: white;
+            border-bottom-left-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+            flex-shrink: 0; /* Prevent footer from shrinking */
+        }
+        #profile-modal-save-btn {
+            background-color: #4f46e5;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        #profile-modal-save-btn:hover {
+            background-color: #4338ca;
+            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.3); /* Add glow effect */
+        }
+
+
+        /* Responsive Styles */
+        @media (min-width: 768px) {
+            header nav > div:nth-of-type(1),
+            header nav > div:nth-of-type(2) {
+                display: flex;
+            }
+            main > section:first-of-type {
+                flex-direction: row;
+                text-align: left;
+                gap: 2rem;
+            }
+            main > section:first-of-type > div:first-child { /* Image container */
+                width: 10rem;
+                height: 10rem;
+            }
+             main > section:first-of-type > div:last-child {
+                max-width: calc(100% - 12rem); /* 10rem img + 2rem gap */
+            }
+            main > div > div:nth-child(1) > section:nth-child(2) > div {
+                grid-template-columns: repeat(2, 1fr);
+            }
+             main > div > div:nth-child(1) > section:nth-child(3) > div {
+                 grid-template-columns: repeat(2, 1fr);
+             }
+        }
+        @media (min-width: 1024px) {
+             main > div:nth-of-type(1) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            main > div:nth-of-type(1) > div:first-child {
+                grid-column: span 2 / span 2;
+            }
+
+            /* --- Modal 2-column layout --- */
+            #profile-modal-form {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem; /* Slightly smaller gap for grid */
+            }
+            #profile-modal-form fieldset:nth-child(1) { /* Profile Header */
+                grid-column: 1 / 2;
+                grid-row: 1 / 3;
+                /* Align content to start to avoid stretching */
+                align-content: start; 
+            }
+            #profile-modal-form fieldset:nth-child(2) { /* Participation Stats */
+                grid-column: 2 / 3;
+                grid-row: 1 / 2;
+                align-content: start;
+            }
+            #profile-modal-form fieldset:nth-child(3) { /* Achievements & Skills */
+                grid-column: 2 / 3;
+                grid-row: 2 / 3;
+                align-content: start;
+            }
+            #profile-modal-form fieldset:nth-child(4) { /* Projects Showcase */
+                grid-column: 1 / -1; /* Span full width */
+            }
+            #profile-modal-form fieldset:nth-child(5) { /* My Contributions */
+                grid-column: 1 / -1; /* Span full width */
+            }
+            #profile-modal-form fieldset:nth-child(6) { /* Dynamic Content */
+                grid-column: 1 / -1; /* Span full width */
+            }
+        }
+        /* Modal responsiveness */
+        @media (max-width: 640px) {
+            #profile-modal-content {
+                padding: 1rem;
+                width: 95%;
+                max-height: 95vh;
+            }
+            #profile-modal-form fieldset {
+                padding: 1rem 0.75rem;
+            }
+            .modal-project-item {
+                grid-template-columns: 1fr; /* Stack project fields on mobile */
+            }
+            /* Make all children span full width */
+            .modal-project-item > div:nth-child(1),
+            .modal-project-item > div:nth-child(3),
+            .modal-project-item > div:nth-child(4) {
+                grid-column: span 1 / span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html">ClubHub</a>
+            <div>
+                <a href="index.html">Home</a>
+                <a href="index.html#clubs">Clubs</a>
+                <a href="index.html#events">Events</a>
+            </div>
+            <div>
+                <span>abc</span>
+                <a href="profile.html">
+                    <i data-lucide="user"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        
+        <!-- Profile Header -->
+        <section data-section="profile-header">
+            <div>
+                <img src="https://placehold.co/200x200/e0e7ff/4f46e5?text=A" alt="Profile Picture" data-field="profile-image">
+                <button>
+                    <i data-lucide="camera"></i>
+                </button>
+            </div>
+            <div>
+                <h1 data-field="profile-name">abc</h1>
+                <p data-field="profile-major">Computer Engineering, 2nd Year</p>
+                <p data-field="profile-bio">Exploring the future of tech, and connecting with fellow innovators.</p>
+            </div>
+        </section>
+
+        <!-- Two Column Layout -->
+        <div>
+            
+            <!-- Left Column -->
+            <div>
+                <!-- My Activity Dashboard -->
+                <section data-section="activity-dashboard">
+                    <h2>My Activity Dashboard</h2>
+                    <div>
+                        <div>
+                            <button data-tab="registered-events">Registered Events</button>
+                            <button data-tab="my-clubs">My Clubs</button>
+                            <button data-tab="event-history">Event History</button>
+                        </div>
+                    </div>
+                    <div id="activity-content"></div>
+                </section>
+
+                <!-- Achievements & Skills -->
+                <section data-section="achievements-skills">
+                    <h2>Achievements & Skills</h2>
+                    <div>
+                        <div>
+                            <h3>Digital Badges</h3>
+                            <div data-field="profile-badges">
+                                <div class="badge-icon-wrapper">
+                                    <div style="background-color: #fef3c7; color: #d97706;">
+                                        <i data-lucide="award"></i>
+                                    </div>
+                                    <p>Hackathon Veteran</p>
+                                </div>
+                                <div class="badge-icon-wrapper">
+                                    <div style="background-color: #e0f2fe; color: #0284c7;">
+                                        <i data-lucide="wrench"></i>
+                                    </div>
+                                    <p>Workshop Wizard</p>
+                                </div>
+                                <div class="badge-icon-wrapper">
+                                    <div style="background-color: #d1fae5; color: #059669;">
+                                        <i data-lucide="users"></i>
+                                    </div>
+                                    <p>Club Enthusiast</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Acquired Skills</h3>
+                            <div data-field="profile-skills">
+                                <span>Python</span>
+                                <span>Public Speaking</span>
+                                <span>UI/UX Design</span>
+                                <span>Leadership</span>
+                                <span>Git & GitHub</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Projects Showcase -->
+                <section data-section="projects-showcase">
+                    <h2>My Projects Showcase</h2>
+                    <div data-field="profile-projects">
+                        <!-- Project Card 1 -->
+                        <div class="project-card">
+                            <h3>CampusNav App</h3>
+                            <p>An interactive campus map app built during the CodeWave Hackathon.</p>
+                            <div>
+                                <span>#CodeWave</span>
+                                <a href="#">
+                                    GitHub <i data-lucide="arrow-up-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Project Card 2 -->
+                        <div class="project-card">
+                            <h3>AI Lecture Summarizer</h3>
+                            <p>A tool to summarize lectures, created for the Tech Titans Mentorship Program.</p>
+                            <div>
+                                <span>#TechTitans</span>
+                                <a href="#">
+                                    Live Demo <i data-lucide="arrow-up-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <!-- Participation Stats -->
+                <section data-section="participation-stats">
+                    <h2>Participation Stats</h2>
+                    <div>
+                        <div>
+                            <span>Events Attended</span>
+                            <span data-field="stats-events">12</span>
+                        </div>
+                        <div>
+                            <div data-field="stats-events-bar" style="width: 60%; background-color: #4f46e5;"></div>
+                        </div>
+                         <div>
+                            <span>Workshops Completed</span>
+                            <span data-field="stats-workshops">5</span>
+                        </div>
+                        <div>
+                            <div data-field="stats-workshops-bar" style="width: 80%; background-color: #db2777;"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Contributions -->
+                <section data-section="my-contributions">
+                    <h2>My Contributions</h2>
+                    <div>
+                        <div>
+                            <h3>Feedback History</h3>
+                            <div data-field="profile-feedback">
+                                <p>"The AI seminar was insightful, but the audio could be better." - <span>for AI & ML Seminar</span></p>
+                                <p>"Loved the hands-on approach in the Git workshop!" - <span>for Intro to Git & GitHub</span></p>
+                            </div>
+                        </div>
+                         <div>
+                            <h3>Suggestions Log</h3>
+                            <div data-field="profile-suggestions">
+                                <p>Idea for a workshop on "Intro to Docker".</p>
+                                <p>Suggested a "Code & Coffee" monthly meetup.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Personal Calendar -->
+                <section data-section="my-calendar">
+                    <div>
+                        <h2>My Calendar</h2>
+                        <div>
+                            <button id="prev-month-btn">
+                                <i data-lucide="chevron-left"></i>
+                            </button>
+                            <h3 id="month-year-display"></h3>
+                            <button id="next-month-btn">
+                                <i data-lucide="chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="calendar-container"></div>
+                </section>
+
+                <!-- Settings -->
+                <section>
+                     <h2>Settings</h2>
+                     <div>
+                        <button id="edit-profile-btn">
+                            <span>Edit Profile</span>
+                            <i data-lucide="chevron-right"></i>
+                        </button>
+                         <div>
+                             <label for="notifications">
+                                 <span>Event Reminders</span>
+                                 <div class="toggle-switch">
+                                    <input type="checkbox" id="notifications" checked>
+                                    <div class="toggle-bg"></div>
+                                 </div>
+                             </label>
+                         </div>
+                     </div>
+                </section>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Edit Profile Modal -->
+    <div id="profile-modal-overlay">
+        <div id="profile-modal-content">
+            <div id="profile-modal-header">
+                <h2>Edit Your Profile</h2>
+                <button id="profile-modal-close-btn">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <!-- This new container will handle the scrolling -->
+            <div id="profile-modal-scroll-container">
+                <form id="profile-modal-form">
+                    
+                    <!-- Profile Header Section -->
+                    <fieldset>
+                        <legend>Profile Header</legend>
+                        <div>
+                            <label for="modal-profile-image">Profile Image URL</label>
+                            <input type="url" id="modal-profile-image" placeholder="https://your-image-url.com/image.png">
+                        </div>
+                        <div>
+                            <label for="modal-profile-name">Full Name</label>
+                            <input type="text" id="modal-profile-name">
+                        </div>
+                    <div>
+                        <label for="modal-profile-major">Major & Year</label>
+                        <input type="text" id="modal-profile-major">
+                    </div>
+                    <div>
+                        <label for="modal-profile-bio">Bio</label>
+                        <textarea id="modal-profile-bio"></textarea>
+                    </div>
+                </fieldset>
+
+                <!-- Participation Stats -->
+                <fieldset>
+                    <legend>Participation Stats</legend>
+                    <div>
+                        <label for="modal-stats-events">Events Attended</label>
+                        <input type="number" id="modal-stats-events" min="0">
+                    </div>
+                     <div>
+                        <label for="modal-stats-workshops">Workshops Completed</label>
+                        <input type="number" id="modal-stats-workshops" min="0">
+                    </div>
+                </fieldset>
+
+                <!-- Achievements & Skills -->
+                 <fieldset>
+                    <legend>Achievements & Skills</legend>
+                    <div>
+                        <label for="modal-profile-skills">Acquired Skills (comma separated)</label>
+                        <input type="text" id="modal-profile-skills" placeholder="Python, UI/UX Design, Leadership...">
+                    </div>
+                    <div>
+                        <label>Digital Badges</label>
+                        <small>Badge management is not available in this quick edit.</small>
+                    </div>
+                </fieldset>
+
+                <!-- My Projects Showcase -->
+                <fieldset>
+                    <legend>My Projects Showcase</legend>
+                    <div id="modal-projects-container">
+                        <!-- Project fields will be dynamically added here by JS -->
+                    </div>
+                    <small>Project links and adding/deleting projects is not available in this quick edit.</small>
+                </fieldset>
+
+                <!-- My Contributions -->
+                 <fieldset>
+                    <legend>My Contributions</legend>
+                    <div>
+                        <label for="modal-profile-feedback">Feedback History</label>
+                        <textarea id="modal-profile-feedback"></textarea>
+                        <small>Please separate entries with a new line.</small>
+                    </div>
+                     <div>
+                        <label for="modal-profile-suggestions">Suggestions Log</label>
+                        <textarea id="modal-profile-suggestions"></textarea>
+                        <small>Please separate entries with a new line.</small>
+                    </div>
+                </fieldset>
+
+                <!-- Dynamic Sections Note -->
+                <fieldset>
+                    <legend>Dynamic Content</legend>
+                     <small>
+                        "My Activity Dashboard" and "My Calendar" are automatically updated based on your event registrations and club memberships.
+                     </small>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div id="profile-modal-footer">
+                <button id="profile-modal-save-btn">Save Changes</button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            // --- Original Activity Dashboard Logic ---
+            const activityContent = document.getElementById('activity-content');
+            const tabButtons = document.querySelectorAll('button[data-tab]');
+            const contentData = {
+                'registered-events': `
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="background-color: #f8fafc; padding: 1rem; border-radius: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p style="font-weight: 700; margin:0;">Annual Hackathon "CodeWave"</p>
+                                <p style="font-size: 0.875rem; color: #64748b; margin: 0.25rem 0 0 0;">September 5, 2025</p>
+                            </div>
+                            <a href="#" style="color: #4f46e5; font-size: 0.875rem; font-weight: 600; text-decoration: none; flex-shrink: 0;">View Event &rarr;</a>
+                        </div>
+                        <div style="background-color: #f8fafc; padding: 1rem; border-radius: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p style="font-weight: 700; margin:0;">Digital Illustration Workshop</p>
+                                <p style="font-size: 0.875rem; color: #64748b; margin: 0.25rem 0 0 0;">September 22, 2025</p>
+                            </div>
+                            <a href="#" style="color: #4f46e5; font-size: 0.875rem; font-weight: 600; text-decoration: none; flex-shrink: 0;">View Event &rarr;</a>
+                        </div>
+                    </div>`,
+                'my-clubs': `
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                         <a href="tech-titans.html" style="background-color: #f8fafc; padding: 1rem; border-radius: 0.5rem; text-align: center; transition: background-color 0.3s; text-decoration: none; color: inherit; display: block;">
+                            <i data-lucide="cpu" style="width: 2.5rem; height: 2.5rem; color: #6366f1; margin: 0 auto;"></i>
+                            <p style="font-weight: 600; margin-top: 0.5rem; margin-bottom: 0;">Tech Titans</p>
+                            <p style="font-size: 0.75rem; color: #64748b; margin: 0;">Member</p>
+                        </a>
+                        <a href="#" style="background-color: #f8fafc; padding: 1rem; border-radius: 0.5rem; text-align: center; transition: background-color 0.3s; text-decoration: none; color: inherit; display: block;">
+                            <i data-lucide="lightbulb" style="width: 2.5rem; height: 2.5rem; color: #f59e0b; margin: 0 auto;"></i>
+                            <p style="font-weight: 600; margin-top: 0.5rem; margin-bottom: 0;">E-Cell</p>
+                            <p style="font-size: 0.75rem; color: #64748b; margin: 0;">Member</p>
+                        </a>
+                    </div>`,
+                'event-history': `
+                     <div style="font-size: 0.875rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                        <p style="color: #475569; margin: 0;"><span style="font-weight: 600;">Attended:</span> AI & Machine Learning Seminar (August 15, 2025)</p>
+                        <p style="color: #475569; margin: 0;"><span style="font-weight: 600;">Attended:</span> Poetry Slam Workshop (August 2, 2025)</p>
+                     </div>`
+            };
+            
+            function renderContent(tab) {
+                if (activityContent) {
+                    activityContent.innerHTML = contentData[tab];
+                    lucide.createIcons();
+                }
+            }
+            const activeTabStyle = { borderBottomColor: '#4f46e5', color: '#4f46e5', backgroundColor: '#eef2ff' };
+            const inactiveTabStyle = { borderBottomColor: 'transparent', color: '#64748b', backgroundColor: 'transparent' };
+            function applyStyle(element, style) {
+                for (const property in style) {
+                    element.style[property] = style[property];
+                }
+            }
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => applyStyle(btn, inactiveTabStyle));
+                    applyStyle(button, activeTabStyle);
+                    renderContent(button.dataset.tab);
+                });
+            });
+            if (tabButtons.length > 0) {
+                applyStyle(tabButtons[0], activeTabStyle);
+                renderContent('registered-events');
+            }
+
+            // --- Original Interactive Calendar Logic ---
+            const calendarContainer = document.getElementById('calendar-container');
+            const monthYearDisplay = document.getElementById('month-year-display');
+            const prevMonthBtn = document.getElementById('prev-month-btn');
+            const nextMonthBtn = document.getElementById('next-month-btn');
+            const registeredEventDates = ['2025-09-05', '2025-09-22'];
+            const registeredEventDetails = {
+                '2025-09-05': 'Annual Hackathon "CodeWave"',
+                '2025-09-22': 'Digital Illustration Workshop'
+            };
+            let currentDate = new Date(2025, 8, 1);
+            function generateCalendar(date) {
+                if (!calendarContainer) return;
+                const year = date.getFullYear();
+                const month = date.getMonth();
+                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                if (monthYearDisplay) monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                calendarContainer.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.25rem; text-align: center; font-size: 0.75rem; color: #64748b; font-weight: 600;">
+                        ${daysOfWeek.map(day => `<div>${day}</div>`).join('')}
+                    </div>
+                    <div id="calendar-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.25rem; margin-top: 0.5rem;"></div>`;
+                const grid = document.getElementById('calendar-grid');
+                if(!grid) return;
+                for (let i = 0; i < firstDay; i++) { grid.innerHTML += '<div></div>'; }
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const fullDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const isEventDay = registeredEventDates.includes(fullDateStr);
+                    const eventTitle = registeredEventDetails[fullDateStr] || '';
+                    let dayDiv = document.createElement('div');
+                    dayDiv.textContent = day;
+                    let dayStyle = 'height: 2.25rem; display: flex; align-items: center; justify-content: center; border-radius: 9999px; font-size: 0.875rem; position: relative; transition: background-color 0.2s;';
+                    if (isEventDay) {
+                        dayStyle += ' background-color: #4f46e5; color: white; font-weight: 700; cursor: pointer;';
+                        let tooltip = document.createElement('div');
+                        tooltip.textContent = eventTitle;
+                        tooltip.style = 'position: absolute; bottom: 100%; margin-bottom: 0.5rem; width: max-content; background-color: #1e293b; color: white; font-size: 0.75rem; border-radius: 0.375rem; padding: 0.25rem 0.5rem; z-index: 10; pointer-events: none; opacity: 0; transition: opacity 0.2s;';
+                        dayDiv.appendChild(tooltip);
+                        dayDiv.addEventListener('mouseover', () => tooltip.style.opacity = '1');
+                        dayDiv.addEventListener('mouseout', () => tooltip.style.opacity = '0');
+                    } else {
+                        dayDiv.addEventListener('mouseover', () => { if(dayDiv.style.backgroundColor !== '#f1f5f9') dayDiv.style.backgroundColor = '#f1f5f9'; });
+                        dayDiv.addEventListener('mouseout', () => { if(dayDiv.style.backgroundColor === 'rgb(241, 245, 249)') dayDiv.style.backgroundColor = 'transparent'; });
+                    }
+                    dayDiv.style.cssText = dayStyle;
+                    grid.appendChild(dayDiv);
+                }
+            }
+            if(prevMonthBtn) prevMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                generateCalendar(currentDate);
+            });
+            if(nextMonthBtn) nextMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                generateCalendar(currentDate);
+            });
+            generateCalendar(currentDate);
+
+            // --- NEW MODAL LOGIC ---
+
+            // Modal Elements
+            const modalOverlay = document.getElementById('profile-modal-overlay');
+            const modalCloseBtn = document.getElementById('profile-modal-close-btn');
+            const modalSaveBtn = document.getElementById('profile-modal-save-btn');
+            const editProfileBtn = document.getElementById('edit-profile-btn');
+
+            // Page Content Elements
+            const profileImage = document.querySelector('[data-field="profile-image"]');
+            const profileName = document.querySelector('[data-field="profile-name"]');
+            const profileMajor = document.querySelector('[data-field="profile-major"]');
+            const profileBio = document.querySelector('[data-field="profile-bio"]');
+            const statsEvents = document.querySelector('[data-field="stats-events"]');
+            const statsEventsBar = document.querySelector('[data-field="stats-events-bar"]');
+            const statsWorkshops = document.querySelector('[data-field="stats-workshops"]');
+            const statsWorkshopsBar = document.querySelector('[data-field="stats-workshops-bar"]');
+            const profileSkillsContainer = document.querySelector('[data-field="profile-skills"]');
+            const profileProjectsContainer = document.querySelector('[data-field="profile-projects"]');
+            const profileFeedbackContainer = document.querySelector('[data-field="profile-feedback"]');
+            const profileSuggestionsContainer = document.querySelector('[data-field="profile-suggestions"]');
+
+            // Modal Form Inputs
+            const modalProfileImage = document.getElementById('modal-profile-image');
+            const modalProfileName = document.getElementById('modal-profile-name');
+            const modalProfileMajor = document.getElementById('modal-profile-major');
+            const modalProfileBio = document.getElementById('modal-profile-bio');
+            const modalStatsEvents = document.getElementById('modal-stats-events');
+            const modalStatsWorkshops = document.getElementById('modal-stats-workshops');
+            const modalProfileSkills = document.getElementById('modal-profile-skills');
+            const modalProjectsContainer = document.getElementById('modal-projects-container');
+            const modalProfileFeedback = document.getElementById('modal-profile-feedback');
+            const modalProfileSuggestions = document.getElementById('modal-profile-suggestions');
+
+            // Function to open the modal
+            function openModal() {
+                // --- Populate Modal with current data ---
+                
+                // 1. Profile Header
+                modalProfileImage.value = profileImage.src;
+                modalProfileName.value = profileName.textContent;
+                modalProfileMajor.value = profileMajor.textContent;
+                modalProfileBio.value = profileBio.textContent;
+
+                // 2. Stats
+                modalStatsEvents.value = statsEvents.textContent;
+                modalStatsWorkshops.value = statsWorkshops.textContent;
+
+                // 3. Skills
+                const skills = Array.from(profileSkillsContainer.querySelectorAll('span')).map(span => span.textContent);
+                modalProfileSkills.value = skills.join(', ');
+
+                // 4. Projects
+                modalProjectsContainer.innerHTML = ''; // Clear old projects
+                const projectCards = profileProjectsContainer.querySelectorAll('.project-card');
+                projectCards.forEach((card, index) => {
+                    const title = card.querySelector('h3').textContent;
+                    const desc = card.querySelector('p').textContent;
+                    const tag = card.querySelector('span').textContent;
+                    const linkText = card.querySelector('a').textContent.trim();
+
+                    const projectHTML = `
+                        <div class="modal-project-item" data-project-index="${index}">
+                            <div>
+                                <label for="modal-project-title-${index}">Project Title</label>
+                                <input type="text" id="modal-project-title-${index}" value="${title}">
+                            </div>
+                            <div>
+                                <label for="modal-project-desc-${index}">Description</label>
+                                <textarea id="modal-project-desc-${index}">${desc}</textarea>
+                            </div>
+                            <div>
+                                <label for="modal-project-tag-${index}">Tag</label>
+                                <input type="text" id="modal-project-tag-${index}" value="${tag}">
+                            </div>
+                            <div>
+                                <label for="modal-project-link-${index}">Link Text</label>
+                                <input type="text" id="modal-project-link-${index}" value="${linkText}">
+                            </div>
+                        </div>
+                    `;
+                    modalProjectsContainer.insertAdjacentHTML('beforeend', projectHTML);
+                });
+
+                // 5. Contributions
+                // Helper to convert <p> tags to textarea text
+                const pToText = (container) => {
+                    return Array.from(container.querySelectorAll('p')).map(p => p.textContent.trim()).join('\n');
+                };
+                modalProfileFeedback.value = pToText(profileFeedbackContainer);
+                modalProfileSuggestions.value = pToText(profileSuggestionsContainer);
+
+                // --- Show the modal ---
+                document.body.classList.add('modal-open');
+                lucide.createIcons(); // Re-create icons for the modal (like the 'x' button)
+            }
+
+            // Function to close the modal
+            function closeModal() {
+                document.body.classList.remove('modal-open');
+            }
+
+            // Function to save changes
+            function saveChanges() {
+                // 1. Profile Header
+                profileImage.src = modalProfileImage.value || 'https://placehold.co/200x200/e0e7ff/4f46e5?text=A'; // Fallback
+                profileImage.onerror = () => { profileImage.src = 'https://placehold.co/200x200/e0e7ff/4f46e5?text=A'; }; // Handle broken links
+                profileName.textContent = modalProfileName.value;
+                profileMajor.textContent = modalProfileMajor.value;
+                profileBio.textContent = modalProfileBio.value;
+
+                // 2. Stats
+                const eventsVal = parseInt(modalStatsEvents.value, 10) || 0;
+                const workshopsVal = parseInt(modalStatsWorkshops.value, 10) || 0;
+                statsEvents.textContent = eventsVal;
+                statsWorkshops.textContent = workshopsVal;
+                // Update progress bars (simple logic, max 20 for 100%)
+                statsEventsBar.style.width = `${Math.min(eventsVal * 5, 100)}%`; 
+                statsWorkshopsBar.style.width = `${Math.min(workshopsVal * 10, 100)}%`;
+
+                // 3. Skills
+                profileSkillsContainer.innerHTML = ''; // Clear old skills
+                const newSkills = modalProfileSkills.value.split(',')
+                                      .map(s => s.trim())
+                                      .filter(s => s.length > 0);
+                newSkills.forEach(skill => {
+                    profileSkillsContainer.innerHTML += `<span>${skill}</span>`;
+                });
+
+                // 4. Projects
+                const modalProjectItems = modalProjectsContainer.querySelectorAll('.modal-project-item');
+                modalProjectItems.forEach((item, index) => {
+                    const pageCard = profileProjectsContainer.querySelectorAll('.project-card')[index];
+                    if (pageCard) {
+                        const title = item.querySelector(`#modal-project-title-${index}`).value;
+                        const desc = item.querySelector(`#modal-project-desc-${index}`).value;
+                        const tag = item.querySelector(`#modal-project-tag-${index}`).value;
+                        const linkText = item.querySelector(`#modal-project-link-${index}`).value;
+
+                        pageCard.querySelector('h3').textContent = title;
+                        pageCard.querySelector('p').textContent = desc;
+                        pageCard.querySelector('span').textContent = tag;
+                        
+                        // Robust check for link and icon
+                        const link = pageCard.querySelector('a');
+                        if (link) { // Only proceed if a link tag exists
+                            const icon = link.querySelector('i'); // Find the icon
+                            link.textContent = linkText + ' '; // Set the new text, add a space
+                            if (icon) { // Only append the icon if it was found
+                                link.appendChild(icon);
+                            }
+                        }
+                    }
+                });
+
+                // 5. Contributions
+                // Helper to convert textarea text to <p> tags
+                const textToP = (container, text) => {
+                    container.innerHTML = ''; // Clear old
+                    const lines = text.split('\n').filter(line => line.trim().length > 0);
+                    lines.forEach(line => {
+                        // A simple heuristic to find the "for" part
+                        const parts = line.split(' - for ');
+                        if (parts.length === 2) {
+                            container.innerHTML += `<p>"${parts[0]}" - <span>for ${parts[1]}</span></p>`;
+                        } else {
+                            container.innerHTML += `<p>${line}</p>`;
+                        }
+                    });
+                };
+                textToP(profileFeedbackContainer, modalProfileFeedback.value);
+                textToP(profileSuggestionsContainer, modalProfileSuggestions.value);
+                
+                // Close modal after saving
+                closeModal();
+            }
+
+            // --- Attach Event Listeners ---
+            if (editProfileBtn) {
+                editProfileBtn.addEventListener('click', openModal);
+            }
+            if (modalCloseBtn) {
+                modalCloseBtn.addEventListener('click', closeModal);
+            }
+            if (modalOverlay) {
+                // Close when clicking the dark background
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target === modalOverlay) {
+                        closeModal();
+                    }
+                });
+            }
+            if (modalSaveBtn) {
+                modalSaveBtn.addEventListener('click', saveChanges);
+            }
+            // Also close with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && document.body.classList.contains('modal-open')) {
+                    closeModal();
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+
+
