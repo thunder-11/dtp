@@ -1,0 +1,365 @@
+/* General styling based on your screenshots */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5; /* Light grey background */
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    max-width: 960px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+/* Header/Navbar styling (adjust to match your existing nav) */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.navbar-brand {
+    background: linear-gradient(to right, #4f46e5, #ec4899);
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-size: 30px;
+    font-weight: 700;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #3498db;
+}
+
+.user-profile-nav {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile-nav .abc {
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.profile-icon {
+    display: block;
+    width: 36px;
+    height: 36px;
+    background-color: #3498db; /* Blue circle */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
+/* Profile Edit Card */
+.profile-edit-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.profile-edit-card h2 {
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+/* Profile Picture Section */
+.profile-picture-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-pic-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 30px;
+    border: 3px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.current-profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#current-profile-display {
+    font-size: 7.5em; /* Keep font-size large for icons */
+    line-height: 1; 
+}
+
+.upload-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #3498db;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease;
+}
+
+.upload-icon:hover {
+    background-color: #2980b9;
+}
+
+.profile-pic-actions {
+    display: flex;
+    gap: 15px;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group textarea {
+    width: calc(100% - 20px); /* Account for padding */
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="url"]:focus,
+.form-group textarea:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Section Headings for Skills/Projects */
+h3 {
+    font-size: 1.4em;
+    color: #333;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 10px;
+}
+
+/* Skills & Achievements Tags */
+.tag-input-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.skill-tag {
+    background-color: #e9f5fd; /* Light blue */
+    color: #3498db;
+    padding: 8px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.9em;
+    border: 1px solid #cce7f8;
+}
+
+.skill-tag .remove-tag {
+    background: none;
+    border: none;
+    color: #3498db;
+    margin-left: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 0;
+    line-height: 1;
+}
+
+#new-skill-input {
+    flex-grow: 1;
+    min-width: 150px;
+    padding: 8px 10px;
+    border: 1px solid #eee; /* Lighter border for inline input */
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Projects Edit Section */
+.projects-edit-section {
+    margin-bottom: 30px;
+}
+
+.project-item {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.project-item input,
+.project-item textarea {
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+.project-item textarea {
+    min-height: 60px;
+}
+
+.project-item input:focus,
+.project-item textarea:focus {
+    border-color: #7bc1eb;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+}
+
+.remove-item-btn {
+    margin-top: 10px;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    border: none;
+}
+
+/* --- UPDATED BUTTON STYLES FOR PILL SHAPE, PADDING, FONT, AND SHADOW --- */
+.btn {
+    /* Base structural styles from user request */
+    display: inline-block;
+    padding: 1rem 2rem; /* Large padding */
+    border-radius: 9999px; /* Pill shape */
+    cursor: pointer;
+    font-size: 1.125rem; /* Larger font size */
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    /* Color and Shadow requested for "Edit Profile" (Save Changes / Change Picture) */
+    background-color: #4f46e5; /* Vibrant indigo */
+    color: white;
+    /* Custom Shadow using indigo color */
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4), 0 4px 6px -2px rgba(79, 70, 229, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #4338ca; /* Slightly darker indigo on hover */
+    transform: translateY(-2px);
+    /* Deeper shadow on hover */
+    box-shadow: 0 15px 20px -5px rgba(79, 70, 229, 0.5), 0 6px 10px -3px rgba(79, 70, 229, 0.3);
+}
+
+.btn-secondary {
+    /* Secondary/Cancel buttons inherit structure but keep light style */
+    background-color: #ecf0f1; /* Light grey */
+    color: #555;
+    border: 1px solid #ddd;
+    box-shadow: none; /* No shadow for secondary buttons */
+    padding: 1rem 2rem; /* Keep pill shape padding */
+}
+
+.btn-secondary:hover {
+    background-color: #dbe4e6;
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    /* Delete Picture button: Keep red color but apply pill shape and red shadow */
+    background-color: #e74c3c; /* Red */
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(231, 76, 60, 0.4), 0 4px 6px -2px rgba(231, 76, 60, 0.2);
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    /* Deeper shadow on hover */
+    box-shadow: 0 15px 20px -5px rgba(231, 76, 60, 0.5), 0 6px 10px -3px rgba(231, 76, 60, 0.3);
+}
+
+.add-btn {
+    /* Override for smaller inline buttons (like "Add Skill" or "Add New Project") */
+    padding: 8px 15px;
+    font-size: 0.95em;
+    border-radius: 6px;
+    box-shadow: none;
+    transform: none;
+}
+/* --- END UPDATED BUTTON STYLES --- */
+
+.form-actions {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}

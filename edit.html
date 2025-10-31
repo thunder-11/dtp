@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - ClubHub</title>
+    <link rel="stylesheet" href="edit.css"> <!-- Link to your main CSS file --><link rel="stylesheet" href="edit_profile.css"> <!-- Link to specific CSS for this page --><!-- You might also want to link to Font Awesome for icons if you use them --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <!-- This would be your existing header/navbar from the other pages --><nav class="navbar">
+            <div class="navbar-brand">ClubHub</div>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="clubs.html">Clubs</a></li>
+                <li><a href="events.html">Events</a></li>
+            </ul>
+            <div class="user-profile-nav">
+                <span class="abc">abc</span>
+                <a href="profile.html" class="profile-icon">
+                    <i class="fas fa-user"></i> <!-- Example user icon --></a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="profile-edit-card">
+            <h2>Edit Profile</h2>
+
+            <div class="profile-picture-section">
+                <div class="profile-pic-container">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <i id="current-profile-display" class="fa-solid fa-circle-user" style="color: #B197FC;"></i>
+                    
+                    <!-- The label and input must remain below the icon -->
+                    <label for="profile-pic-upload" class="upload-icon"><i class="fas fa-camera"></i></label>
+                    <input type="file" id="profile-pic-upload" accept="image/*" style="display: none;">
+                </div>
+                    
+                </div>
+                <div class="profile-pic-actions">
+                    <button class="btn btn-secondary">Change Picture</button>
+                    <button class="btn btn-danger">Delete Picture</button>
+                </div>
+            </div>
+
+            <form class="edit-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" value="abc" placeholder="Your Name">
+                </div>
+
+                <div class="form-group">
+                    <label for="major">Major</label>
+                    <input type="text" id="major" value="Computer Engineering" placeholder="Your Major">
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <input type="text" id="year" value="2nd Year" placeholder="Your Academic Year">
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">Bio / Tagline</label>
+                    <textarea id="bio" placeholder="Exploring the future of tech, and connecting with fellow innovators.">Exploring the future of tech, and connecting with fellow innovators.</textarea>
+                </div>
+
+                <h3>Skills & Achievements</h3>
+                <div id="skills-achievements-list" class="tag-input-section">
+                    <!-- Existing skills/achievements would be loaded here --><div class="skill-tag">Python <button type="button" class="remove-tag">&times;</button></div>
+                    <div class="skill-tag">Public Speaking <button type="button" class="remove-tag">&times;</button></div>
+                    <input type="text" id="new-skill-input" placeholder="Add new skill/achievement">
+                    <button type="button" class="btn btn-primary add-btn">Add Skill</button>
+                </div>
+
+                <h3>My Projects</h3>
+                <div id="projects-list" class="projects-edit-section">
+                    <!-- Existing projects --><div class="project-item">
+                        <input type="text" value="CampusNav App" class="project-title-input">
+                        <textarea class="project-desc-input">An interactive campus map app built during the CodeWave Hackathon.</textarea>
+                        <input type="text" value="#CodeWave" class="project-tag-input">
+                        <input type="url" value="https://github.com/yourproject" class="project-link-input" placeholder="GitHub Link">
+                        <button type="button" class="btn btn-danger remove-item-btn">Remove Project</button>
+                    </div>
+                    <div class="project-item">
+                        <input type="text" value="AI Lecture Summarizer" class="project-title-input">
+                        <textarea class="project-desc-input">A tool to summarize lectures, created for the Tech Titans Mentorship Program.</textarea>
+                        <input type="text" value="#TechTitans" class="project-tag-input">
+                        <input type="url" value="https://livedemo.com/summarizer" class="project-link-input" placeholder="Live Demo Link">
+                        <button type="button" class="btn btn-danger remove-item-btn">Remove Project</button>
+                    </div>
+                    <button type="button" class="btn btn-secondary add-btn">Add New Project</button>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Your existing footer content --></footer>
+
+    <script src="edit_profile.js"></script> <!-- For dynamic additions/removals --></body>
+</html>
