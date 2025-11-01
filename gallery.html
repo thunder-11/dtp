@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Hub Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        /* Gallery section */
+        .gallery-container {
+            padding: 3rem 1.25rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 640px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Gallery heading styles */
+        .section-heading {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-heading h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-heading p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 1.5rem;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-item-date {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: #64748b;
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="#" class="gradient-text" style="font-size: 1.875rem; font-weight: 700;">ClubHub</a>
+            <div class="nav-links">
+                <a class="nav-link">Home</a>
+                <a onclick="window.location.href = 'events.html'" class="nav-link">Events</a>
+                <a href="#clubs" class="nav-link">Clubs</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
+                <a href="#leaderboard" class="nav-link">Winners</a>
+            </div>
+            <div class="profile-section">
+                <div class="sign">
+                    <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
+                        Login
+                    </a>
+                </div>
+            </div>
+            <button id="mobile-menu-button" class="mobile-menu-button">
+                <i data-lucide="menu"></i>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="mobile-menu">
+
+        </div>
+    </header>
+
+
+    <!-- Gallery Section -->
+    <div class="gallery-container">
+        <div class="section-heading">
+            <h2>Gallery</h2>
+            <p>Explore our memorable moments and achievements</p>
+        </div>
+
+        <div class="gallery-grid">
+            <!-- Gallery Item 1 -->
+            <div class="gallery-item">
+                <img src="https://www.eventbrite.com/blog/wp-content/uploads/2022/11/image14-min-1.png" alt="Tech Event">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-item-title">Tech Summit 2025</div>
+                    <div class="gallery-item-date">October 15, 2025</div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 2 -->
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?cs=srgb&dl=pexels-fauxels-3183197.jpg&fm=jpg" alt="Workshop">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-item-title">AI Workshop</div>
+                    <div class="gallery-item-date">September 28, 2025</div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 3 -->
+            <div class="gallery-item">
+                <img src="https://www.brightidea.com/wp-content/uploads/Hackathon-Benefits.png" alt="Hackathon">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-item-title">Hackathon 2025</div>
+                    <div class="gallery-item-date">August 20, 2025</div>
+                </div>
+            </div>
+
+            <!-- Gallery Item 4 -->
+            <div class="gallery-item">
+                <img src="https://thedailytexan.com/wp-content/uploads/2019/09/coding_2019-09-14_Terminal_Coding_Competition_Joshua.Guenther13782-scaled.jpg" alt="Coding Competition">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-item-title">Code Wars</div>
+                    <div class="gallery-item-date">July 15, 2025</div>
+                </div>
+            </div>
+
+            <!-- Add more gallery items as needed -->
+        </div>
+    </div>
+
+    <!-- Connect Section -->
+    <section class="connect-section">
+        <div class="section-heading">
+            <h2>Connect now!</h2>
+            <p>This is all you need to know</p>
+        </div>
+        <div class="connect-info">
+            <div class="info-box">
+                <!-- Placeholder for additional information -->
+                <p>Join our community and stay updated with the latest events and activities!</p>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* Connect section styles */
+        .connect-section {
+            padding: 4rem 1.25rem;
+            background-color: #f8fafc;
+        }
+
+        .connect-info {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .info-box {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .info-box p {
+            color: #666;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+    </style>
+
+     <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <h3 class="gradient-text" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">ClubHub</h3>
+                <p style="color: #94a3b8;">Connecting students, fostering talent, and creating memories.</p>
+            </div>
+            <div>
+                <h4 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Quick Links</h4>
+                <ul style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <li><a href="#events" class="nav-link" style="color: #94a3b8;">Upcoming Events</a></li>
+                    <li><a href="#clubs" class="nav-link" style="color: #94a3b8;">Find a Club</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Follow Us</h4>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="#" class="nav-link" style="color: #94a3b8;"><i data-lucide="twitter"></i></a>
+                    <a href="#" class="nav-link" style="color: #94a3b8;"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="nav-link" style="color: #94a3b8;"><i data-lucide="linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div style="border-top: 1px solid #1e293b; text-align: center; padding: 1.5rem 0;">
+            <p style="color: #64748b;">&copy; 2025 ClubHub. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
