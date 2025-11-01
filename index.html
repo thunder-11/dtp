@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClubHub - Your Campus Event Central</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    
+    <style>
+        /* All your existing CSS */
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .container {
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        .header {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            max-width: 1024px;
+            margin: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        .nav-links { display: none; }
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+            }
+        }
+        .nav-link {
+            color: #475569;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        .nav-link:hover { color: #4f46e5; }
+        .footer-nav-link {
+            color: #94a3b8;
+            transition: color 0.3s;
+        }
+        .footer-nav-link:hover {
+            color: white;
+        }
+
+        .profile-section { display: none; }
+        @media (min-width: 768px) {
+            .profile-section { display: flex; align-items: center; gap: 0.75rem; }
+        }
+        .custom-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .mobile-menu-button { display: block; }
+        @media (min-width: 768px) {
+            .mobile-menu-button { display: none; }
+        }
+        .mobile-menu { display: none; }
+        #home { text-align: center; padding: 5rem 0; scroll-margin-top: 80px; }
+        #events { scroll-margin-top: 80px; }
+        #clubs { scroll-margin-top: 80px; }
+        #gallery { scroll-margin-top: 80px; }
+        #leaderboard { scroll-margin-top: 80px; }
+        
+        #home h1 { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; }
+        @media (min-width: 768px) { #home h1 { font-size: 4.5rem; } }
+        #home p { font-size: 1.125rem; color: #475569; max-width: 56rem; margin: 0 auto 2rem; }
+        @media (min-width: 768px) { #home p { font-size: 1.25rem; } }
+        .hero-button {
+            display: inline-block;
+            background-color: #4f46e5;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4), 0 4px 6px -2px rgba(79, 70, 229, 0.2);
+            cursor: pointer;
+        }
+        .hero-button:hover { background-color: #4338ca; transform: scale(1.05); }
+        .section { padding: 4rem 0; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-title { font-size: 2.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .section-subtitle { color: #64748b; }
+        .grid-container { display: grid; gap: 2rem; grid-template-columns: repeat(1, 1fr); }
+        @media (min-width: 768px) { .grid-container { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .grid-container-3-col { grid-template-columns: repeat(3, 1fr); } }
+        .all-events { text-align: center; margin-top: 2rem; }
+        .btn {
+            background-color: #eef2ff;
+            color: #4338ca;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover { background-color: #e0e7ff; }
+        .slider { overflow: hidden; }
+        .slide-track { display: flex; animation: scroll 40s linear infinite; }
+        .slide { flex-shrink: 0; width: 300px; padding: 10px; }
+        .slide img { width: 100%; border-radius: 0.5rem; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-3000px); } }
+        
+        /* Footer */
+        .site-footer { 
+            background-color: #0f172a; 
+            color: white; 
+            padding-top: 4rem;
+            border-top-left-radius: 1.5rem; /* rounded-t-3xl */
+            border-top-right-radius: 1.5rem; /* rounded-t-3xl */
+        }
+        .footer-grid { 
+            display: grid; 
+            gap: 2rem; 
+            padding-bottom: 3rem;
+            grid-template-columns: repeat(1, 1fr);
+        }
+        @media (min-width: 640px) {
+             .footer-grid {
+                grid-template-columns: repeat(3, 1fr);
+             }
+        }
+        .footer-grid h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        .footer-grid p, .footer-grid li {
+            color: #94a3b8;
+        }
+        .footer-grid .footer-about {
+            grid-column: span 1;
+        }
+        @media (min-width: 640px) {
+            .footer-grid .footer-about {
+                grid-column: span 3 / span 3;
+            }
+        }
+         @media (min-width: 768px) {
+            .footer-grid .footer-about {
+                grid-column: span 1 / span 1;
+            }
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .two-col-layout {
+            display: grid;
+            gap: 4rem;
+            padding: 4rem 0;
+        }
+        @media (min-width: 1024px) {
+            .two-col-layout {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+        .leaderboard-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            height: 350px;
+            overflow-y: auto;
+        }
+        .news-item {
+            background-color: white;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            transition: box-shadow 0.3s;
+        }
+        .news-item:hover {
+             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .news-meta {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+        .leaderboard-rank {
+            font-weight: 700;
+            color: #334155;
+            width: 1.5rem;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+        .leaderboard-name {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .leaderboard-event {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        /* This is the CSS that powers your working modals */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 1rem;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 0; 
+            border-radius: 1.5rem; 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 48rem; 
+            position: relative;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+        }
+        .modal-body {
+            overflow-y: auto; 
+            padding: 2rem; 
+            flex-grow: 1; 
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #94a3b8; 
+            z-index: 60; 
+        }
+        .modal-close-btn:hover {
+            color: #1e293b; 
+        }
+        .hidden {
+            display: none;
+        }
+
+        #clubs {
+            background-color: #f1f5f9;
+            border-radius: 1.5rem;
+        }
+        .club-item {
+            text-align: center;
+        }
+        .club-logo-container {
+            background-color: white;
+            width: 8rem;
+            height: 8rem;
+            margin: 0 auto;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .club-item:hover .club-logo-container {
+            background-color: #4f46e5;
+            transform: scale(1.1);
+        }
+        .club-logo {
+            width: 4rem;
+            height: 4rem;
+            color: #4f46e5;
+            transition: color 0.3s;
+        }
+        .club-item:hover .club-logo {
+            color: white;
+        }
+        .club-name {
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+        
+        /* STYLES FOR CLUBS (FIXED) */
+        @media (min-width: 768px) {
+            /* This ID selector makes the rule more specific, fixing the override bug */
+            #club-list.grid-container-5-col {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        
+        .event-filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 9999px;
+            font-weight: 600;
+            color: #475569; 
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-grow: 1; 
+            text-align: center;
+        }
+        .event-filter-btn.active, .event-filter-btn:hover {
+            background-color: white;
+            color: #4f46e5; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- === THIS SECTION IS REBUILT === -->
+    <!-- It now uses the .modal-overlay and .modal-content classes -->
+    <div id="success-modal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 28rem; padding: 2.5rem; text-align: center; overflow: hidden;">
+            <i class="fa-regular fa-circle-check" style="font-size: 70px; color: #4f46e5;"></i>
+            <h2 id="message" style="font-size: 25px; font-weight: 500; color: #1e293b; margin-top: 20px;">
+                Registered Successfully!
+            </h2>
+            <div class="buttons" style="margin-top: 25px;">
+                <button class="custom-button" style="background-color: #4f46e5; padding: 0.75rem 2rem;" onclick="exitModal()">
+                    Ok
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.html" class="gradient-text" style="font-size: 1.875rem; font-weight: 700;">ClubHub</a>
+            <div class="nav-links">
+                <a href="#home" class="nav-link">Home</a>
+                <a onclick="window.location.href = 'events.html'" class="nav-link">Events</a>
+                <a href="#clubs" class="nav-link">Clubs</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
+                <a href="#leaderboard" class="nav-link">Winners</a>
+            </div>
+            <div class="profile-section">
+                <div class="sign">
+                    <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
+                        Login
+                    </a>
+                </div>
+            </div>
+            <button id="mobile-menu-button" class="mobile-menu-button">
+                <i data-lucide="menu"></i>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="mobile-menu">
+        </div>
+    </header>
+
+    <main>
+        <section id="home">
+            <div class="container">
+                <h1>Discover, Engage, <span class="gradient-text">Excel.</span></h1>
+                <p>Your central hub for all club activities, workshops, and events. Dive into a vibrant campus community and
+                    never miss an opportunity.</p>
+                <a class="hero-button" onclick="fun(event)">Explore Upcoming Events</a>
+            </div>
+        </section>
+
+        <section id="events" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">All Events & Workshops</h2> 
+                    <p class="section-subtitle">See what's happening, what's new, and what you missed.</p> 
+                </div>
+
+                <div id="event-filter-buttons" style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 2.5rem; border-radius: 9999px; background-color: #f1f5f9; padding: 0.5rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+                    <button id="filter-btn-upcoming" class="event-filter-btn" onclick="showEvents('upcoming')">
+                        Upcoming
+                    </button>
+                    <button id="filter-btn-present" class="event-filter-btn" onclick="showEvents('present')">
+                        Ongoing
+                    </button>
+                    <button id="filter-btn-past" class="event-filter-btn" onclick="showEvents('past')">
+                        Past
+                    </button>
+                </div>
+
+                <div id="events-container" class="grid-container grid-container-3-col">
+                    <!-- Events will be loaded here by JS -->
+                </div>
+                
+            </div>
+        </section>
+
+        <section id="clubs" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Clubs</h2>
+                    <p class="section-subtitle">Explore the diverse clubs driving our campus culture.</p>
+                </div>
+                <div id="club-list" class="grid-container grid-container-5-col" style="padding: 0 1rem;">
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="two-col-layout">
+                <section id="news">
+                    <div class="section-header" style="text-align: left; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h2 class="section-title" style="margin-bottom: 0;">Latest News</h2>
+                            <p class="section-subtitle">The freshest updates from across the clubs.</p>
+                        </div>
+                        <a href="#" id="view-all-news-btn" class="nav-link" style="font-weight: 600; display:flex; align-items:center; gap: 0.25rem;">
+                            <span>View All News</span>
+                            <i data-lucide="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
+                        </a>
+                    </div>
+                    <div id="news-feed" style="display: flex; flex-direction: column; gap: 1.5rem;"></div>
+                </section>
+                <section id="leaderboard">
+                     <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+                         <h2 class="section-title">Hall of Fame</h2>
+                         <p class="section-subtitle">Celebrating our recent winners.</p>
+                     </div>
+                    <div class="leaderboard-container">
+                        <ul id="leaderboard-list" style="display: flex; flex-direction: column; gap: 1rem;"></ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <section id="gallery" class="section">
+             <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Event Snapshots</h2>
+                    <p class="section-subtitle">A glimpse into the vibrant moments from our past events.</p>
+                </div>
+                <div class="slider">
+                    <div class="slide-track">
+                        <div class="slide"><img src="https://placehold.co/300x200/a78bfa/ffffff?text=Event+1" alt="Event 1"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/ec4899/ffffff?text=Hackathon" alt="Hackathon"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/8b5cf6/ffffff?text=Workshop" alt="Workshop"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/ef4444/ffffff?text=Winners" alt="Winners"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/f59e0b/ffffff?text=Projects" alt="Projects"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/10b981/ffffff?text=Teamwork" alt="Teamwork"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/3b82f6/ffffff?text=Coding" alt="Coding"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/a78bfa/ffffff?text=Event+1" alt="Event 1"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/ec4899/ffffff?text=Hackathon" alt="Hackathon"></div>
+                        <div class="slide"><img src="https://placehold.co/300x200/8b5cf6/ffffff?text=Workshop" alt="Workshop"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <footer class="site-footer">
+            <!-- Footer content remains unchanged -->
+            <div class="container footer-grid">
+                <div class="footer-about">
+                    <h3 class="gradient-text" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">ClubHub</h3>
+                    <p>Connecting students, fostering talent, and creating memories.</p>
+                </div>
+                <div>
+                    <h4>Navigate</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home" class="footer-nav-link">Home</a></li>
+                        <li><a href="#events" class="footer-nav-link">Events</a></li>
+                        <li><a href="#clubs" class="footer-nav-link">Clubs</a></li>
+                        <li><a href="#gallery" class="footer-nav-link">Gallery</a></li>
+                        <li><a href="#leaderboard" class="footer-nav-link">Winners</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-nav-link">Start a Club</a></li>
+                        <li><a href="#" class="footer-nav-link">Event Guidelines</a></li>
+                        <li><a href="admin.html" class="footer-nav-link">Admin Login</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container footer-bottom">
+                <p style="color: #64748b; font-size: 0.875rem;">&copy; 2025 ClubHub. All Rights Reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="footer-nav-link"><i data-lucide="twitter"></i></a>
+                    <a href="#" class="footer-nav-link"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="footer-nav-link"><i data-lucide="linkedin"></i></a>
+                </div>
+            </div>
+         </footer>
+        
+    </main>
+
+    <!-- === NEW CONFIRMATION MODAL === -->
+    <div id="confirmation-modal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 28rem;"> <!-- Smaller width -->
+            <div style="padding: 2rem;">
+                <h2 class="section-title" style="text-align: left; margin-bottom: 1rem;">Confirm Registration</h2>
+                <p class="section-subtitle" style="text-align: left; margin-bottom: 1.5rem;">You are registering for this event as:</p>
+                
+                <!-- User Info -->
+                <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem; margin-bottom: 2rem;">
+                    <p id="confirm-username" style="font-weight: 600; color: #1e293b; font-size: 1.125rem;">Student Name</p>
+                    <p id="confirm-email" style="color: #64748b; font-size: 0.875rem;">student.email@example.com</p>
+                </div>
+                
+                <!-- Buttons -->
+                <div style="display: flex; gap: 0.75rem;">
+                    <button id="cancel-registration-btn" 
+                            class="custom-button" 
+                            style="flex-grow: 1; background-color: #64748b; text-align: center; justify-content: center; padding: 0.75rem;">
+                        Cancel
+                    </button>
+                    <button id="confirm-registration-btn" 
+                            class="custom-button" 
+                            style="flex-grow: 1; background-color: #4f46e5; text-align: center; justify-content: center; padding: 0.75rem;">
+                        Confirm & Register
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="all-news-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="section-header" style="margin-bottom: 1.5rem;">
+                <h2 class="section-title">All News Updates</h2>
+                <p class="section-subtitle">The complete feed of updates from all our clubs.</p>
+            </div>
+            <div id="all-news-feed" class="modal-body"></div>
+            <button id="close-news-modal" class="modal-close-btn">
+                <i data-lucide="x" style="width: 2rem; height: 2rem;"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div id="event-detail-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-event-detail-modal" class="modal-close-btn">
+                <i data-lucide="x" style="width: 1.5rem; height: 1.5rem;"></i>
+            </button>
+            
+            <div id="event-detail-header" style="padding: 2rem; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; flex-shrink: 0;">
+                <span id="event-detail-type" style="font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px;"></span>
+                <h1 id="event-detail-name" style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-top: 1rem;"></h1>
+                <p id="event-detail-host" style="font-size: 1.25rem; color: #475569; margin-top: 0.5rem;"></p>
+            </div>
+            
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; @media (min-width: 768px) { grid-template-columns: repeat(3, 1fr); }">
+                    <div id="event-detail-desc" style="grid-column: span 1; @media (min-width: 768px) { grid-column: span 2; } display: flex; flex-direction: column; gap: 1rem; color: #475569;">
+                        </div>
+                    
+                    <div style="grid-column: span 1;">
+                        <div id="event-detail-info-box" style="background-color: #f1f5f9; border-radius: 1rem; padding: 1.5rem; display: flex; flex-direction: column;">
+                            </div>
+                        <button id="event-detail-register-btn" style="width: 100%; background-color: #4f46e5; color: white; font-weight: 700; padding: 0.75rem 1.5rem; border-radius: 0.5rem; margin-top: 1.5rem; transition: background-color 0.3s; cursor: pointer; border: none;">
+                            Register Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        // --- 1. FIREBASE INITIALIZATION ---
+        const firebaseConfig = {
+         apiKey: "AIzaSyCaLA-ROmNplFqBgyRngEgiJqNuIYhty0c",
+         authDomain: "clubhub-5add8.firebaseapp.com",
+         projectId: "clubhub-5add8",
+         storageBucket: "clubhub-5add8.firebasestorage.app",
+         messagingSenderId: "185734043029",
+         appId: "1:185734043029:web:645967f9f50fd926c7529c",
+         measurementId: "G-10KYVLP66J"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth(); 
+
+        // --- 2. STATIC DATA (Clubs) ---
+        const clubs = [
+            { name: 'Tech Titans', logo: 'cpu', page: 'tech-titans.html' },
+            { name: 'Creative Coders', logo: 'code-2', page: 'creative-coders.html' },
+            { name: 'Art & Design', logo: 'palette', page: 'art-design.html' },
+            { name: 'E-Cell', logo: 'lightbulb', page: 'e-cell.html' },
+            { name: 'Music Mavericks', logo: 'music', page: 'music-mavericks.html' },
+            { name: 'Literary Society', logo: 'book-open', page: 'literary-society.html' },
+            { name: 'Eco Warriors', logo: 'leaf', page: 'eco-warriors.html' },
+            { name: 'Film Club', logo: 'film', page: 'film-club.html' },
+            { name: 'Debate Union', logo: 'messages-square', page: 'debate-union.html' },
+            { name: 'Sports Club', logo: 'swords', page: 'sports-club.html' }
+        ];
+        
+        // --- 3. GLOBAL VARIABLES ---
+        let events = []; 
+        let allPresentEvents = [];
+        let allUpcomingEvents = [];
+        let allPastEvents = [];
+        
+        let currentUser = null; 
+        let currentEventIdToRegister = null; 
+        
+        let eventContainer;
+        let btnUpcoming, btnPresent, btnPast;
+        
+        // --- 4. HELPER FUNCTIONS ---
+        
+        function getTodayISO() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        function timeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            let interval = seconds / 31536000;
+            if (interval > 1) return Math.floor(interval) + " year" + (Math.floor(interval) > 1 ? 's' : '') + " ago";
+            interval = seconds / 2592000;
+            if (interval > 1) return Math.floor(interval) + " month" + (Math.floor(interval) > 1 ? 's' : '') + " ago";
+            interval = seconds / 86400;
+            if (interval > 1) return Math.floor(interval) + " day" + (Math.floor(interval) > 1 ? 's' : '') + " ago";
+            interval = seconds / 3600;
+            if (interval > 1) return Math.floor(interval) + " hour" + (Math.floor(interval) > 1 ? 's' : '') + " ago";
+            interval = seconds / 60;
+            if (interval > 1) return Math.floor(interval) + " minute" + (Math.floor(interval) > 1 ? 's' : '') + " ago";
+            return Math.floor(seconds) + " second" + (Math.floor(seconds) > 1 ? 's' : '') + " ago";
+        }
+        
+        function renderEvents(container, eventArray, emptyMessage) {
+            if (eventArray.length > 0) {
+                container.innerHTML = eventArray.map(createEventCard).join('');
+            } else {
+                container.innerHTML = `<p class="text-slate-500" style="text-align: center; grid-column: 1 / -1;">${emptyMessage}</p>`;
+            }
+            lucide.createIcons();
+        }
+
+
+        // --- 5. CARD & MODAL FUNCTIONS ---
+        
+        function createEventCard(event) {
+            const timeDiff = event.date.getTime() - new Date().getTime();
+            const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            let notification = '';
+            if (daysRemaining > 0 && daysRemaining <= 3) {
+                 notification = `<div style="position: absolute; bottom: 1rem; right: 1rem; background-color: #22c55e; color: white; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px;">
+                     ${daysRemaining} Day${daysRemaining > 1 ? 's' : ''} Left!
+                 </div>`;
+            }
+            else if (daysRemaining === 0) {
+                 notification = `<div style="position: absolute; bottom: 1rem; right: 1rem; background-color: #ec4899; color: white; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px;">
+                     Today!
+                 </div>`;
+            }
+            
+            const typeColors = {
+                'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+                'Workshop': 'background-color: #fefce8; color: #b45309;',
+                'Event': 'background-color: #eef2ff; color: #4338ca;',
+                'Hackathon': 'background-color: #fdf2f8; color: #db2777;'
+            };
+            
+            const viewMoreButton = `<button onclick="openEventDetail('${event.id}')" class="btn" style="margin-top: 1rem; background-color: #f1f5f9; color: #475569;">View More</button>`;
+
+            return `
+                <div style="background-color: white; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); overflow: hidden; position: relative; padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                        <span style="font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; ${typeColors[event.type]}">${event.type}</span>
+                        <span style="font-size: 0.875rem; color: #64748b;">${event.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">${event.name}</h3>
+                    <p style="color: #475569; margin-bottom: 1rem; font-size: 0.875rem;">${event.description_short}</p>
+                    <div style="display: flex; align-items: center; font-size: 0.875rem; color: #64748b;">
+                        <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                        <span>Organized by <strong>${event.club}</strong></span>
+                    </div>
+                    ${viewMoreButton}
+                    ${notification}
+                </div>`;
+        }
+        
+        function openEventDetail(eventId) {
+            const event = events.find(e => e.id === eventId);
+            if (!event) {
+                console.error("Event not found!");
+                return;
+            }
+
+            const modal = document.getElementById('event-detail-modal');
+            const typeEl = document.getElementById('event-detail-type');
+            const nameEl = document.getElementById('event-detail-name');
+            const hostEl = document.getElementById('event-detail-host');
+            const descEl = document.getElementById('event-detail-desc');
+            const infoBoxEl = document.getElementById('event-detail-info-box');
+            const registerBtn = document.getElementById('event-detail-register-btn'); 
+
+            const typeColors = {
+                'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+                'Workshop': 'background-color: #fefce8; color: #b45309;',
+                'Event': 'background-color: #eef2ff; color: #4338ca;',
+                'Hackathon': 'background-color: #fdf2f8; color: #db2777;'
+            };
+            typeEl.textContent = event.type;
+            typeEl.style.cssText = `font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; ${typeColors[event.type] || typeColors['Event']}`;
+            nameEl.textContent = event.name;
+            hostEl.innerHTML = `Hosted by <a href="#" class="nav-link" style="font-weight: 600;">${event.club}</a>`;
+            descEl.innerHTML = `<p>${event.description_full.replace(/\n/g, '</p><p>')}</p>`;
+            infoBoxEl.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="calendar" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Date</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="clock" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Time</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.time || 'TBA'}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="map-pin" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Venue</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.venue || 'TBA'}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="ticket" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Fees</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.fees || 'Free'}</p>
+                </div>
+            `;
+            
+            // --- UPDATED: This now opens the confirmation modal ---
+            registerBtn.onclick = function() {
+                if (currentUser) {
+                    currentEventIdToRegister = eventId; 
+                    
+                    document.getElementById('confirm-username').innerText = currentUser.displayName || 'No Name Provided';
+                    document.getElementById('confirm-email').innerText = currentUser.email;
+                    
+                    modal.classList.add('hidden');
+                    
+                    document.getElementById('confirmation-modal').classList.remove('hidden');
+                } else {
+                    alert('Please log in to register for this event.');
+                    window.location.href = 'login.html';
+                }
+            };
+
+            lucide.createIcons();
+            modal.classList.remove('hidden');
+        }
+        
+        // --- 6. EVENT FILTERING LOGIC (Unchanged) ---
+        function showEvents(filterType) {
+            if (!eventContainer || !btnUpcoming || !btnPresent || !btnPast) { return; }
+            btnUpcoming.classList.remove('active');
+            btnPresent.classList.remove('active');
+            btnPast.classList.remove('active');
+
+            if (filterType === 'upcoming') {
+                renderEvents(eventContainer, allUpcomingEvents, "No upcoming events found.");
+                btnUpcoming.classList.add('active');
+            } else if (filterType === 'present') {
+                renderEvents(eventContainer, allPresentEvents, "No events scheduled for today.");
+                btnPresent.classList.add('active');
+            } else if (filterType === 'past') {
+                renderEvents(eventContainer, allPastEvents, "No recent past events found.");
+                btnPast.classList.add('active');
+            }
+        }
+
+        // --- 7. MAIN SCRIPT LOGIC (DOMContentLoaded) ---
+        document.addEventListener('DOMContentLoaded', async function() {
+            lucide.createIcons(); 
+            
+            // --- 7a. AUTH STATE LISTENER (Unchanged) ---
+            auth.onAuthStateChanged(user => {
+                const loginButtonContainer = document.querySelector('.profile-section .sign');
+                
+                if (user) {
+                    currentUser = user; 
+                    loginButtonContainer.innerHTML = `
+                        <a href="#" onclick="logoutUser()" class="custom-button" style="background-color: #ef4444; ">
+                            Logout
+                        </a>`;
+                } else {
+                    currentUser = null;
+                    loginButtonContainer.innerHTML = `
+                        <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
+                            Login
+                        </a>`;
+                }
+
+                // --- 7b. Mobile Menu Build (Unchanged) ---
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton && mobileMenu) {
+                    const navLinks = document.querySelector('.nav-links');
+                    mobileMenu.innerHTML = navLinks.innerHTML;
+                    const profileSection = document.querySelector('.profile-section');
+                    mobileMenu.innerHTML += `<div style="border-top: 1px solid #e2e8f0; margin-top: 1rem; padding-top: 1rem;">${profileSection.innerHTML}</div>`;
+                    
+                    if (!mobileMenuButton.dataset.listenerAttached) {
+                        mobileMenuButton.addEventListener('click', () => {
+                            mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+                        });
+                        mobileMenuButton.dataset.listenerAttached = 'true';
+                    }
+                }
+            });
+
+            
+            // --- 7c. Get references to containers (Unchanged) ---
+            eventContainer = document.getElementById('events-container'); 
+            btnUpcoming = document.getElementById('filter-btn-upcoming');
+            btnPresent = document.getElementById('filter-btn-present');
+            btnPast = document.getElementById('filter-btn-past');
+            
+            const newsFeed = document.getElementById('news-feed');
+            const leaderboardList = document.getElementById('leaderboard-list');
+            const allNewsFeed = document.getElementById('all-news-feed');
+            const clubListContainer = document.getElementById('club-list');
+
+            // --- 7d. Show "Loading..." text (Unchanged) ---
+            if (eventContainer) eventContainer.innerHTML = '<p class="text-slate-500" style="text-align: center; grid-column: 1 / -1;">Loading events...</p>';
+            newsFeed.innerHTML = '<p class="text-slate-500">Loading news...</p>';
+            leaderboardList.innerHTML = '<p class="text-slate-500">Loading winners...</p>';
+
+            
+            // --- 7e. Load All Events (Unchanged) ---
+            async function loadAllEvents() {
+                events = []; 
+                allPresentEvents = [];
+                allUpcomingEvents = [];
+                allPastEvents = [];
+                const todayISO = getTodayISO();
+                
+                const processDoc = (doc) => {
+                    const data = doc.data();
+                    const eventData = {
+                        id: doc.id, name: data.title, description_short: data.description,
+                        description_full: data.description, date: new Date(data.date + 'T' + (data.time || '00:00')), 
+                        dateString: data.date, time: data.time, type: data.eventType, club: data.club,
+                        venue: data.venue || 'TBA', participants: data.participants || null, fees: data.fees || 'Free'
+                    };
+                    events.push(eventData); 
+                    return eventData;
+                };
+
+                try {
+                    const upcomingSnapshot = await db.collection("events")
+                        .where("date", ">=", todayISO).orderBy("date", "asc").get();
+                    
+                    upcomingSnapshot.forEach((doc) => {
+                        const eventData = processDoc(doc);
+                        if (eventData.dateString === todayISO) { allPresentEvents.push(eventData); } 
+                        else { allUpcomingEvents.push(eventData); }
+                    });
+
+                    const pastSnapshot = await db.collection("events")
+                        .where("date", "<", todayISO).orderBy("date", "desc").limit(6).get();
+
+                    pastSnapshot.forEach((doc) => { allPastEvents.push(processDoc(doc)); });
+                    
+                    showEvents('upcoming'); 
+
+                } catch (error) {
+                    console.error("Error loading events:", error);
+                    if (eventContainer) eventContainer.innerHTML = '<p class="text-red-500" style="text-align: center; grid-column: 1 / -1;">Could not load events.</p>';
+                }
+            }
+            loadAllEvents(); 
+
+            // --- 7f. Load News (Unchanged) ---
+            try {
+                const querySnapshot = await db.collection("news").orderBy("date", "desc").limit(3).get();
+                newsFeed.innerHTML = '';
+                if (querySnapshot.empty) {
+                    newsFeed.innerHTML = '<p class="text-slate-500">No news posted yet.</p>';
+                } else {
+                    querySnapshot.forEach(doc => {
+                        const item = doc.data();
+                        const itemDate = new Date(item.date + 'T12:00:00');
+                        newsFeed.innerHTML += `<div class="news-item"><p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p><div class="news-meta"><span>By ${item.category}</span><span>${timeAgo(itemDate)}</span></div></div>`;
+                    });
+                }
+            } catch (error) {
+                console.error("Error loading news:", error);
+                newsFeed.innerHTML = '<p class="text-red-500">Could not load news.</p>';
+            }
+            
+            // --- 7g. Load Winners (Unchanged) ---
+            try {
+                const querySnapshot = await db.collection("winners").orderBy("createdAt", "desc").limit(10).get();
+                leaderboardList.innerHTML = '';
+                if (querySnapshot.empty) {
+                    leaderboardList.innerHTML = '<p class="text-slate-500">No winners announced yet.</p>';
+                } else {
+                    const medalColors = { 1: '#facc15', 2: '#94a3b8', 3: '#f97316', 4: '#38bdf8', 5: '#84cc16', 6: '#22d3ee', 7: '#10b981', 8: '#f43f5e', 9: '#8b5cf6', 10: '#14b8a6' };
+                    let rank = 1;
+                    querySnapshot.forEach(doc => {
+                        const entry = doc.data();
+                        const color = medalColors[rank] || '#38bdf8';
+                        leaderboardList.innerHTML += `<li class="leaderboard-item"><i data-lucide="medal" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: ${color};"></i><span class="leaderboard-rank">${rank}.</span><div><p class="leaderboard-name">${entry.name}</p><p class="leaderboard-event">${entry.event}</p></div></li>`;
+                        rank++;
+                    });
+                    lucide.createIcons();
+                }
+            } catch (error) {
+                console.error("Error loading winners:", error);
+                leaderboardList.innerHTML = '<p class="text-red-500">Could not load winners.</p>';
+            }
+
+            // --- 7h. Populate Static Clubs (Unchanged) ---
+            if (clubListContainer) {
+                clubListContainer.innerHTML = ''; 
+                clubs.forEach(club => {
+                    const clubItemHTML = `
+                        <a href="${club.page}" class="club-item">
+                            <div class="club-logo-container">
+                                <i data-lucide="${club.logo}" class="club-logo"></i>
+                            </div>
+                            <p class="club-name">${club.name}</p>
+                        </a>`;
+                    clubListContainer.innerHTML += clubItemHTML;
+                });
+                lucide.createIcons();
+            }
+            
+            // --- 7i. All News Modal (Unchanged) ---
+            async function populateAllNewsModal() {
+                allNewsFeed.innerHTML = '<p class="text-slate-500">Loading all news...</p>';
+                let allNews = [];
+                try {
+                    const querySnapshot = await db.collection("news").orderBy("date", "desc").get();
+                    querySnapshot.forEach((doc) => { allNews.push({ id: doc.id, ...doc.data() }); });
+
+                    if (allNews.length > 0) {
+                        allNewsFeed.innerHTML = '';
+                        allNews.forEach(item => {
+                            const itemDate = new Date(item.date + 'T12:00:00');
+                            allNewsFeed.innerHTML += `<div class="news-item" style="background-color: #f8fafc; border: 1px solid #e2e8f0;"><p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p><div class="news-meta"><span>By <strong>${item.category}</strong></span><span>${timeAgo(itemDate)}</span></div></div>`;
+                        });
+                    } else {
+                        allNewsFeed.innerHTML = '<p class="text-slate-500">No news posts found.</p>';
+                    }
+                } catch (error) {
+                    console.error("Error loading all news: ", error);
+                    allNewsFeed.innerHTML = '<p class="text-red-500">Could not load news.</p>';
+                }
+            }
+            
+            // --- 7j. Modal Event Listeners (UPDATED) ---
+            const viewAllNewsBtn = document.getElementById('view-all-news-btn');
+            const allNewsModal = document.getElementById('all-news-modal');
+            const closeNewsModalBtn = document.getElementById('close-news-modal');
+            
+            if(viewAllNewsBtn) {
+                viewAllNewsBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    populateAllNewsModal(); 
+                    allNewsModal.classList.remove('hidden');
+                });
+            }
+            if(closeNewsModalBtn) {
+                closeNewsModalBtn.addEventListener('click', () => {
+                    allNewsModal.classList.add('hidden');
+                });
+            }
+            
+            const closeEventDetailModalBtn = document.getElementById('close-event-detail-modal');
+            const eventDetailModal = document.getElementById('event-detail-modal');
+            if(closeEventDetailModalBtn) {
+                closeEventDetailModalBtn.addEventListener('click', () => {
+                    eventDetailModal.classList.add('hidden');
+                });
+            }
+
+            // --- Listeners for NEW Confirmation Modal ---
+            const confirmModal = document.getElementById('confirmation-modal');
+            const confirmBtn = document.getElementById('confirm-registration-btn');
+            const cancelBtn = document.getElementById('cancel-registration-btn');
+
+            if(confirmBtn) {
+                confirmBtn.addEventListener('click', () => {
+                    confirmRegistration(); // Call the new registration function
+                });
+            }
+            if(cancelBtn) {
+                cancelBtn.addEventListener('click', () => {
+                    confirmModal.classList.add('hidden'); // Just close the modal
+                });
+            }
+
+        });
+        
+        // --- 8. GLOBAL FUNCTIONS ---
+        
+        function logoutUser() {
+            auth.signOut().then(() => {
+                console.log('User signed out');
+            }).catch(error => {
+                console.error('Sign out error', error);
+            });
+        }
+        
+        // --- UPDATED Registration Function ---
+        async function confirmRegistration() { 
+            if (!currentUser || !currentEventIdToRegister) {
+                alert('Error: You must be logged in to register.');
+                return;
+            }
+            
+            const userName = currentUser.displayName || 'No Name Provided';
+            const eventDetails = events.find(e => e.id === currentEventIdToRegister);
+
+            if (!eventDetails) {
+                alert('Error: Event details not found. Please try again.');
+                return;
+            }
+
+            const registrationData = {
+                userId: currentUser.uid,
+                userName: userName,
+                userEmail: currentUser.email,
+                eventId: currentEventIdToRegister,
+                eventName: eventDetails.name,
+                eventDate: eventDetails.dateString,
+                club: eventDetails.club,
+                registeredAt: new Date()
+            };
+
+            try {
+                const docRef = await db.collection('registrations').add(registrationData);
+                console.log('Registration successful! Document ID: ', docRef.id);
+
+                // Close the confirmation modal
+                document.getElementById('confirmation-modal').classList.add('hidden');
+
+                // --- UPDATED to show new modal ---
+                document.getElementById('success-modal').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error adding document: ', error);
+                alert('There was an error during registration. Please try again.');
+            }
+        }
+
+        function fun(event) { 
+            const eventsSection = document.getElementById('events');
+            if(eventsSection) eventsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // --- UPDATED: This function now closes the new success modal ---
+        function exitModal() { 
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+
+    </script>
+</body>
+
+</html>
+

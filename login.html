@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <title>Sign In</title>
+    
+    <!-- FIREBASE SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+/* Reset and base styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f8fafc; /* Light background */
+    color: #1e293b; /* Dark text */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Main container for the sign-in form */
+.signin-container {
+    background: #ffffff; /* White card background */
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Softer shadow */
+    border: 1px solid #e2e8f0; /* Light border */
+}
+
+/* Header section */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1e293b; /* Dark text for heading */
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #64748b; /* Subdued text color */
+    font-size: 14px;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    color: #475569; /* Slate grey for labels */
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: #ffffff; /* White input background */
+    border: 1px solid #cbd5e1; /* Grey border */
+    border-radius: 8px;
+    color: #1e293b; /* Dark text */
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4f46e5; /* Primary accent color on focus */
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); /* Focus ring */
+}
+
+.form-group input::placeholder {
+    color: #94a3b8; /* Lighter placeholder text */
+}
+
+/* Form options (remember me, forgot password) */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    color: #475569;
+}
+
+.remember-me input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    accent-color: #4f46e5; /* Primary accent for checkbox */
+}
+
+.forgot-password {
+    color: #4f46e5; /* Primary accent for link */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #4338ca; /* Darker accent on hover */
+    text-decoration: underline;
+}
+
+/* Button styling */
+button {
+    width: 100%;
+    padding: 14px;
+    background: #4f46e5; /* Primary accent background */
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+button:disabled {
+    background: #94a3b8; /* Greyed out when disabled */
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    background: #4338ca; /* Darker accent on hover */
+    transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+    background: #3730a3; /* Even darker on active */
+    transform: translateY(0);
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3); /* Focus ring */
+}
+
+/* Divider styling */
+.divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.divider span {
+    background-color: #ffffff; /* Match container background */
+    padding: 0 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #e2e8f0; /* Light line for divider */
+    z-index: 0;
+}
+
+
+/* Sign-up link */
+.signup-link {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.signup-link a {
+    color: #4f46e5; /* Primary accent for link */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.signup-link a:hover {
+    color: #4338ca; /* Darker accent on hover */
+    text-decoration: underline;
+}
+
+.signup-link a:focus {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Password visibility toggle */
+.pass {
+    position: relative;
+    width: 100%;
+}
+
+.pass input {
+    width: 100%;
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+
+.pass .icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #94a3b8; /* Icon color */
+}
+
+
+.overlay {
+  position: fixed;
+  inset: 0;   
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.35);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999;
+  transition: opacity 0.3s ease;
+}
+
+section.active .overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 380px;
+  width: calc(100% - 40px);
+  padding: 30px 20px;
+  border-radius: 24px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.28s ease;
+  z-index: 1000;
+}
+
+/* Show modal when section.active */
+section.active .modal-box {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-box i {
+    font-size: 70px;
+    color: #4f46e5; /* Primary accent for icon */
+}
+
+.modal-box h2 {
+    margin-top: 20px;
+    font-size: 25px;
+    font-weight: 500;
+    color: #1e293b; /* Dark text */
+}
+
+.modal-box h3 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #475569; /* Subdued text */
+    text-align: center;
+}
+
+.modal-box .buttons {
+    margin-top: 25px;
+}
+
+.modal-box button {
+    font-size: 14px;
+    padding: 8px 22px;
+    margin: 0 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .signin-container {
+        padding: 30px 25px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .form-options {
+        flex-direction: column;
+        gap: 15px; /* Increased gap for better spacing */
+        align-items: flex-start;
+    }
+}
+</style>
+
+<body>
+    <!-- Your existing modal for success/error messages -->
+    <section>
+        <span class="overlay" onclick="closeModal()"></span>
+        <div class="modal-box">
+            <i class="fa-regular fa-circle-check"></i>
+            <h2 id="message"></h2>
+            <div class="buttons">
+                <button class="close-btn" onclick="closeModal()">Ok</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="signin-container">
+        <div class="header">
+            <h1>Sign In</h1>
+            <p>Welcome back! Please sign in to your account</p>
+        </div>
+
+        <!-- Added id="login-form" -->
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="Enter email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="pass">
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+                <i class="far fa-eye icon" id="togglePassword" onclick="togglePass()"></i>
+                </div>
+            </div>
+
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox" name="remember">
+                    Remember me
+                </label>
+                <a href="#forgot" class="forgot-password">Forgot password?</a>
+            </div>
+
+            <!-- Added id="submit" and updated onclick -->
+            <button type="submit" id="submit" class="signin-btn" onclick="login(event)">
+                Sign In
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>Don't have an account?</span>
+        </div>
+
+        <div class="signup-link">
+            <!-- Assumes your signup page is register.html -->
+            <a onclick="window.location.assign('register.html')">Create new account</a>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. FIREBASE INITIALIZATION ---
+        // This is the *exact* config from your homepage.
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaLA-ROmNplFqBgyRngEgiJqNuIYhty0c",
+            authDomain: "clubhub-5add8.firebaseapp.com",
+            projectId: "clubhub-5add8",
+            storageBucket: "clubhub-5add8.firebasestorage.app",
+            messagingSenderId: "185734043029",
+            appId: "1:185734043029:web:645967f9f50fd926c7529c",
+            measurementId: "G-10KYVLP66J"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // --- 2. DOM ELEMENT REFERENCES ---
+        const section = document.querySelector("section");
+        const modalMessage = document.getElementById("message");
+        const modalIcon = document.querySelector(".modal-box i");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const loginButton = document.getElementById("submit");
+
+        // --- 3. THE MAIN LOGIN FUNCTION ---
+        async function login(event) {
+            event.preventDefault(); // Stop form from submitting
+            
+            // Show loading state on button
+            loginButton.disabled = true;
+            loginButton.innerText = "Signing In...";
+
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            try {
+                // Try to sign in with email and password
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                
+                // --- SUCCESS ---
+                console.log('Login successful:', userCredential.user);
+                
+                // Show success modal (using your HTML structure)
+                modalIcon.className = "fa-regular fa-circle-check"; // Check icon
+                modalIcon.style.color = "#4f46e5";
+                modalMessage.innerText = "Login Successful!";
+                section.classList.add("active");
+                
+                // Redirect to homepage after a short delay
+                setTimeout(() => {
+                    window.location.href = 'index.html'; 
+                }, 1500); // 1.5 seconds
+
+            } catch (error) {
+                // --- FAILURE ---
+                console.error('Login failed:', error.code);
+                const friendlyMessage = getFirebaseError(error.code);
+                
+                // Show error modal (using your HTML structure)
+                modalIcon.className = "fa-regular fa-circle-xmark"; // Error icon (e.g., from FontAwesome)
+                modalIcon.style.color = "#ef4444"; // Red color
+                modalMessage.innerText = friendlyMessage;
+                section.classList.add("active");
+
+                // Reset button
+                loginButton.disabled = false;
+                loginButton.innerText = "Sign In";
+            }
+        }
+
+        // --- 4. HELPER: Close Modal ---
+        // Renamed function to match your HTML's onclick
+        function closeModal() {
+            section.classList.remove("active");
+        }
+
+        // --- 5. HELPER: Password Toggle ---
+        // This is the togglePass function from your HTML
+        function togglePass() {
+            const togglePassword = document.getElementById("togglePassword");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePassword.classList.remove("fa-eye");
+                togglePassword.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                togglePassword.classList.remove("fa-eye-slash");
+                togglePassword.classList.add("fa-eye");
+            }
+        }
+        
+        // --- 6. HELPER: Firebase Error Messages ---
+        function getFirebaseError(errorCode) {
+            switch (errorCode) {
+                case 'auth/invalid-email':
+                    return 'Please enter a valid email address.';
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential':
+                    return 'Invalid email or password. Please try again.';
+                case 'auth/too-many-requests':
+                    return 'Too many login attempts. Please try again later.';
+                default:
+                    return 'An unknown error occurred. Please try again.';
+            }
+        }
+    </script>
+</body>
+</html>
+
