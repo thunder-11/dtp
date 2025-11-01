@@ -11,9 +11,9 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <!-- <link rel="stylesheet" href="styles.css"> -->
+    
     <style>
-        /* Placeholder styles to match the structure */
+        /* ALL YOUR ORIGINAL CSS IS UNCHANGED */
         html { scroll-behavior: smooth; }
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -303,12 +303,54 @@
             display: none;
         }
 
-        
+        /* STYLES FOR CLUBS (Unchanged) */
+        @media (min-width: 768px) {
+            .grid-container-5-col {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        #clubs {
+            background-color: #f1f5f9;
+            border-radius: 1.5rem;
+        }
+        .club-item {
+            text-align: center;
+        }
+        .club-logo-container {
+            background-color: white;
+            width: 8rem;
+            height: 8rem;
+            margin: 0 auto;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .club-item:hover .club-logo-container {
+            background-color: #4f46e5;
+            transform: scale(1.1);
+        }
+        .club-logo {
+            width: 4rem;
+            height: 4rem;
+            color: #4f46e5;
+            transition: color 0.3s;
+        }
+        .club-item:hover .club-logo {
+            color: white;
+        }
+        .club-name {
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
     </style>
 </head>
 
 <body>
-     <section style="display: none;"> <!-- Hidden by default -->
+    <section style="display: none;">
         <span class="overlay"></span>
         <div class="modal-box">
             <i class="fa-regular fa-circle-check"></i>
@@ -340,7 +382,6 @@
             </button>
         </nav>
         <div id="mobile-menu" class="mobile-menu">
-            <!-- Mobile menu links... -->
         </div>
     </header>
 
@@ -361,18 +402,24 @@
                     <p class="section-subtitle">Stay ahead of the curve. Here's what's happening on campus soon.</p>
                 </div>
                 <div id="events-container" class="grid-container grid-container-3-col">
-                    <!-- Events will be populated by main.js -->
-                </div>
+                    </div>
                 <div class="all-events">
                     <button id="all-events" class="btn" onclick="window.location.href = 'events.html'">View All Events <span class="arrow" style="display: inline-block;" data-lucide="arrow-right"></span></button>
                 </div>
             </div>
         </section>
 
-        
-        <!-- END OF NEW CLUBS SECTION -->
+        <section id="clubs" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Clubs</h2>
+                    <p class="section-subtitle">Explore the diverse clubs driving our campus culture.</p>
+                </div>
+                <div id="club-list" class="grid-container grid-container-5-col" style="padding: 0 1rem;">
+                </div>
+            </div>
+        </section>
 
-        <!-- SECTIONS FROM homepage1.html -->
         <div class="container">
             <div class="two-col-layout">
                 <section id="news">
@@ -399,8 +446,6 @@
                 </section>
             </div>
         </div>
-        <!-- END OF SECTIONS FROM homepage1.html -->
-
 
         <section id="gallery" class="section">
              <div class="container">
@@ -420,7 +465,6 @@
                         <div class="slide"><img src="https://placehold.co/300x200/6366f1/ffffff?text=Innovate" alt="Innovate"></div>
                         <div class="slide"><img src="https://placehold.co/300x200/14b8a6/ffffff?text=Community" alt="Community"></div>
                         <div class="slide"><img src="https://placehold.co/300x200/f43f5e/ffffff?text=Fun" alt="Fun"></div>
-
                         <div class="slide"><img src="https://placehold.co/300x200/a78bfa/ffffff?text=Event+1" alt="Event 1"></div>
                         <div class="slide"><img src="https://placehold.co/300x200/ec4899/ffffff?text=Hackathon" alt="Hackathon"></div>
                         <div class="slide"><img src="https://placehold.co/300x200/8b5cf6/ffffff?text=Workshop" alt="Workshop"></div>
@@ -473,14 +517,12 @@
         
     </main>
 
-    <!-- Modals from original file are assumed to be in styles.css or main.js -->
-     <div id="modal-container" class="modal-overlay hidden">
+    <div id="modal-container" class="modal-overlay hidden">
             <div id="modal-content" class="modal-card">
                 <div class="modal-header">
                     <h2>Event Registration Form</h2>
                     <button id="close-modal-btn" onclick="closeModal(event)" class="close-button">&times;</button>
                 </div>
-
                 <form id="event-form">
                     <div class="form-body">
                         <div class="form-group">
@@ -488,13 +530,11 @@
                             <input type="text" id="registration-name" name="name" required class="form-input"
                                 placeholder="Name">
                         </div>
-
                          <div class="form-group">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" id="registration-email" name="email" readonly class="form-input">
                         </div>
                     </div>
-
                     <div class="modal-footer">
                         <button type="button" id="cancel-btn" onclick="closeModal(event)" class="btn btn-secondary">Cancel</button>
                         <button type="submit" id="modal-registration-btn" onclick="registration(event)" class="custom-button">Register</button>
@@ -503,7 +543,6 @@
             </div>
         </div>
 
-    <!-- All News Modal (Copied from homepage1.html) -->
     <div id="all-news-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <div class="section-header" style="margin-bottom: 1.5rem;">
@@ -517,33 +556,26 @@
         </div>
     </div>
     
-    <!-- NEW Event Detail Modal -->
     <div id="event-detail-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <button id="close-event-detail-modal" class="modal-close-btn">
                 <i data-lucide="x" style="width: 1.5rem; height: 1.5rem;"></i>
             </button>
             
-            <!-- Modal Header -->
             <div id="event-detail-header" style="padding: 2rem; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; flex-shrink: 0;">
                 <span id="event-detail-type" style="font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px;"></span>
                 <h1 id="event-detail-name" style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-top: 1rem;"></h1>
                 <p id="event-detail-host" style="font-size: 1.25rem; color: #475569; margin-top: 0.5rem;"></p>
             </div>
             
-            <!-- Modal Body -->
             <div class="modal-body">
                 <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; @media (min-width: 768px) { grid-template-columns: repeat(3, 1fr); }">
-                    <!-- Left Column: Details -->
                     <div id="event-detail-desc" style="grid-column: span 1; @media (min-width: 768px) { grid-column: span 2; } display: flex; flex-direction: column; gap: 1rem; color: #475569;">
-                        <!-- Description will be populated by JS -->
-                    </div>
+                        </div>
                     
-                    <!-- Right Column: Info Box -->
                     <div style="grid-column: span 1;">
                         <div id="event-detail-info-box" style="background-color: #f1f5f9; border-radius: 1rem; padding: 1.5rem; display: flex; flex-direction: column;">
-                            <!-- Info items will be populated by JS -->
-                        </div>
+                            </div>
                         <button id="event-detail-register-btn" style="width: 100%; background-color: #4f46e5; color: white; font-weight: 700; padding: 0.75rem 1.5rem; border-radius: 0.5rem; margin-top: 1.5rem; transition: background-color 0.3s; cursor: pointer; border: none;">
                             Register Now
                         </button>
@@ -553,30 +585,45 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        // --- 1. FIREBASE INITIALIZATION ---
+        // (This works because you added the scripts in the <head>)
+        const firebaseConfig = {
+          apiKey: "AIzaSyCaLA-ROmNplFqBgyRngEgiJqNuIYhty0c",
+          authDomain: "clubhub-5add8.firebaseapp.com",
+          projectId: "clubhub-5add8",
+          storageBucket: "clubhub-5add8.firebasestorage.app",
+          messagingSenderId: "185734043029",
+          appId: "1:185734043029:web:645967f9f50fd926c7529c",
+          measurementId: "G-10KYVLP66J"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        // --- END OF FIREBASE INITIALIZATION ---
 
-<script>
-        // --- 1. FIREBASE INITIALIZATION ---
-        const firebaseConfig = {
-          apiKey: "AIzaSyCaLA-ROmNplFqBgyRngEgiJqNuIYhty0c",
-          authDomain: "clubhub-5add8.firebaseapp.com",
-          projectId: "clubhub-5add8",
-          storageBucket: "clubhub-5add8.firebasestorage.app",
-          messagingSenderId: "185734043029",
-          appId: "1:185734043029:web:645967f9f50fd926c7529c",
-          measurementId: "G-10KYVLP66J"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        // --- END OF FIREBASE INITIALIZATION ---
 
-
-        
-        
-        // This global array will hold event data for the modal
-        let events = []; 
-        
-        // --- 3. HELPER FUNCTIONS (From your original file) ---
-        
+        // --- 2. STATIC DATA (For Clubs, as requested) ---
+        // (This is your original clubs array, unchanged)
+        const clubs = [
+            { name: 'Tech Titans', logo: 'cpu', page: 'tech-titans.html' },
+            { name: 'Creative Coders', logo: 'code-2', page: 'creative-coders.html' },
+            { name: 'Art & Design', logo: 'palette', page: 'art-design.html' },
+            { name: 'E-Cell', logo: 'lightbulb', page: 'e-cell.html' },
+            { name: 'Music Mavericks', logo: 'music', page: 'music-mavericks.html' },
+            { name: 'Literary Society', logo: 'book-open', page: 'literary-society.html' },
+            { name: 'Eco Warriors', logo: 'leaf', page: 'eco-warriors.html' },
+            { name: 'Film Club', logo: 'film', page: 'film-club.html' },
+            { name: 'Debate Union', logo: 'messages-square', page: 'debate-union.html' },
+            { name: 'Sports Club', logo: 'swords', page: 'sports-club.html' }
+        ];
+        
+        // This global array will be filled with data from Firebase
+        let events = []; 
+        
+        // --- 3. HELPER FUNCTIONS (From your original file) ---
+        
         // Helper to get today's date in YYYY-MM-DD format for queries
         function getTodayISO() {
             const today = new Date();
@@ -602,107 +649,107 @@
             return Math.floor(seconds) + " second" + (Math.floor(seconds) > 1 ? 's' : '') + " ago";
         }
 
-        // --- 4. YOUR ORIGINAL CARD & MODAL FUNCTIONS (Unchanged) ---
-        
-        // This function creates the HTML for a single event card
-        function createEventCard(event) {
-            const timeDiff = event.date.getTime() - new Date().getTime();
-            const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            let notification = '';
-            if (daysRemaining > 0 && daysRemaining <= 3) {
-                 notification = `<div style="position: absolute; bottom: 1rem; right: 1rem; background-color: #22c55e; color: white; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px;">
-                    ${daysRemaining} Day${daysRemaining > 1 ? 's' : ''} Left!
-                </div>`;
-            }
-            const typeColors = {
-                'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
-                'Workshop': 'background-color: #fefce8; color: #b45309;',
-                'Event': 'background-color: #eef2ff; color: #4338ca;',
-                'Hackathon': 'background-color: #fdf2f8; color: #db2777;'
-            };
-            
-            const viewMoreButton = `<button onclick="openEventDetail('${event.id}')" class="btn" style="margin-top: 1rem; background-color: #f1f5f9; color: #475569;">View More</button>`;
+        // --- 4. YOUR ORIGINAL CARD & MODAL FUNCTIONS ---
+        // (These are unchanged, but will now be called with Firebase data)
+        
+        function createEventCard(event) {
+            const timeDiff = event.date.getTime() - new Date().getTime();
+            const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            let notification = '';
+            if (daysRemaining > 0 && daysRemaining <= 3) {
+                 notification = `<div style="position: absolute; bottom: 1rem; right: 1rem; background-color: #22c55e; color: white; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px;">
+                    ${daysRemaining} Day${daysRemaining > 1 ? 's' : ''} Left!
+                </div>`;
+            }
+            const typeColors = {
+                'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+                'Workshop': 'background-color: #fefce8; color: #b45309;',
+                'Event': 'background-color: #eef2ff; color: #4338ca;',
+                'Hackathon': 'background-color: #fdf2f8; color: #db2777;'
+            };
+            
+            // This button now uses the event.id from Firebase
+            const viewMoreButton = `<button onclick="openEventDetail('${event.id}')" class="btn" style="margin-top: 1rem; background-color: #f1f5f9; color: #475569;">View More</button>`;
 
-            return `
-                <div style="background-color: white; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); overflow: hidden; position: relative; padding: 1.5rem;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                        <span style="font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; ${typeColors[event.type]}">${event.type}</span>
-                        <span style="font-size: 0.875rem; color: #64748b;">${event.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                    </div>
-                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">${event.name}</h3>
-                    <p style="color: #475569; margin-bottom: 1rem; font-size: 0.875rem;">${event.description_short}</p>
-                    <div style="display: flex; align-items: center; font-size: 0.875rem; color: #64748b;">
-                        <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
-                        <span>Organized by <strong>${event.club}</strong></span>
-                    </div>
-                    ${viewMoreButton}
-                    ${notification}
-                </div>`;
-        }
-        
-        // This function finds the event in our 'events' array to show details
-        function openEventDetail(eventId) {
-            // Find the event from the globally loaded 'events' array
-            const event = events.find(e => e.id === eventId);
-            if (!event) {
+            return `
+                <div style="background-color: white; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); overflow: hidden; position: relative; padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                        <span style="font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; ${typeColors[event.type]}">${event.type}</span>
+                        <span style="font-size: 0.875rem; color: #64748b;">${event.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">${event.name}</h3>
+                    <p style="color: #475569; margin-bottom: 1rem; font-size: 0.875rem;">${event.description_short}</p>
+                    <div style="display: flex; align-items: center; font-size: 0.875rem; color: #64748b;">
+                        <i data-lucide="shield" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                        <span>Organized by <strong>${event.club}</strong></span>
+                    </div>
+                    ${viewMoreButton}
+                    ${notification}
+                </div>`;
+        }
+        
+        function openEventDetail(eventId) {
+            // Find the event from the globally loaded 'events' array
+            const event = events.find(e => e.id === eventId);
+            if (!event) {
                 console.error("Event not found!");
                 return;
             }
 
-            const modal = document.getElementById('event-detail-modal');
-            const typeEl = document.getElementById('event-detail-type');
-            const nameEl = document.getElementById('event-detail-name');
-            const hostEl = document.getElementById('event-detail-host');
-            const descEl = document.getElementById('event-detail-desc');
-            const infoBoxEl = document.getElementById('event-detail-info-box');
+            const modal = document.getElementById('event-detail-modal');
+            const typeEl = document.getElementById('event-detail-type');
+            const nameEl = document.getElementById('event-detail-name');
+            const hostEl = document.getElementById('event-detail-host');
+            const descEl = document.getElementById('event-detail-desc');
+            const infoBoxEl = document.getElementById('event-detail-info-box');
 
-            const typeColors = {
-                'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
-                'Workshop': 'background-color: #fefce8; color: #b45309;',
-                'Event': 'background-color: #eef2ff; color: #4338ca;',
-                'Hackathon': 'background-color: #fdf2f8; color: #db2777;'
-            };
-            
-            typeEl.textContent = event.type;
-            typeEl.style.cssText = `font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; ${typeColors[event.type] || typeColors['Event']}`;
-            nameEl.textContent = event.name;
-            hostEl.innerHTML = `Hosted by <a href="#" class="nav-link" style="font-weight: 600;">${event.club}</a>`;
-            descEl.innerHTML = `<p>${event.description_full.replace(/\n/g, '</p><p>')}</p>`;
+            const typeColors = {
+                'Seminar': 'background-color: #ecf9ff; color: #0284c7;',
+                'Workshop': 'background-color: #fefce8; color: #b45309;',
+                'Event': 'background-color: #eef2ff; color: #4338ca;',
+                'Hackathon': 'background-color: #fdf2f8; color: #db2777;'
+            };
+            
+            typeEl.textContent = event.type;
+            typeEl.style.cssText = `font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; ${typeColors[event.type] || typeColors['Event']}`;
+            nameEl.textContent = event.name;
+            hostEl.innerHTML = `Hosted by <a href="#" class="nav-link" style="font-weight: 600;">${event.club}</a>`;
+            descEl.innerHTML = `<p>${event.description_full.replace(/\n/g, '</p><p>')}</p>`;
 
-            infoBoxEl.innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
-                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="calendar" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Date</p></div>
-                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                </div>
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
-                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="clock" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Time</p></div>
-                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.time || 'TBA'}</p>
-                </div>
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
-                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="map-pin" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Venue</p></div>
-                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.venue || 'TBA'}</p>
-                </div>
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
-                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="users" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Participants</p></div>
-                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.participants ? event.participants + ' Registered' : 'TBA'}</p>
-                </div>
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0;">
-                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="ticket" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Fees</p></div>
-                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.fees || 'Free'}</p>
-                </div>
-            `;
-            
-            lucide.createIcons();
-            modal.classList.remove('hidden');
-        }
+            infoBoxEl.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="calendar" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Date</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="clock" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Time</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.time || 'TBA'}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="map-pin" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Venue</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.venue || 'TBA'}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="users" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Participants</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.participants ? event.participants + ' Registered' : 'TBA'}</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0;">
+                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="ticket" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Fees</p></div>
+                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${event.fees || 'Free'}</p>
+                </div>
+            `;
+            
+            lucide.createIcons();
+            modal.classList.remove('hidden');
+        }
 
-        // --- 5. MAIN SCRIPT LOGIC (This runs when the page loads) ---
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Run this first for all static icons (menu, footer, etc.)
-            lucide.createIcons(); 
-            
-            // --- Get references to all dynamic containers ---
-            const eventList = document.getElementById('events-container');
+        // --- 5. MAIN SCRIPT LOGIC (This runs when the page loads) ---
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Run this first for all static icons (menu, footer, etc.)
+            lucide.createIcons(); 
+            
+            // --- Get references to all dynamic containers ---
+            const eventList = document.getElementById('events-container');
             const newsFeed = document.getElementById('news-feed');
             const leaderboardList = document.getElementById('leaderboard-list');
             const allNewsFeed = document.getElementById('all-news-feed');
@@ -713,16 +760,16 @@
             newsFeed.innerHTML = '<p class="text-slate-500">Loading news...</p>';
             leaderboardList.innerHTML = '<p class="text-slate-500">Loading winners...</p>';
 
-            // --- 1. Load Events ---
+            // --- 1. Load Events ---
+            // --- 1. Load Events ---
             try {
-                const todayISO = getTodayISO();
-                // Query for 3 upcoming events
-                const querySnapshot = await db.collection("events")
-                    .where("date", ">=", todayISO)
-                    .orderBy("date", "asc")
-                    .orderBy("time", "asc")
-                    .limit(3)
-                    .get();
+                const todayISO = getTodayISO();
+                // Query for 3 upcoming events
+                const querySnapshot = await db.collection("events")
+                    .where("date", ">=", todayISO)
+                    .orderBy("date", "asc")
+                    .limit(3)
+                    .get();
                 
                 // Clear the global 'events' array
                 events = []; 
@@ -738,7 +785,7 @@
                         time: data.time,
                         type: data.eventType,
                         club: data.club,
-                        // You can add venue, fees, etc. to your admin panel and here later
+                        // Add other fields from your modal here
                         venue: data.venue || 'TBA',
                         participants: data.participants || null,
                         fees: data.fees || 'Free'
@@ -754,154 +801,158 @@
                 } else {
                     eventList.innerHTML = '<p class="text-slate-500" style="text-align: center; grid-column: 1 / -1;">No upcoming events found.</p>';
                 }
-            } catch (error) {
-                console.error("Error loading events:", error);
+            } catch (error) {
+                console.error("Error loading events:", error);
                 eventList.innerHTML = '<p class="text-red-500" style="text-align: center; grid-column: 1 / -1;">Could not load events.</p>';
-            }
+            }
 
-            // --- 2. Load News ---
-            try {
-                // Query for 3 newest news items
-                const querySnapshot = await db.collection("news").orderBy("date", "desc").limit(3).get();
-                newsFeed.innerHTML = ''; // Clear "Loading..."
-                if (querySnapshot.empty) {
-                    newsFeed.innerHTML = '<p class="text-slate-500">No news posted yet.</p>';
-                } else {
-                    querySnapshot.forEach(doc => {
-                        const item = doc.data();
-                        const itemDate = new Date(item.date + 'T12:00:00'); // Add time to avoid TZ issues
-                        // This HTML matches your original file's logic
-                        newsFeed.innerHTML += `<div class="news-item"><p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p><div class="news-meta"><span>By ${item.category}</span><span>${timeAgo(itemDate)}</span></div></div>`;
-                    });
-                }
-            } catch (error) {
-                console.error("Error loading news:", error);
-                newsFeed.innerHTML = '<p class="text-red-500">Could not load news.</p>';
-            }
-            
-            // --- 3. Load Winners (Leaderboard) ---
-            try {
-                // Query for 10 most recent winners
-                const querySnapshot = await db.collection("winners").orderBy("createdAt", "desc").limit(10).get();
-                leaderboardList.innerHTML = ''; // Clear "Loading..."
-                if (querySnapshot.empty) {
-                    leaderboardList.innerHTML = '<p class="text-slate-500">No winners announced yet.</p>';
-                } else {
-                    // This logic matches your original file
-                    const medalColors = { 1: '#facc15', 2: '#94a3b8', 3: '#f97316', 4: '#38bdf8', 5: '#84cc16', 6: '#22d3ee', 7: '#10b981', 8: '#f43f5e', 9: '#8b5cf6', 10: '#14b8a6' };
-                    let rank = 1;
-                    querySnapshot.forEach(doc => {
-                        const entry = doc.data();
-                        const color = medalColors[rank] || '#38bdf8'; // Use default color after 10th
-                        leaderboardList.innerHTML += `<li class="leaderboard-item"><i data-lucide="medal" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: ${color};"></i><span class="leaderboard-rank">${rank}.</span><div><p class="leaderboard-name">${entry.name}</p><p class="leaderboard-event">${entry.event}</p></div></li>`;
-                        rank++;
-                    });
-                }
-            } catch (error) {
-                console.error("Error loading winners:", error);
-                leaderboardList.innerHTML = '<p class="text-red-500">Could not load winners.</p>';
-            }
+            // --- 2. Load News ---
+            try {
+                // Query for 3 newest news items
+                const querySnapshot = await db.collection("news").orderBy("date", "desc").limit(3).get();
+                newsFeed.innerHTML = ''; // Clear "Loading..."
+                if (querySnapshot.empty) {
+                    newsFeed.innerHTML = '<p class="text-slate-500">No news posted yet.</p>';
+                } else {
+                    querySnapshot.forEach(doc => {
+                        const item = doc.data();
+                        const itemDate = new Date(item.date + 'T12:00:00'); // Add time to avoid TZ issues
+                        // This HTML matches your original file's logic
+                        newsFeed.innerHTML += `<div class="news-item"><p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p><div class="news-meta"><span>By ${item.category}</span><span>${timeAgo(itemDate)}</span></div></div>`;
+                    });
+                }
+            } catch (error) {
+                console.error("Error loading news:", error);
+                newsFeed.innerHTML = '<p class="text-red-500">Could not load news.</p>';
+            }
+            
+            // --- 3. Load Winners (Leaderboard) ---
+            try {
+                // Query for 10 most recent winners
+                const querySnapshot = await db.collection("winners").orderBy("createdAt", "desc").limit(10).get();
+                leaderboardList.innerHTML = ''; // Clear "Loading..."
+                if (querySnapshot.empty) {
+                    leaderboardList.innerHTML = '<p class="text-slate-500">No winners announced yet.</p>';
+                } else {
+                    // This logic matches your original file
+                    const medalColors = { 1: '#facc15', 2: '#94a3b8', 3: '#f97316', 4: '#38bdf8', 5: '#84cc16', 6: '#22d3ee', 7: '#10b981', 8: '#f43f5e', 9: '#8b5cf6', 10: '#14b8a6' };
+                    let rank = 1;
+                    querySnapshot.forEach(doc => {
+                        const entry = doc.data();
+                        const color = medalColors[rank] || '#38bdf8'; // Use default color after 10th
+                        leaderboardList.innerHTML += `<li class="leaderboard-item"><i data-lucide="medal" style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem; color: ${color};"></i><span class="leaderboard-rank">${rank}.</span><div><p class="leaderboard-name">${entry.name}</p><p class="leaderboard-event">${entry.event}</p></div></li>`;
+                        rank++;
+                    });
+                }
+            } catch (error) {
+                console.error("Error loading winners:", error);
+                leaderboardList.innerHTML = '<p class="text-red-500">Could not load winners.</p>';
+            }
 
-            // --- 4. Populate Static Clubs (Your original code) ---
-            if (clubListContainer) {
+            // --- 4. Populate Static Clubs (Your original code) ---
+            if (clubListContainer) {
                 clubListContainer.innerHTML = ''; // Clear placeholders
-                clubs.forEach(club => {
-                    const clubItemHTML = `
-                        <a href="${club.page}" class="club-item">
-                            <div class="club-logo-container">
-                                <i data-lucide="${club.logo}" class="club-logo"></i>
-Z                       </div>
-                            <p class="club-name">${club.name}</p>
-                        </a>`;
-                    clubListContainer.innerHTML += clubItemHTML;
-CSS           });
-            }
-            
-            // --- 5. Populate All News Modal (This is now a dynamic function) ---
-            async function populateAllNewsModal() {
-                allNewsFeed.innerHTML = '<p class="text-slate-500">Loading all news...</p>';
-                let allNews = [];
-                try {
-                    const querySnapshot = await db.collection("news").orderBy("date", "desc").get();
-                    querySnapshot.forEach((doc) => {
-                        allNews.push({ id: doc.id, ...doc.data() });
-                    });
+                clubs.forEach(club => {
+                    const clubItemHTML = `
+                        <a href="${club.page}" class="club-item">
+                            <div class="club-logo-container">
+                                <i data-lucide="${club.logo}" class="club-logo"></i>
+                            </div>
+                            <p class="club-name">${club.name}</p>
+                        </a>`;
+                    clubListContainer.innerHTML += clubItemHTML;
+                });
+            }
+            
+            // --- 5. Populate All News Modal (This is now a dynamic function) ---
+            async function populateAllNewsModal() {
+                allNewsFeed.innerHTML = '<p class="text-slate-500">Loading all news...</p>';
+                let allNews = [];
+                try {
+                    const querySnapshot = await db.collection("news").orderBy("date", "desc").get();
+                    querySnapshot.forEach((doc) => {
+                        allNews.push({ id: doc.id, ...doc.data() });
+                    });
 
-                    if (allNews.length > 0) {
-                        allNewsFeed.innerHTML = ''; // Clear "Loading..."
-                        allNews.forEach(item => {
-                            const itemDate = new Date(item.date + 'T12:00:00');
-                            // This HTML matches your original file's logic
-                            allNewsFeed.innerHTML += `<div class="news-item" style="background-color: #f8fafc; border: 1px solid #e2e8f0;"><p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p><div class="news-meta"><span>By <strong>${item.category}</strong></span><span>${timeAgo(itemDate)}</span></div></div>`;
-                        });
-                    } else {
-                        allNewsFeed.innerHTML = '<p class="text-slate-500">No news posts found.</p>';
-                    }
-                } catch (error) {
-                    console.error("Error loading all news: ", error);
-                 allNewsFeed.innerHTML = '<p class="text-red-500">Could not load news.</p>';
-                }
-            }
-            
-            // Re-run lucide for all newly added icons
-            lucide.createIcons(); 
+                    if (allNews.length > 0) {
+                        allNewsFeed.innerHTML = ''; // Clear "Loading..."
+                        allNews.forEach(item => {
+                            const itemDate = new Date(item.date + 'T12:00:00');
+                            // This HTML matches your original file's logic
+                            allNewsFeed.innerHTML += `<div class="news-item" style="background-color: #f8fafc; border: 1px solid #e2e8f0;"><p style="font-size: 1.125rem; font-weight: 600;">${item.title}</p><div class="news-meta"><span>By <strong>${item.category}</strong></span><span>${timeAgo(itemDate)}</span></div></div>`;
+                        });
+                    } else {
+                        allNewsFeed.innerHTML = '<p class="text-slate-500">No news posts found.</p>';
+                    }
+                } catch (error) {
+                    console.error("Error loading all news: ", error);
+                    allNewsFeed.innerHTML = '<p class="text-red-500">Could not load news.</p>';
+                }
+            }
+            
+            // Re-run lucide for all newly added icons
+            lucide.createIcons(); 
 
-            // --- 6. Your Original Modal & Menu Logic (Unchanged) ---
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenuButton && mobileMenu) {
-                const navLinks = document.querySelector('.nav-links');
-                mobileMenu.innerHTML = navLinks.innerHTML;
-                const profileSection = document.querySelector('.profile-section');
-                mobileMenu.innerHTML += `<div style="border-top: 1px solid #e2e8f0; margin-top: 1rem; padding-top: 1rem;">${profileSection.innerHTML}</div>`;
-                mobileMenuButton.addEventListener('click', () => {
-                    mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
-MS             });
-            }
+            // --- 6. Your Original Modal & Menu Logic (Unchanged) ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                const navLinks = document.querySelector('.nav-links');
+                mobileMenu.innerHTML = navLinks.innerHTML;
+                const profileSection = document.querySelector('.profile-section');
+                mobileMenu.innerHTML += `<div style="border-top: 1px solid #e2e8f0; margin-top: 1rem; padding-top: 1rem;">${profileSection.innerHTML}</div>`;
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+                });
+            }
 
-            // News Modal Logic
-            const viewAllNewsBtn = document.getElementById('view-all-news-btn');
-            const allNewsModal = document.getElementById('all-news-modal');
-            const closeNewsModalBtn = document.getElementById('close-news-modal');
-            
-            if(viewAllNewsBtn) {
-                viewAllNewsBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    populateAllNewsModal(); // MODIFIED: Load data on click
-                    allNewsModal.classList.remove('hidden');
-                });
-            }
-            if(closeNewsModalBtn) {
-                closeNewsModalBtn.addEventListener('click', () => {
-                    allNewsModal.classList.add('hidden');
-Code           });
-            }
-            
-            // Event Detail Modal Logic
-             const closeEventDetailModalBtn = document.getElementById('close-event-detail-modal');
-            const eventDetailModal = document.getElementById('event-detail-modal');
-            if(closeEventDetailModalBtn) {
-                closeEventDetailModalBtn.addEventListener('click', () => {
-                    eventDetailModal.classList.add('hidden');
-                });
-      _   }
-        });
-        
-        // Placeholder for functions referenced in your HTML:
-        function fun(event) { 
-            const eventsSection = document.getElementById('events');
-            if(eventsSection) eventsSection.scrollIntoView({ behavior: 'smooth' });
-  Do     }
-        function exitModal() { 
-            const section = document.querySelector('section');
-             if(section) section.style.display = 'none';
-        }
-        function closeModal(event) { 
-            const modal = document.getElementById('modal-container');
-            if(modal) modal.classList.add('hidden');
-        }
-        function registration(event) { console.log('Registration submitted'); }
+            // News Modal Logic
+            const viewAllNewsBtn = document.getElementById('view-all-news-btn');
+            const allNewsModal = document.getElementById('all-news-modal');
+            const closeNewsModalBtn = document.getElementById('close-news-modal');
+            
+            if(viewAllNewsBtn) {
+                viewAllNewsBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    populateAllNewsModal(); // MODIFIED: Load data on click
+                    allNewsModal.classList.remove('hidden');
+                });
+            }
+            if(closeNewsModalBtn) {
+                closeNewsModalBtn.addEventListener('click', () => {
+                    allNewsModal.classList.add('hidden');
+                });
+            }
+            
+            // Event Detail Modal Logic
+            const closeEventDetailModalBtn = document.getElementById('close-event-detail-modal');
+            const eventDetailModal = document.getElementById('event-detail-modal');
+            if(closeEventDetailModalBtn) {
+                closeEventDetailModalBtn.addEventListener('click', () => {
+                    eventDetailModal.classList.add('hidden');
+                });
+            }
+        });
+        
+        // Placeholder for functions referenced in your HTML:
+        function fun(event) { 
+            const eventsSection = document.getElementById('events');
+            if(eventsSection) eventsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        function exitModal() { 
+            const section = document.querySelector('section');
+            if(section) section.style.display = 'none';
+        }
+        function closeModal(event) { 
+            const modal = document.getElementById('modal-container');
+            if(modal) modal.classList.add('hidden');
+        }
+        function registration(event) { 
+            event.preventDefault(); // Prevent form from actually submitting
+            console.log('Registration submitted'); 
+        }
 
-    </script>
+    </script>
 </body>
+
 </html>
