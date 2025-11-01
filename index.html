@@ -372,8 +372,7 @@
 </head>
 
 <body>
-    <!-- === THIS SECTION IS REBUILT === -->
-    <!-- It now uses the .modal-overlay and .modal-content classes -->
+    <!-- SUCCESS MODAL (REBUILT) -->
     <div id="success-modal" class="modal-overlay hidden">
         <div class="modal-content" style="max-width: 28rem; padding: 2.5rem; text-align: center; overflow: hidden;">
             <i class="fa-regular fa-circle-check" style="font-size: 70px; color: #4f46e5;"></i>
@@ -399,6 +398,7 @@
                 <a href="#leaderboard" class="nav-link">Winners</a>
             </div>
             <div class="profile-section">
+                <!-- This 'sign' div is updated by auth.onAuthStateChanged -->
                 <div class="sign">
                     <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
                         Login
@@ -832,32 +832,70 @@
         document.addEventListener('DOMContentLoaded', async function() {
             lucide.createIcons(); 
             
-            // --- 7a. AUTH STATE LISTENER (Unchanged) ---
+            // --- 7a. AUTH STATE LISTENER (MODIFIED) ---
             auth.onAuthStateChanged(user => {
                 const loginButtonContainer = document.querySelector('.profile-section .sign');
                 
                 if (user) {
                     currentUser = user; 
+                    
+                    // --- FIX: Apply flex styles to the container ---
+                    loginButtonContainer.style.display = 'flex';
+                    loginButtonContainer.style.alignItems = 'center';
+                    loginButtonContainer.style.gap = '0.75rem'; // 12px
+                    
+                    // NEW: Add icon and username
                     loginButtonContainer.innerHTML = `
+                        <span class="flex items-center gap-2 text-slate-700">
+                            <i data-lucide="user-circle" style="width: 20px; height: 20px;"></i>
+                            <span class="font-medium">${currentUser.displayName || 'User'}</span>
+                        </span>
                         <a href="#" onclick="logoutUser()" class="custom-button" style="background-color: #ef4444; ">
                             Logout
                         </a>`;
                 } else {
                     currentUser = null;
+                    
+                    // --- FIX: Remove inline styles when logged out ---
+                    loginButtonContainer.style.display = '';
+                    loginButtonContainer.style.alignItems = '';
+                    loginButtonContainer.style.gap = '';
+                    
                     loginButtonContainer.innerHTML = `
                         <a href="login.html" class="custom-button" style="background-color: #4f46e5;">
                             Login
                         </a>`;
                 }
 
-                // --- 7b. Mobile Menu Build (Unchanged) ---
+                // --- 7b. Mobile Menu Build (MODIFIED) ---
                 const mobileMenuButton = document.getElementById('mobile-menu-button');
                 const mobileMenu = document.getElementById('mobile-menu');
                 if (mobileMenuButton && mobileMenu) {
                     const navLinks = document.querySelector('.nav-links');
                     mobileMenu.innerHTML = navLinks.innerHTML;
-                    const profileSection = document.querySelector('.profile-section');
-                    mobileMenu.innerHTML += `<div style="border-top: 1px solid #e2e8f0; margin-top: 1rem; padding-top: 1rem;">${profileSection.innerHTML}</div>`;
+                    
+                    // Re-select the profile section *after* it has been updated by the auth state
+                    const profileSection = document.querySelector('.profile-section'); 
+                    
+                    // Create a mobile-friendly version of the profile section
+                    let profileHTML = '';
+                    if (currentUser) {
+                        profileHTML = `
+                            <div class="flex items-center gap-2 text-slate-700 p-2">
+                                <i data-lucide="user-circle" style="width: 20px; height: 20px;"></i>
+                                <span class="font-medium">${currentUser.displayName || 'User'}</span>
+                            </div>
+                            <div class="mt-2">
+                                <a href="#" onclick="logoutUser()" class="custom-button" style="background-color: #ef4444; width: 100%; text-align: center; display: block;">
+                                    Logout
+                                </a>
+                            </div>`;
+                    } else {
+                        // Just use the original "Login" button HTML from the *updated* container
+                        profileHTML = loginButtonContainer.innerHTML;
+                    }
+
+                    mobileMenu.innerHTML += `<div style="border-top: 1px solid #e2e8f0; margin-top: 1rem; padding-top: 1rem; padding-left: 0.5rem; padding-right: 0.5rem;">${profileHTML}</div>`;
                     
                     if (!mobileMenuButton.dataset.listenerAttached) {
                         mobileMenuButton.addEventListener('click', () => {
@@ -866,6 +904,9 @@
                         mobileMenuButton.dataset.listenerAttached = 'true';
                     }
                 }
+                
+                // --- NEW: Render icons in header and mobile menu ---
+                lucide.createIcons();
             });
 
             
@@ -1119,4 +1160,5 @@
 </body>
 
 </html>
+
 
