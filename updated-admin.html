@@ -895,9 +895,8 @@
 
             let allEvents = [];
             try {
-                const eventsQuery = db.collection("events")
-                                      .orderBy("date", "asc")
-                                      .orderBy("time", "asc");
+                const eventsQuery = db.collection("events")
+                                      .orderBy("date", "asc");
                                       
                 const querySnapshot = await eventsQuery.get();
                 
