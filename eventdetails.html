@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <header class="header">
         <nav class="navbar">
@@ -19,7 +17,8 @@
                 <a class="nav-link">Home</a>
                 <a onclick="window.location.href = 'events.html'" class="nav-link">Events</a>
                 <a href="#clubs" class="nav-link">Clubs</a>
-                <a href="#gallery" class="nav-link">Gallery</a>
+                <a href="#" class="nav-link">Gallery</a>
+                <!-- <a href="#" class="gallery-button">View Full Gallery</a> -->
                 <a href="#leaderboard" class="nav-link">Winners</a>
             </div>
             <div class="profile-section">
@@ -47,72 +46,44 @@
             </div>
         </div>
     </section>
-    <div id="modal-container" class="modal-overlay">
-        <div id="modal-content" class="modal-card">
-            <div class="modal-header">
-                <h2>Event Registration Form</h2>
-                <button id="close-modal-btn" onclick="closeModal(event)" class="close-button">&times;</button>
-            </div>
+     <div id="modal-container" class="modal-overlay">
+            <div id="modal-content" class="modal-card">
+                <div class="modal-header">
+                    <h2>Event Registration Form</h2>
+                    <button id="close-modal-btn" onclick="closeModal(event)" class="close-button">&times;</button>
+                </div>
 
-            <form id="event-form">
-                <div class="form-body">
-                    <div class="form-group">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" id="registration-name" name="name" required class="form-input"
-                            placeholder="Name">
+                <form id="event-form">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="registration-name" name="name" required class="form-input"
+                                placeholder="Name">
+                        </div>
+
+                         <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="registration-email" name="email" readonly class="form-input">
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="registration-email" name="email" readonly class="form-input">
+                    <div class="modal-footer">
+                        <button type="button" id="cancel-btn" onclick="closeModal(event)" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" id="modal-registration-btn" onclick="registration(event)" class="custom-button">Register</button>
                     </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" id="cancel-btn" onclick="closeModal(event)"
-                        class="btn btn-secondary">Cancel</button>
-                    <button type="submit" id="modal-registration-btn" onclick="registration(event)"
-                        class="custom-button">Register</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="event-detail-container" class="event-detail-page-container">
-        <!-- Modal Header -->
-        <div id="event-detail-header" style="padding: 2rem; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; flex-shrink: 0;">
-            <span id="event-detail-type" style="font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px;"></span>
-            <h1 id="event-detail-name" style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-top: 1rem;"></h1>
-            <p id="event-detail-host" style="font-size: 1.25rem; color: #475569; margin-top: 0.5rem;"></p>
-        </div>
-        
-        <!-- Modal Body -->
-        <div class="modal-body-layout">
-            <div class="modal-grid-layout">
-                
-                <!-- Left Column: Details -->
-                <div id="event-detail-desc" class="modal-grid-desc">
-                    <p>Loading event details...</p>
-                </div>
-                
-                <!-- Right Column: Info Box -->
-                <div class="modal-grid-info" id="box">
-                    <div id="event-detail-info-box" style="background-color: #f1f5f9; border-radius: 1rem; padding: 1.5rem; display: flex; flex-direction: column;">
-                        <!-- Info items will be populated by JS -->
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-    </div>
-    
-    </div>
 
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-        <script src="https://unpkg.com/lucide@latest"></script>
-        <script src="main.js"></script>
+    <section class="event-details-container" id="event-details-container">
+            
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="main.js"></script>
 </body>
-
 </html>

@@ -72,32 +72,32 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (fileName() == 'admin.html') {
-            db.ref(`users/${emailv}/access/`).get().then((snapshot) => {
-              if (!snapshot.exists()) {
-                return;
+          db.ref(`users/${emailv}/access/`).get().then((snapshot) => {
+            if (!snapshot.exists()) {
+              return;
+            }
+
+            snapshot.forEach((childSnap) => {
+              console.log(childSnap);
+              const clubName = childSnap.key;
+              const hasAccess = childSnap.val();
+              if (hasAccess === true) {
+                const club = document.createElement('option');
+                club.value = clubName;
+                club.innerHTML = clubName;
+                clubNames.appendChild(club);
               }
 
-              snapshot.forEach((childSnap) => {
-                console.log(childSnap);
-                const clubName = childSnap.key;
-                const hasAccess = childSnap.val();
-                if (hasAccess === true) {
-                  const club = document.createElement('option');
-                  club.value = clubName;
-                  club.innerHTML = clubName;
-                  clubNames.appendChild(club);
-                }
-
-              })
-            }).catch((error) => {
-              console.error("Error:", error);
-            });
-          }
+            })
+          }).catch((error) => {
+            console.error("Error:", error);
+          });
+        }
         } else {
           alert("User not found");
         }
       });
-
+  
 
     } else {
 
@@ -196,50 +196,50 @@ document.addEventListener("DOMContentLoaded", () => {
     db.ref(`events/${eventID}`).get().then((snapshot) => {
       if (snapshot.exists()) {
         const eventval = snapshot.val();
-        const typeEl = document.getElementById('event-detail-type');
-        const nameEl = document.getElementById('event-detail-name');
-        const hostEl = document.getElementById('event-detail-host');
-        const descEl = document.getElementById('event-detail-desc');
-        const detailsBox = document.getElementById('box');
 
-        typeEl.textContent = eventval.type;
-        nameEl.textContent = eventval.title;
-        hostEl.innerHTML = `Hosted by <a href="#" class="nav-link" style="font-weight: 600;">${eventval.club}</a>`;
-        descEl.innerHTML = eventval.description;
+        eventDetailsContainer.innerHTML = `
+          <main class="main-container">
+            <section id="details" class="card">
+                <div class="details-grid">
+                    <div>
+                        <h2 class="card-title">${eventval.title}</h2>
+                        <div class="details-list">
+                            <div class="details-list-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="details-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                <span><strong>Date:</strong> ${eventval.date}</span>
+                            </div>
+                            <div class="details-list-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="details-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span><strong>Time:</strong> ${eventval.time}</span>
+                            </div>
+                            <div class="details-list-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="details-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                <span><strong>Club:</strong> ${eventval.club}</span>
+                            </div>
+                            <div class="details-list-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="details-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                <span><strong>Participants count: </strong> ${eventval.participantsCount}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticket-box">
+                        <button class="custom-button" id="registration-btn" data-id="${snapshot.key}" onclick="openModal(event)">Register</button>
+                    </div>
+                </div>
+            </section>
 
-
-        detailsBox.innerHTML = `
-        <div id="event-detail-info-box" style="background-color: #f1f5f9; border-radius: 1rem; padding: 1.5rem; display: flex; flex-direction: column;">
-                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
-                                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="calendar" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Date</p></div>
-                                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${eventval.date}</p>
-                                </div>
-                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
-                                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="clock" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Time</p></div>
-                                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${eventval.time || 'TBA'}</p>
-                                </div>
-                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
-                                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="users" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Participants</p></div>
-                                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${eventval.participantsCount ? eventval.participantsCount : 'TBA'}</p>
-                                </div>
-                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0;">
-                                    <div style="display: flex; align-items: center; flex-shrink: 0;"><i data-lucide="ticket" style="width: 1.25rem; height: 1.25rem; color: #4f46e5; margin-right: 0.75rem;"></i><p style="font-weight: 500; color: #475569;">Fees</p></div>
-                                    <p style="font-weight: 600; color: #1e293b; text-align: right;">${eventval.fees || 'Free'}</p>
-                                </div>
-                                </div>
-                                <button id="event-detail-register-btn" style="width: 100%; background-color: #4f46e5; color: white; font-weight: 700; padding: 0.75rem 1.5rem; border-radius: 0.5rem; margin-top: 1.5rem; transition: background-color 0.3s; cursor: pointer; border: none;" id="registration-btn" data-id="${snapshot.key}" onclick="openModal(event)">Register Now</button>
-                            `;
-        lucide.createIcons();
+            <section id="about" class="card">
+                <h2 class="card-title">About the Event</h2>
+                <p class="about-text">${eventval.description}</p>
+            </section>
+        </main>
+          `;
       } else {
-        // FIX: Changed eventDetailsContainer to descEl
-        const descEl = document.getElementById('event-detail-desc');
-        if (descEl) descEl.innerHTML = `<p>Error: Event not found.</p>`;
+        eventDetailsContainer.innerHTML = `<p>Error: Event not found.</p>`;
       }
     }).catch((error) => {
       console.error("Firebase fetch error:", error);
-      // FIX: Changed eventDetailsContainer to descEl
-      const descEl = document.getElementById('event-detail-desc');
-      if (descEl) descEl.innerHTML = `<p>Error loading event details.</p>`;
+      eventDetailsContainer.innerHTML = `<p>Error loading event details.</p>`;
     });
   }
 
@@ -480,8 +480,7 @@ document.addEventListener("DOMContentLoaded", () => {
       date: "2025-10-20",
       club: "CSI",
       time: "10:00",
-      type: "Seminar",
-      participantsCount: 0
+      type: "Seminar"
     })
       .then(() => {
         alert("Event added");
